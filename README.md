@@ -7,8 +7,8 @@ Currently includes:
 - Simple terrain generation.
 - Ocean simulation.
 - Coral Generation:
-  - space colonization algorithm
-  - reaction-diffusion (wip)
+  - space colonization algorithm.
+  - reaction-diffusion.
   
 References:
 - https://github.com/gasgiant/Ocean-URP
