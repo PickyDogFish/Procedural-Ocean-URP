@@ -1,0 +1,66 @@
+// Each #kernel tells which function to compile; you can have many kernels
+#pragma kernel Init
+#pragma kernel Update
+
+// Create a RenderTexture with enableRandomWrite flag and set it
+// with cs.SetTexture
+bool useFeedTex;
+float feedTexStrength;
+Texture2D<float> FeedTex;
+
+Texture2D<float2> Read;
+RWTexture2D<float2> Write;
+
+int resolution;
+
+float2 diffusion;
+float feed;
+float kill;
+float speed;
+
+float2 Read2D(int2 pos){
+    return Read.Load(int3(pos, 0));
+}
+
+float Feed2D(int2 pos){
+    return FeedTex.Load(int3(pos, 0));
+}
+
+float2 GetLaplacian(int2 pos){
+    float2 val = -Read2D(pos);
+    float3 dir = float3(1, -1, 0.0);
+	//direct
+    val += Read2D(pos.xy + dir.xz).xy * 0.20; // +1, 0
+	val += Read2D(pos.xy + dir.zx).xy * 0.20; // 0, +1
+	val += Read2D(pos.xy - dir.zx).xy * 0.20; // 0, -1
+	val += Read2D(pos.xy - dir.xz).xy * 0.20; // -1, 0
+    //diagonal
+	val += Read2D(pos.xy + dir.xx).xy * 0.05; // +1, +1
+	val += Read2D(pos.xy - dir.yx).xy * 0.05; // +1, -1
+    val += Read2D(pos.xy - dir.xx).xy * 0.05; // -1,-1
+	val += Read2D(pos.xy + dir.yx).xy * 0.05; // -1, +1
+    return val;
+}
+
+
+[numthreads(8,8,1)]
+void Init (uint3 id : SV_DispatchThreadID){
+    Write[id.xy] = float2(0, Read2D(id.xy).y);
+}
+
+[numthreads(8,8,1)]
+void Update (uint3 id : SV_DispatchThreadID){
+    float newFeed = feed;
+    if (useFeedTex){
+        newFeed = lerp(feed, Feed2D(id.xy), feedTexStrength);
+    }
+
+
+    float2 prevq = Read2D(id.xy);
+    float2 newq = GetLaplacian(id.xy);
+    float reactionTerm = prevq.r * prevq.g * prevq.g;
+    float a = prevq.x + (diffusion.x * newq.x - reactionTerm + newFeed * (1.0 - prevq.x)) * speed;
+
+    float b = prevq.y + (diffusion.y * newq.y + reactionTerm - (kill + newFeed) * prevq.y) * speed;
+    Write[id.xy] = float2(saturate(a), saturate(b));
+}

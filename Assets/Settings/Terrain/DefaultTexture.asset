@@ -1,0 +1,64 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae0961d343369d549805f82b1e352141, type: 3}
+  m_Name: DefaultTexture
+  m_EditorClassIdentifier: 
+  autoUpdate: 1
+  layers:
+  - texture: {fileID: 2800000, guid: c840935418eda4f4789e1a6d984eff68, type: 3}
+    tint: {r: 0.31505874, g: 0.31997713, b: 0.3773585, a: 0}
+    tintStrength: 0.436
+    startHeight: 0
+    blendStrength: 0.003
+    textureScale: 5
+  - texture: {fileID: 2800000, guid: c840935418eda4f4789e1a6d984eff68, type: 3}
+    tint: {r: 0.7015267, g: 0.7169812, b: 0.21306516, a: 0}
+    tintStrength: 0.395
+    startHeight: 0.056
+    blendStrength: 0.017
+    textureScale: 5.4
+  - texture: {fileID: 2800000, guid: c840935418eda4f4789e1a6d984eff68, type: 3}
+    tint: {r: 0.745283, g: 0.4745906, b: 0.4745906, a: 0}
+    tintStrength: 0
+    startHeight: 0.074
+    blendStrength: 0.026
+    textureScale: 0.2
+  - texture: {fileID: 2800000, guid: 2214f7df37f54f14d80fce3c8039ac9d, type: 3}
+    tint: {r: 0.764151, g: 0.7368521, b: 0.28732076, a: 0}
+    tintStrength: 0.001
+    startHeight: 0.1
+    blendStrength: 0.02
+    textureScale: 1
+  - texture: {fileID: 2800000, guid: 72264f13bc7342543892040270051195, type: 3}
+    tint: {r: 0.22152013, g: 0.3584906, b: 0.24654357, a: 0}
+    tintStrength: 0
+    startHeight: 0.099
+    blendStrength: 0.007
+    textureScale: 3
+  - texture: {fileID: 2800000, guid: 72264f13bc7342543892040270051195, type: 3}
+    tint: {r: 0.05383516, g: 0.213, b: 0.058516484, a: 0}
+    tintStrength: 0
+    startHeight: 0.257
+    blendStrength: 0.016
+    textureScale: 5
+  - texture: {fileID: 2800000, guid: 231d35719716c4942bfdc5b3f58760bb, type: 3}
+    tint: {r: 0.23584908, g: 0.17238873, b: 0.09678713, a: 0}
+    tintStrength: 0
+    startHeight: 0.336
+    blendStrength: 0.152
+    textureScale: 8
+  - texture: {fileID: 2800000, guid: e2daeac6e9a0ec54fa0a9a9e4d080158, type: 3}
+    tint: {r: 0.13817196, g: 0.20809896, b: 0.254717, a: 0}
+    tintStrength: 0
+    startHeight: 0.57
+    blendStrength: 0.171
+    textureScale: 3
