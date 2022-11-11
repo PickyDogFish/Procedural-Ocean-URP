@@ -1,0 +1,93 @@
+// Each #kernel tells which function to compile; you can have many kernels
+#pragma kernel Init
+#pragma kernel Update
+
+// Create a RenderTexture with enableRandomWrite flag and set it
+// with cs.SetTexture
+RWTexture3D<float2> Read;
+RWTexture3D<float2> Write;
+
+float2 diffusion;
+float feed;
+float kill;
+float speed;
+uint resolution;
+
+float Random (int3 pos) {
+    return frac(sin(dot(pos.xyz, float3(12.9898,78.233,7.42443)))* 43758.5453123);
+}
+
+float2 Read3D(int3 pos){
+    return Read.Load(pos);
+}
+
+
+float2 GetLaplacian(int3 pos){
+    float2 val = float2(0,0);
+    float3 dir = float3(1, -1, 0.0);
+    //bottom layer
+    //direct 
+    val += Read3D(pos.xyz + dir.zzy).xy * 0.1; // +1, 0
+    val += Read3D(pos.xyz + dir.xzy).xy * 0.025; // +1, 0
+    val += Read3D(pos.xyz + dir.zxy).xy * 0.025; // 0, +1
+    val += Read3D(pos.xyz - dir.zxy).xy * 0.025; // 0, -1
+    val += Read3D(pos.xyz - dir.xzy).xy * 0.025; // -1, 0
+    //diagonal
+    val += Read3D(pos.xyz + dir.xxy).xy * 0.0125; // +1, +1
+    val += Read3D(pos.xyz - dir.yxy).xy * 0.0125; // +1, -1
+    val += Read3D(pos.xyz - dir.xxy).xy * 0.0125; // -1,-1
+    val += Read3D(pos.xyz + dir.yxy).xy * 0.0125; // -1, +1
+
+    //middle layer
+    //direct
+    val -= Read3D(pos);
+    val += Read3D(pos.xyz + dir.xzz).xy * 0.1; // +1, 0
+    val += Read3D(pos.xyz + dir.zxz).xy * 0.1; // 0, +1
+    val += Read3D(pos.xyz - dir.zxz).xy * 0.1; // 0, -1
+    val += Read3D(pos.xyz - dir.xzz).xy * 0.1; // -1, 0
+    //diagonal
+    val += Read3D(pos.xyz + dir.xxz).xy * 0.025; // +1, +1
+    val += Read3D(pos.xyz - dir.yxz).xy * 0.025; // +1, -1
+    val += Read3D(pos.xyz - dir.xxz).xy * 0.025; // -1,-1
+    val += Read3D(pos.xyz + dir.yxz).xy * 0.025; // -1, +1
+
+    //top layer
+    //direct
+    val += Read3D(pos.xyz + dir.zzx).xy * 0.1; // +1, 0
+    val += Read3D(pos.xyz + dir.xzx).xy * 0.025; // +1, 0
+    val += Read3D(pos.xyz + dir.zxx).xy * 0.025; // 0, +1
+    val += Read3D(pos.xyz - dir.zxx).xy * 0.025; // 0, -1
+    val += Read3D(pos.xyz - dir.xzx).xy * 0.025; // -1, 0
+    //diagonal
+    val += Read3D(pos.xyz + dir.xxx).xy * 0.0125; // +1, +1
+    val += Read3D(pos.xyz - dir.yxx).xy * 0.0125; // +1, -1
+    val += Read3D(pos.xyz - dir.xxx).xy * 0.0125; // -1,-1
+    val += Read3D(pos.xyz + dir.yxx).xy * 0.0125; // -1, +1
+    return val;
+}
+
+
+[numthreads(8,8,8)]
+void Init (uint3 id : SV_DispatchThreadID){
+    // TODO: insert actual code here!
+    float fromMiddle = id.x / (float)resolution;
+    fromMiddle = fromMiddle * 2.0 - 1.0;
+    if (fromMiddle > 0.0){
+        float rnd = Random(id.xyz);
+        Write[id.xyz] = float2(1.0 - fromMiddle,1.0 - fromMiddle);//float2(1, step(rnd,0.1));
+        } else {
+        fromMiddle = -fromMiddle;
+        Write[id.xyz] = float2(1.0 - fromMiddle, 1.0 - fromMiddle);//float2(1, step(rnd,0.1));
+    } 
+}
+
+[numthreads(8,8,8)]
+void Update(uint3 id : SV_DISPATCHTHREADID){
+    float2 prevq = Read3D(id.xyz);
+    float2 newq = GetLaplacian(id.xyz);
+
+    float reactionTerm = prevq.r * prevq.g * prevq.g;
+    float a = prevq.x + (diffusion.x * newq.x - reactionTerm + feed * (1.0 - prevq.x)) * speed;
+    float b = prevq.y + (diffusion.y * newq.y + reactionTerm - (kill + feed) * prevq.y) * speed;
+    Write[id.xyz] = float2(saturate(a), saturate(b));
+}

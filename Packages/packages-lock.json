@@ -33,7 +33,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.ide.visualstudio": {
-      "version": "2.0.14",
+      "version": "2.0.16",
       "depth": 0,
       "source": "registry",
       "dependencies": {
@@ -150,6 +150,13 @@
         "com.unity.shadergraph": "12.1.6",
         "com.unity.render-pipelines.core": "12.1.6"
       }
+    },
+    "com.wayn-games.editor.extension": {
+      "version": "https://github.com/WAYN-Games/WAYN-Editor-Extension.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "50824dbbd3f025431d1416eeaa0c063460712898"
     },
     "com.unity.modules.ai": {
       "version": "1.0.0",

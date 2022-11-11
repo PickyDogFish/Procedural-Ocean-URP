@@ -45,7 +45,6 @@ namespace ReactionDiffusion
             previewMaterial.SetTexture("_BaseMap", readBuffer);
         }
 
-        //
         void InitializeComputeShader()
         {
             int kernel = computeShader.FindKernel("Init");

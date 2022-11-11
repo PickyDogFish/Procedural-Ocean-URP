@@ -12,13 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 698031c1e0fc0234d9c5d3b88f60aca1, type: 3}
   m_Name: New RD Settings
   m_EditorClassIdentifier: 
-  feed: 0.01
-  useFeedTexture: 0
+  feed: 0.037
+  useFeedTexture: 1
   feedTexture: {fileID: 2800000, guid: e98d03927fb7cac46a98f32099947a8b, type: 3}
-  feedTexStrength: 0
+  feedTexStrength: 0.033
   kill: 0.01
   du: 0.05
   dv: 0.05
-  speed: 0.453
+  speed: 0.11
   initialTexture: {fileID: 2800000, guid: b38b4a8d515db52448385974db6f0487, type: 3}
-  resolution: 512
+  resolution: 64

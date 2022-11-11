@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04cbaf5885b25754da159b5789594791, type: 3}
   m_Name: New RD Layer Settings
   m_EditorClassIdentifier: 
-  <startOffset>k__BackingField: 100
-  <step>k__BackingField: 100
-  <size>k__BackingField: 512
-  <killIncrease>k__BackingField: 0.003
+  <startOffset>k__BackingField: 10
+  <step>k__BackingField: 50
+  <size>k__BackingField: 256
+  <killIncrease>k__BackingField: 0.001
   <builderTriangleBudget>k__BackingField: 65536
   <builderTargetValue>k__BackingField: 0.3
-  <builderGridScale>k__BackingField: 0.0625
+  <builderGridScale>k__BackingField: 1
