@@ -303,7 +303,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   settings: {fileID: 11400000, guid: 897d7bd1fe6da0a4ca674836221a4c5a, type: 2}
   computeShader: {fileID: 7200000, guid: 81b386fd52798ca4caf0c36ab9272fa1, type: 3}
-  meshBuilderShader: {fileID: 7200000, guid: 81b386fd52798ca4caf0c36ab9272fa1, type: 3}
+  meshBuilderShader: {fileID: 7200000, guid: 9f19ed91e8aa34430ac0ea80fb20eead, type: 3}
   computeTextures:
   - {fileID: 0}
   - {fileID: 0}

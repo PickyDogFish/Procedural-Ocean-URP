@@ -35,12 +35,12 @@ uint EdgeIndexFromTriangleTable(uint2 data, uint index)
 
 StructuredBuffer<float> Voxels;
 bool Use3dTex;
-Texture3D<float> VoxelsTex;
+Texture3D<float2> VoxelsTex;
 
 float VoxelValue(uint x, uint y, uint z)
 {
     if (Use3dTex){
-        return VoxelsTex[uint3(x,y,z)];
+        return VoxelsTex[uint3(x,y,z)].y;
     } 
     else {
         return Voxels[x + Dims.x * (y + Dims.y * z)];

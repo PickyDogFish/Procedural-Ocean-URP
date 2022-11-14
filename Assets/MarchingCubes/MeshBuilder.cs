@@ -63,6 +63,7 @@ sealed class MeshBuilder : System.IDisposable
         _compute.SetFloat("Isovalue", target);
         _compute.SetBuffer(0, "TriangleTable", _triangleTable);
         RenderTexture temp = new RenderTexture(8,8,0);
+        temp.dimension = TextureDimension.Tex3D;
         temp.Create();
         _compute.SetTexture(0, "VoxelsTex", temp);
         _compute.SetBool("Use3dTex", false);

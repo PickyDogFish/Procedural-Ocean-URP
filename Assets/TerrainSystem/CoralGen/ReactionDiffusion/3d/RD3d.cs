@@ -13,6 +13,7 @@ namespace ReactionDiffusion
         private int resolution { get { return settings.resolution; } }
         [SerializeField] private ComputeShader computeShader;
         [SerializeField] private ComputeShader meshBuilderShader;
+        private Texture2D feedTexture;
 
         public RenderTexture[] computeTextures = new RenderTexture[2];
         private MeshBuilder meshBuilder;
@@ -36,20 +37,25 @@ namespace ReactionDiffusion
             meshBuilder = new MeshBuilder(resolution, resolution, resolution, 1048576, meshBuilderShader);
         }
 
+        void Start()
+        {
+        }
         void Update()
         {
             Iterate();
             BuildMesh();
         }
 
-        public void BuildMesh(){
-            meshBuilder.BuildIsoSurface(readBuffer, 0.1f, 0.0625f);
+        public void BuildMesh()
+        {
+            meshBuilder.BuildIsoSurface(readBuffer, 0.02f, 0.0625f);
             GetComponent<MeshFilter>().sharedMesh = meshBuilder.Mesh;
         }
 
         void InitializeComputeShader()
         {
             int kernel = computeShader.FindKernel("Init");
+            feedTexture = TextureScaler.Scaled(settings.feedTexture, resolution, resolution);
             computeShader.SetTexture(kernel, "Write", readBuffer);
             computeShader.Dispatch(kernel, resolution / 8, resolution / 8, resolution / 8);
         }
@@ -79,9 +85,9 @@ namespace ReactionDiffusion
 
             //Setting feed parameters
             computeShader.SetFloat("feed", settings.feed);
-            //computeShader.SetFloat("feedTexStrength", settings.feedTexStrength);
+            computeShader.SetFloat("feedTexStrength", settings.feedTexStrength);
             //computeShader.SetBool("useFeedTex", settings.useFeedTexture);
-            //computeShader.SetTexture(kernel, "FeedTex", feedTexture);
+            computeShader.SetTexture(kernel, "FeedTex", feedTexture);
 
             //setting up the textures we are operation on
             computeShader.SetTexture(kernel, "Read", readBuffer);
