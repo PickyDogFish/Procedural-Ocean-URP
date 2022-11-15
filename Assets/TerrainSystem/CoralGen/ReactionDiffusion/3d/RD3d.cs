@@ -31,8 +31,8 @@ namespace ReactionDiffusion
 
         void Awake()
         {
-            readBuffer = CreateRenderTexture();
-            writeBuffer = CreateRenderTexture();
+            readBuffer = CreateRenderTexture("Read");
+            writeBuffer = CreateRenderTexture("Write");
             InitializeComputeShader();
             meshBuilder = new MeshBuilder(resolution, resolution, resolution, 1048576, meshBuilderShader);
         }
@@ -61,11 +61,11 @@ namespace ReactionDiffusion
         }
 
 
-        private RenderTexture CreateRenderTexture()
+        private RenderTexture CreateRenderTexture(string name)
         {
             RenderTexture renderTexture = new RenderTexture(resolution, resolution, 0);
 
-            renderTexture.name = "Output";
+            renderTexture.name = name;
             renderTexture.enableRandomWrite = true;
             renderTexture.dimension = TextureDimension.Tex3D;
             renderTexture.volumeDepth = resolution;
@@ -80,7 +80,7 @@ namespace ReactionDiffusion
             int kernel = computeShader.FindKernel("Update");
             computeShader.SetInt("resolution", resolution);
             computeShader.SetFloat("speed", settings.speed);
-            computeShader.SetVector("diffusion", new Vector2(settings.du, settings.dv));
+            computeShader.SetVector("diffusion", settings.diffusion);
             computeShader.SetFloat("kill", settings.kill);
 
             //Setting feed parameters

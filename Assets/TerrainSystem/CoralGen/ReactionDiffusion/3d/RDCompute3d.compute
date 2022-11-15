@@ -69,6 +69,24 @@ float2 GetLaplacianCube(int3 pos){
     return val;
 }
 
+float2 GetLaplacianCorners(int3 pos){
+    float2 val = float2(0,0);
+    float3 dir = float3(1.0, 0.0, -1.0);
+
+    val += Read3D(pos.xyz + dir.xxx).xy * 0.25;
+    val += Read3D(pos.xyz + dir.zxx).xy * 0.25;
+    val += Read3D(pos.xyz + dir.xzx).xy * 0.25;
+    val += Read3D(pos.xyz + dir.zzx).xy * 0.25; 
+
+    val -= Read3D(pos) * 2.0;
+
+    val += Read3D(pos.xyz + dir.xxz).xy * 0.25;
+    val += Read3D(pos.xyz + dir.zxz).xy * 0.25;
+    val += Read3D(pos.xyz + dir.xzz).xy * 0.25;
+    val += Read3D(pos.xyz + dir.zzz).xy * 0.25;
+    return val;
+}
+
 float2 GetLaplacianNoCorners(int3 pos){
     float2 val = float2(0,0);
     float3 dir = float3(1, -1, 0.0);
@@ -106,6 +124,25 @@ float2 GetLaplacianNoCorners(int3 pos){
     return val;
 }
 
+float2 GetLaplacianDirect(int3 pos){
+    float2 val = float2(0,0);
+    float3 dir = float3(1, -1, 0.0);
+
+    val += Read3D(pos.xyz + dir.zzy).xy * 0.1666; // +1, 0
+
+    val -= Read3D(pos);
+    val += Read3D(pos.xyz + dir.xzz).xy * 0.1666; // +1, 0
+    val += Read3D(pos.xyz + dir.zxz).xy * 0.1666; // 0, +1
+    val += Read3D(pos.xyz - dir.zxz).xy * 0.1666; // 0, -1
+    val += Read3D(pos.xyz - dir.xzz).xy * 0.1666; // -1, 0
+
+    val += Read3D(pos.xyz + dir.zzx).xy * 0.1666; // +1, 0
+
+
+
+    return val;
+}
+
 
 [numthreads(8,8,8)]
 void Init (uint3 id : SV_DispatchThreadID){
@@ -119,11 +156,23 @@ void Init (uint3 id : SV_DispatchThreadID){
 [numthreads(8,8,8)]
 void Update(uint3 id : SV_DISPATCHTHREADID){
     float2 prevq = Read3D(id.xyz);
-    float2 newq = GetLaplacianNoCorners(id.xyz);
-    float newFeed = lerp(feed, FeedTex.Load(int3(id.xy, 0)), feedTexStrength);
+    float2 newq = GetLaplacianCorners(id.xyz);
+    float newFeed = feed; //lerp(feed, FeedTex.Load(int3(id.xy, 0)), feedTexStrength);
 
-    float reactionTerm = prevq.r * prevq.g * prevq.g;
-    float a = prevq.x + (diffusion.x * newq.x - reactionTerm + newFeed * (1.0 - prevq.x)) * speed;
-    float b = prevq.y + (diffusion.y * newq.y + reactionTerm - (kill + newFeed) * prevq.y) * speed;
-    Write[id.xyz] = float2(saturate(a), saturate(b));
+    float2 diffused = diffusion * newq;
+
+    //float reactionTerm = prevq.r * prevq.g * prevq.g;
+    //float a = prevq.x + (diffusion.x * newq.x - reactionTerm + newFeed * (1.0 - prevq.x)) * speed;
+    //float b = prevq.y + (diffusion.y * newq.y + reactionTerm - (kill + newFeed) * prevq.y) * speed;
+
+    float u = prevq.x;
+    float v = prevq.y;
+    float reactionU = -u * v * v + newFeed * (1.0f - u);
+    float reactionV = u * v * v - (newFeed + kill) * v;
+
+    // Apply using simple forward Euler.
+    float2 newValues = prevq + (diffused + float2(reactionU, reactionV)) * speed;
+    newValues = max(float2(0.0f, 0.0f), newValues);
+
+    Write[id.xyz] = newValues; //float2(saturate(a), saturate(b));
 }

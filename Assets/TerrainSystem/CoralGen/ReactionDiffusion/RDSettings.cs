@@ -21,5 +21,7 @@ namespace ReactionDiffusion
         [Range(0.00001f, 1.5f)] public float speed = 1;
         public Texture2D initialTexture;
         public int resolution = 512;
+
+        public Vector2 diffusion { get {return new Vector2(du,dv);}}
     }
 }
