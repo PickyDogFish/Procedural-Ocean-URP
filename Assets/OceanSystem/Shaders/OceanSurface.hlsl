@@ -202,6 +202,7 @@ float4 HorizonBlend(LightingInput li)
 	return float4(horizonColor, t);	
 }
 
+// calucates the color of the ocean surface from the top
 float3 GetOceanColor(LightingInput li, FoamData foamData)
 {
 	float3 tangentY = float3(0.0, li.normal.z, -li.normal.y);
@@ -237,6 +238,7 @@ float3 GetOceanColor(LightingInput li, FoamData foamData)
 	return color;
 }
 
+// calculates the color of the ocean surface from underneath
 float3 GetOceanColorUnderwater(LightingInput li)
 {
 	const float n = 1.1;

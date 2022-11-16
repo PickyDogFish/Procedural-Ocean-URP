@@ -2,6 +2,7 @@
 #define OCEAN_VOLUME_INCLUDED
 #include "OceanGlobals.hlsl"
 
+// does what the name suggests
 float3 ColorThroughWater(float3 color, float3 volumeColor, float distThroughWater, float depth)
 {
 	distThroughWater = max(0, distThroughWater);
@@ -10,6 +11,7 @@ float3 ColorThroughWater(float3 color, float3 volumeColor, float distThroughWate
 	return lerp(color, volumeColor, 1 - saturate(exp(-Ocean_FogDensity * distThroughWater)));
 }
 
+// does what the name suggests
 float3 UnderwaterFogColor(float3 viewDir, float3 lightDir, float depth)
 {
 	float depthScale = 0;//saturate(exp(Ocean_ElevationBelowCamera / Ocean_FogGradientScale));

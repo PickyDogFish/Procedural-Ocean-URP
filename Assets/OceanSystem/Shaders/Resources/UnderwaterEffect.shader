@@ -21,6 +21,7 @@ Shader "Hidden/Ocean/UnderwaterEffect"
         //#include "../OceanShoreMap.hlsl"
         #include "../OceanVolume.hlsl"
 
+        // calculates the height of the water when camera half submerged
         float SubmergenceFrag(Varyings input) : SV_Target
         {
             float4 positionCS = float4(input.uv * 2 - 1, UNITY_NEAR_CLIP_VALUE, 1);
@@ -31,6 +32,7 @@ Shader "Hidden/Ocean/UnderwaterEffect"
             return positionWS.y - waterHeight + 0.5;
         }
 
+        // calculates the color of underwater objects when underwater
         half4 UnderwaterPostEffectFrag(Varyings input) : SV_Target
         {
             float submergence = SAMPLE_TEXTURE2D(Ocean_CameraSubmergenceTexture,

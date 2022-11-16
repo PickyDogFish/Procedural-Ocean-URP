@@ -206,6 +206,7 @@ Shader "Ocean/Ocean"
                     input.positionNDC.xy / input.positionNDC.w).r;
                 clip(-(facing < 0 && submergence > 0.6));
 
+                //bool that tells if camera is viewing the fragment from underwater
                 bool underwater = facing < 0 || submergence < 0.3;
                 if (!underwater && backface)
                 {
@@ -222,7 +223,7 @@ Shader "Ocean/Ocean"
                 #else
                 if (backface)
                     li.normal = reflect(li.normal, li.viewDir);
-                oceanColor = GetOceanColor(li, foamData);
+                    oceanColor = GetOceanColor(li, foamData);
                 #endif
 
                 return float4(oceanColor, 1);
