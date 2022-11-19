@@ -8,6 +8,9 @@ Shader "Unlit/Caustic"
         _TexPan1 ("CausticsPan1", Vector) = (1.0, 0.0, 0.0, 0.0)
         _TexPan2 ("CausticsPan2", Vector) = (0.0, 1.0, 0.0, 0.0)
         _LuminanceMaskStrength ("LuminanceMaskStrength", float) = 0.25
+        _ColorSplit ("ColorSplit", float) = 0.01
+        _Height ("MaxDepth", float) = 50.0
+        _TopFade ("TopFade", float) = 1.0
     }
     SubShader
     {
@@ -68,6 +71,18 @@ Shader "Unlit/Caustic"
             float2 _TexPan1;
             float2 _TexPan2;
             float _LuminanceMaskStrength;
+            float _ColorSplit;
+            float _Height;
+            float _TopFade;
+
+
+            half3 sampleTexture(half2 uv, float colorSplit){
+                half r = SAMPLE_TEXTURE2D(_CausticsTex, sampler_CausticsTex, uv).r;
+                half g = SAMPLE_TEXTURE2D(_CausticsTex, sampler_CausticsTex, uv + half2(0, colorSplit)).r;
+                half b = SAMPLE_TEXTURE2D(_CausticsTex, sampler_CausticsTex, uv + half2(colorSplit, colorSplit)).r;
+
+                return half3(r,g,b);
+            }
 
             half4 frag (v2f input) : SV_Target
             {
@@ -82,15 +97,15 @@ Shader "Unlit/Caustic"
                 float3 positionWS = ComputeWorldSpacePosition(positionNDC, depth, UNITY_MATRIX_I_VP);
                 
                 float3 positionOS = TransformWorldToObject(positionWS);
-                float boundingBoxMask = all(step(positionOS, 0.5) * (1 - step(positionOS, -0.5)));
+                half boundingBoxMask = all(step(positionOS, 0.5) * (1 - step(positionOS, -0.5)));
 
                 half2 uv = mul(positionWS, _MainLightDirection).xy;
 
                 half2 uv1 = _Time * _TexPan1 + uv * _TexScale1;
                 half2 uv2 = _Time * _TexPan2 + uv * _TexScale2;
 
-                half4 caustics1 = SAMPLE_TEXTURE2D(_CausticsTex, sampler_CausticsTex, uv1);
-                half4 caustics2 = SAMPLE_TEXTURE2D(_CausticsTex, sampler_CausticsTex, uv2);
+                half3 caustics1 = sampleTexture(uv1, _ColorSplit);
+                half3 caustics2 = sampleTexture(uv2, _ColorSplit);
 
                 // luminance mask
                 half3 sceneColor = SampleSceneColor(positionNDC);
@@ -100,10 +115,11 @@ Shader "Unlit/Caustic"
                 float4 shadowCoord = TransformWorldToShadowCoord(positionWS);
                 half light = MainLightRealtimeShadow(shadowCoord);
                 
+                half heightPercent = 1 - saturate(-positionWS.y / _Height);
+                half topFade = saturate((_TopFade + positionWS.y)/_TopFade);
 
-
-                return min(caustics1, caustics2) * boundingBoxMask * light;
-
+                return half4(min(caustics1, caustics2) * boundingBoxMask * light * (saturate(heightPercent - topFade)), 1);
+                //return half4(half3(heightPercent, heightPercent, heightPercent) * boundingBoxMask, 1);
             }
             ENDHLSL
         }

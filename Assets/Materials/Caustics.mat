@@ -87,6 +87,7 @@ Material:
     - _BumpScale: 1
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
+    - _ColorSplit: 0.01
     - _Cull: 2
     - _Cutoff: 0.5
     - _DetailAlbedoMapScale: 1
@@ -96,6 +97,7 @@ Material:
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
+    - _Height: 10
     - _LuminanceMaskStrength: 0.84
     - _Metallic: 0
     - _OcclusionStrength: 1
@@ -108,7 +110,8 @@ Material:
     - _SrcBlend: 1
     - _Surface: 0
     - _TexScale1: 0.2
-    - _TexScale2: 0.08
+    - _TexScale2: 0.14
+    - _TopFade: 1
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
