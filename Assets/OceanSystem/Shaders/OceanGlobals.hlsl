@@ -66,6 +66,18 @@ float2 Ocean_AbsorptionGradientParams;
 float Ocean_FogDensity;
 float Ocean_AbsorptionDepthScale;
 
+//Caustics
+TEXTURE2D(Ocean_CausticsTex);
+SAMPLER(samplerOcean_CausticsTex);
+half4x4 Ocean_MainLightDirection;
+float Ocean_TexScale1;
+float Ocean_TexScale2;
+float2 Ocean_TexPan1;
+float2 Ocean_TexPan2;
+float Ocean_LuminanceMaskStrength;
+float Ocean_ColorSplit;
+float Ocean_Height;
+float Ocean_TopFade;
 
 float3 SampleOceanSpecCube(float3 dir)
 {

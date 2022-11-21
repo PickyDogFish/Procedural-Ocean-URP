@@ -68,5 +68,19 @@ namespace OceanSystem
             public static readonly int TrailDirection1 = Shader.PropertyToID("Ocean_FoamTrailDirection1");
             public static readonly int TrailBlendValue = Shader.PropertyToID("Ocean_FoamTrailBlendValue");
         }
+
+        public static class Caustics
+        {
+            public static readonly int CausticsTex = Shader.PropertyToID("Ocean_CausticsTex");
+            public static readonly int MainLightDirection = Shader.PropertyToID("Ocean_MainLightDirection");
+            public static readonly int TexScale1 = Shader.PropertyToID("Ocean_TexScale1");
+            public static readonly int TexScale2 = Shader.PropertyToID("Ocean_TexScale2");
+            public static readonly int TexPan1 = Shader.PropertyToID("Ocean_TexPan1");
+            public static readonly int TexPan2 = Shader.PropertyToID("Ocean_TexPan2");
+            public static readonly int LuminanceMaskStrength = Shader.PropertyToID("Ocean_LuminanceMaskStrength");
+            public static readonly int ColorSplit = Shader.PropertyToID("Ocean_ColorSplit");
+            public static readonly int Height = Shader.PropertyToID("Ocean_Height");
+            public static readonly int TopFade = Shader.PropertyToID("Ocean_TopFade");
+        }
     }
 }

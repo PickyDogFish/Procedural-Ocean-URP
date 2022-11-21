@@ -26,6 +26,18 @@ namespace OceanSystem
         [Range(16, 50)]
         [SerializeField] private int _vertexDensity = 25;
 
+        [Header("Caustics")]
+        [SerializeField] private Texture2D _CausticsTex;
+        [SerializeField] private Transform _MainLight;
+        [SerializeField] private float _TexScale1;
+        [SerializeField] private float _TexScale2;
+        [SerializeField] private Vector2 _TexPan1;
+        [SerializeField] private Vector2 _TexPan2;
+        [SerializeField] private float _LuminanceMaskStrength;
+        [SerializeField] private float _ColorSplit;
+        [SerializeField] private float _Height;
+        [SerializeField] private float _TopFade;
+
         private GameObject _meshObject;
         private MeshFilter _meshFilter;
         private Vector2Int _currentMeshParams = -Vector2Int.one;
@@ -44,6 +56,7 @@ namespace OceanSystem
                 ConfigureMaterial();
                 SetEnvironmentSpecCube();
                 SetGlobalColorVariables();
+                SetGlobalCaustics();
             }
         }
 
@@ -174,6 +187,20 @@ namespace OceanSystem
             }
             Shader.SetGlobalVector(propIDs[0],
                 new Vector2(grad.colorKeys.Length, (float)grad.mode));
+        }
+
+        private void SetGlobalCaustics(){
+            Shader.SetGlobalTexture(GlobalShaderVariables.Caustics.CausticsTex, _CausticsTex);
+            Shader.SetGlobalMatrix(GlobalShaderVariables.Caustics.MainLightDirection, _MainLight.transform.localToWorldMatrix);
+            Shader.SetGlobalFloat(GlobalShaderVariables.Caustics.TexScale1, _TexScale1);
+            Shader.SetGlobalFloat(GlobalShaderVariables.Caustics.TexScale2, _TexScale2);
+            Shader.SetGlobalVector(GlobalShaderVariables.Caustics.TexPan1, _TexPan1);
+            Shader.SetGlobalVector(GlobalShaderVariables.Caustics.TexPan2, _TexPan2);
+            
+            Shader.SetGlobalFloat(GlobalShaderVariables.Caustics.LuminanceMaskStrength, _LuminanceMaskStrength);
+            Shader.SetGlobalFloat(GlobalShaderVariables.Caustics.ColorSplit, _ColorSplit);
+            Shader.SetGlobalFloat(GlobalShaderVariables.Caustics.Height, _Height);
+            Shader.SetGlobalFloat(GlobalShaderVariables.Caustics.TopFade, _TopFade);
         }
     }
 

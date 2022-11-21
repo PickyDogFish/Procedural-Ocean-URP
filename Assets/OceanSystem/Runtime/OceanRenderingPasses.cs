@@ -82,7 +82,7 @@ namespace OceanSystem
         public OceanUnderwaterEffectPass(OceanRendererFeature.OceanRenderingSettings settings)
         {
             _settings = settings;
-            _underwaterEffectMaterial = new Material(Shader.Find("Hidden/Ocean/UnderwaterEffect"));
+            _underwaterEffectMaterial = new Material(Shader.Find("Ocean/UnderwaterEffect"));
         }
 
         public override void Configure(CommandBuffer cmd, RenderTextureDescriptor cameraTextureDescriptor)

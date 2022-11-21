@@ -1,4 +1,4 @@
-Shader "Hidden/Ocean/UnderwaterEffect"
+Shader "Ocean/UnderwaterEffect"
 {
     Properties
     {
@@ -20,6 +20,7 @@ Shader "Hidden/Ocean/UnderwaterEffect"
         #include "../OceanGlobals.hlsl"
         //#include "../OceanShoreMap.hlsl"
         #include "../OceanVolume.hlsl"
+        #include "../Caustics.hlsl"
 
         // calculates the height of the water when camera half submerged
         float SubmergenceFrag(Varyings input) : SV_Target
@@ -51,11 +52,14 @@ Shader "Hidden/Ocean/UnderwaterEffect"
             safetyMargin *= saturate((viewDir.y * 1.3 + 1) * 0.5);
             clip(-(submergence - 0.5 > safetyMargin));
 
+
+            //adding caustics to scene color
+
+            float3 backgroundColor = AddCaustics(positionWS, SampleSceneColor(input.uv));
+
             Light mainLight = GetMainLight();
-            float3 backgroundColor = SampleSceneColor(input.uv);
             float3 volume = UnderwaterFogColor(viewDir, mainLight.direction, _WorldSpaceCameraPos.y);
-            float3 color = ColorThroughWater(backgroundColor, volume,
-                viewDist - _ProjectionParams.y, -positionWS.y);
+            float3 color = ColorThroughWater(backgroundColor, volume, viewDist - _ProjectionParams.y, -positionWS.y);
             return float4(color, 1);
         }
 

@@ -13,6 +13,8 @@ float4 _CameraDepthTexture_TexelSize;
 #include "OceanVolume.hlsl"
 #include "OceanFoam.hlsl"
 
+#include "Caustics.hlsl"
+
 struct LightingInput
 {
 	float3 normal;
@@ -170,6 +172,7 @@ float3 Refraction(LightingInput li, FoamData foamData, float2 sss, float3 foamCo
 	
 	float3 backgroundPositionWS = PositionWsFromDepth(refractionCoords.z, refractionCoords.xy, Ocean_InverseProjectionMatrix, Ocean_InverseViewMatrix);
 	float backgroundDistance = length(backgroundPositionWS - li.cameraPos) - li.viewDist;
+	backgroundColor = AddCaustics(backgroundPositionWS, backgroundColor);
 	color = ColorThroughWater(backgroundColor, color, backgroundDistance, -backgroundPositionWS.y);
 	#endif
 	

@@ -90,3 +90,4 @@ MonoBehaviour:
     updateSkyMap: 0
     transparency: 1
     underwaterEffect: 1
+    underwaterMat: {fileID: 2100000, guid: a84334205e7f1b249a18aa3eebe24f39, type: 2}
