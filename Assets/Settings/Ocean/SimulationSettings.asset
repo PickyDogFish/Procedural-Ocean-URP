@@ -20,7 +20,7 @@ MonoBehaviour:
   _readbackCascades: 0
   _samplingIterations: 3
   _domainsMode: 0
-  _simulationScale: 665.91
+  _simulationScale: 450
   _allowOverlap: 1
   _minWavesInCascade: 6
   _c0Scale: 858.72
