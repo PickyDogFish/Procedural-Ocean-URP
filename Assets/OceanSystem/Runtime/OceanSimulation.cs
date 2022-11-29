@@ -149,7 +149,7 @@ namespace OceanSystem
                 width = size,
                 volumeDepth = cascadesNumber,
                 enableRandomWrite = true,
-                colorFormat = RenderTextureFormat.ARGBHalf,
+                colorFormat = RenderTextureFormat.ARGBFloat,
                 sRGB = false,
                 msaaSamples = 1,
                 depthBufferBits = 0,
@@ -244,12 +244,12 @@ namespace OceanSystem
                 _initialSpectrumKernel, _size / LocalWorkGroupsX, _size / LocalWorkGroupsY, 1);
 
             cmd.SetComputeTextureParam(_initialSpectrumShader,
-                _conjugateSpectrumKernel, SimualtionVariables.H0, _initialSpectrum);
-            cmd.SetComputeTextureParam(_initialSpectrumShader,
                 _conjugateSpectrumKernel, SimualtionVariables.H0K, _initializationBuffer);
+            cmd.SetComputeTextureParam(_initialSpectrumShader,
+                _conjugateSpectrumKernel, SimualtionVariables.H0, _initialSpectrum);
             // Calculating complex conjugate of the initial spectrum
             cmd.DispatchCompute(_initialSpectrumShader,
-                _conjugateSpectrumKernel, _size / LocalWorkGroupsX, _size / LocalWorkGroupsY, 1);
+                _conjugateSpectrumKernel, _size / LocalWorkGroupsX, _size / LocalWorkGroupsY, 1); 
 
             SetGlobalShaderVariables();
             _foamVariablesController.SetGlobalFoamVariables(_inputs, _localWindDirection);

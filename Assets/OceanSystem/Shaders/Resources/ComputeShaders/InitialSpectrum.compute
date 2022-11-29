@@ -32,7 +32,7 @@ cbuffer Params
 float NormalRandom(uint3 id)
 {
 	float2 random01 = hash23(id);
-    return cos(2 * OCEANOGRAPHY_PI * random01.x) * sqrt(-2 * log(random01.y));
+    return cos(2.0 * OCEANOGRAPHY_PI * random01.x) * sqrt(-2.0 * log(random01.y));
 }
 
 
@@ -56,7 +56,7 @@ void CalculateInitialsForCascade(uint3 id)
 {
     float2 noise = float2(NormalRandom(id),
 			NormalRandom(uint3(id.xy, id.z + CascadesCount)));
-    float deltaK = 2 * OCEANOGRAPHY_PI / LengthScales[id.z];
+    float deltaK = 2.0 * OCEANOGRAPHY_PI / LengthScales[id.z];
 	int nx = id.x - Size / 2;
 	int nz = id.y - Size / 2;
 	float2 k = float2(nx, nz) * deltaK;
@@ -85,7 +85,7 @@ void CalculateInitialsForCascade(uint3 id)
 		
 		WavesData[id] = float4(k.x, lambda, k.y, omega);
 		H0K[id] = contribution * scaleRamp * float2(noise.x, noise.y)
-			* sqrt(2 * spectrum * abs(dOmegadk) / kLength * deltaK * deltaK);
+			* sqrt(2.0 * spectrum * abs(dOmegadk) / kLength * deltaK * deltaK);
 	}
 	else
 	{
@@ -108,7 +108,12 @@ void CalculateConjugatedSpectrum(uint3 id : SV_DispatchThreadID)
 {
 	for (uint i = 0; i < CascadesCount; i++)
 	{
+
 		float2 h0K = H0K[uint3(id.xy, i)];
+		//uint neki = mod(Size - id.x, Size);
+		//uint modx = fmod(Size-id.x, Size);
+		//uint mody = fmod(Size-id.y, Size);
+		//float2 h0MinusK = H0K[uint3(modx, mody, i)];
 		float2 h0MinusK = H0K[uint3((Size - id.x) % Size, (Size - id.y) % Size, i)];
 		H0[uint3(id.xy, i)] = float4(h0K.x, h0K.y, h0MinusK.x, -h0MinusK.y);
 	}
