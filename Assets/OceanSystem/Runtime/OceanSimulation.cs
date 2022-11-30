@@ -7,6 +7,7 @@ namespace OceanSystem
     [ExecuteAlways]
     public class OceanSimulation : MonoBehaviour
     {
+        /* #region  variables */
         [SerializeField] private OceanSimulationSettings _simulationSettings;
         [SerializeField] private OceanSimulationInputsProvider _inputsProvider;
 
@@ -18,7 +19,7 @@ namespace OceanSystem
         [SerializeField] private float _windForce01;
 
         public OceanCollision Collision => _collision;
-        
+
         private readonly OceanSimulationInputs _inputs = new OceanSimulationInputs();
 
         private static float OceanTime => (float)(Time.timeSinceLevelLoadAsDouble % 18000);
@@ -52,6 +53,7 @@ namespace OceanSystem
         private Vector2Int _currrentTextureParams = -Vector2Int.one;
         private bool _isSpectrumInitialized;
         private bool NeedToCalculateSpectrum => !_isSpectrumInitialized || _simulationSettings.UpdateSpectrum;
+        /* #endregion */
 
         public void Awake()
         {
@@ -113,7 +115,7 @@ namespace OceanSystem
             if (_spectrumsBuffer == null)
                 _spectrumsBuffer = new ComputeBuffer(2, 7 * sizeof(float) + 1 * sizeof(int));
 
-            Vector2Int newTextureParams = new Vector2Int(_simulationSettings.Resolution, 
+            Vector2Int newTextureParams = new Vector2Int(_simulationSettings.Resolution,
                 _simulationSettings.CascadesNumber);
             if (newTextureParams == _currrentTextureParams)
             {
@@ -156,10 +158,6 @@ namespace OceanSystem
                 useMipMap = false,
                 dimension = TextureDimension.Tex2DArray
             };
-
-
-            var noiseTextureDescriptor = initialsDescriptor;
-            noiseTextureDescriptor.colorFormat = RenderTextureFormat.RGHalf;
 
             var displacementAndDerivativesTextureDescriptor = initialsDescriptor;
             displacementAndDerivativesTextureDescriptor.useMipMap = true;
@@ -234,10 +232,10 @@ namespace OceanSystem
             cmd.SetComputeTextureParam(_initialSpectrumShader,
                 _initialSpectrumKernel, SimualtionVariables.WavesData, _wavesData);
             cmd.SetComputeTextureParam(_initialSpectrumShader,
-                _initialSpectrumKernel, SimualtionVariables.EqualizerRamp0, 
+                _initialSpectrumKernel, SimualtionVariables.EqualizerRamp0,
                 _inputs.equalizerRamp0 ? _inputs.equalizerRamp0 : EqualizerPreset.GetDefaultRamp());
             cmd.SetComputeTextureParam(_initialSpectrumShader,
-                _initialSpectrumKernel, SimualtionVariables.EqualizerRamp1, 
+                _initialSpectrumKernel, SimualtionVariables.EqualizerRamp1,
                 _inputs.equalizerRamp1 ? _inputs.equalizerRamp1 : EqualizerPreset.GetDefaultRamp());
             // Calculating initial spectrum
             cmd.DispatchCompute(_initialSpectrumShader,
@@ -249,7 +247,7 @@ namespace OceanSystem
                 _conjugateSpectrumKernel, SimualtionVariables.H0, _initialSpectrum);
             // Calculating complex conjugate of the initial spectrum
             cmd.DispatchCompute(_initialSpectrumShader,
-                _conjugateSpectrumKernel, _size / LocalWorkGroupsX, _size / LocalWorkGroupsY, 1); 
+                _conjugateSpectrumKernel, _size / LocalWorkGroupsX, _size / LocalWorkGroupsY, 1);
 
             SetGlobalShaderVariables();
             _foamVariablesController.SetGlobalFoamVariables(_inputs, _localWindDirection);
@@ -291,7 +289,7 @@ namespace OceanSystem
 
                 cmd.DispatchCompute(_foamSimulationShader,
                     _simulateFoamKernel, _size / LocalWorkGroupsX, _size / LocalWorkGroupsY, 1);
-                cmd.GenerateMips(_turbulence); 
+                cmd.GenerateMips(_turbulence);
             }
         }
 
