@@ -21,7 +21,7 @@ MonoBehaviour:
     seed: 0
     offset: {x: 0, y: 0}
     normalizeMode: 1
-  heightMultiplier: 50
+  heightMultiplier: 100
   heightCurve:
     serializedVersion: 2
     m_Curve:
