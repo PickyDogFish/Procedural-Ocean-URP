@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   autoUpdate: 0
   growChance: 0.3
-  maxSpawnHeight: -1
+  maxSpawnHeight: -2.5
   minSpawnHeight: -3.4028235e+38
   growSpread: 5
-  material: {fileID: 2100000, guid: 88cf38b1307795e4599ad353c5a954d2, type: 2}
+  material: {fileID: 2100000, guid: 0a9904b194778de4cb0c1d95eaeaad47, type: 2}
   maxIterations: 50
   radius: 1
   attractorCount: 50
