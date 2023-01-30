@@ -75,7 +75,7 @@ public class TerrainGenerator : MonoBehaviour {
                         TerrainChunk newChunk = new TerrainChunk(viewedChunkCoord, verticalOffset, heightMapSettings, meshSettings, detailLevels, colliderLODIndex, transform, viewer, terrainMaterial);
                         terrainChunkDict.Add(viewedChunkCoord, newChunk);
                         newChunk.onVisibilityChanged += OnTerrainChunkVisibilityChanged;
-                        coralSpawner.SpawnColony(newChunk, 15);
+                        coralSpawner.SpawnColony(newChunk, 5);
                         newChunk.Load();
                     }
                 }

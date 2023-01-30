@@ -16,15 +16,15 @@ MonoBehaviour:
   growChance: 0.3
   maxSpawnHeight: -2.5
   minSpawnHeight: -3.4028235e+38
-  growSpread: 5
+  growSpread: 3
   material: {fileID: 2100000, guid: 0a9904b194778de4cb0c1d95eaeaad47, type: 2}
-  maxIterations: 50
+  maxIterations: 100
   radius: 1
-  attractorCount: 50
-  killRange: 0.15
-  attractionRange: 0.7
+  attractorCount: 250
+  killRange: 0.1
+  attractionRange: 0.5
   attractorFieldOffset: {x: 0, y: 1, z: 0}
-  branchLength: 0.1
-  branchRadialSubdivisions: 8
+  branchLength: 0.08
+  branchRadialSubdivisions: 10
   maxAngleDegrees: 45
-  branchBaseDiameter: 0.05
+  branchBaseDiameter: 0.04
