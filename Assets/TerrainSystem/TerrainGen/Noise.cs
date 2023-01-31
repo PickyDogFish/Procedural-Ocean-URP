@@ -31,6 +31,7 @@ public static class Noise {
                     float sampleX = (x - halfWidth + octaveOffsets[i].x) / noiseSettings.scale * frequency;
                     float sampleY = (y - halfHeight + octaveOffsets[i].y) / noiseSettings.scale * frequency;
                     float perlinValue = Mathf.PerlinNoise(sampleX, sampleY) * 2 - 1;
+                    perlinValue = getWarpedHeight(sampleX, sampleY);
                     noiseHeight += perlinValue * amplitude;
                     amplitude *= noiseSettings.persistance;
                     frequency *= noiseSettings.lacunarity;
@@ -45,16 +46,17 @@ public static class Noise {
 
                 if (noiseSettings.normalizeMode == NormalizeMode.Global) {
                     //the 0.8f factor is estimated
+                    if (noiseMap[x,y] > maxPossibleHeight || noiseMap[x,y] < 0){
+                        Debug.Log(noiseMap[x,y]);
+                    }
                     float normalizedHeight = (noiseMap[x, y] + 1) / (maxPossibleHeight + 0.8f);
-                    noiseMap[x, y] = Mathf.Clamp(normalizedHeight, 0, 1);
+                    noiseMap[x, y] = Mathf.Clamp(normalizedHeight, 0.00001f, 1);
                 }
             }
         }
 
         //normalizing the map
 
-        //Debug.Log((maxLocalNoiseHeight+1) / (maxPossibleHeight + 0.8f));
-        //Debug.Log((minLocalNoiseHeight+1) / (maxPossibleHeight + 0.8f));
         if (noiseSettings.normalizeMode == NormalizeMode.Local) {
             for (int y = 0; y < mapHeight; y++) {
                 for (int x = 0; x < mapWidth; x++) {
@@ -64,6 +66,20 @@ public static class Noise {
         }
 
         return noiseMap;
+    }
+
+    private static float getWarpedHeight(float ix, float iy) {
+        float striation1 = 8*Mathf.PerlinNoise(ix/400,iy/400);
+        float distort1 = Mathf.PerlinNoise(ix/40,iy/40);
+        float noise1 = Mathf.PerlinNoise(ix/100 + striation1 + distort1, iy/100 + striation1 + distort1);
+        float striation2 = 8*Mathf.PerlinNoise(ix/800,iy/800);
+        float distort2 = Mathf.PerlinNoise(ix/80,iy/80);
+        float noise2 = Mathf.PerlinNoise(ix/200 + striation2 + distort2, iy/200 + striation2 +distort2 )*1.5f;
+        float roughness = Mathf.PerlinNoise(ix/600,iy/600)-0.3f;
+        float bumpdistort = Mathf.PerlinNoise(ix/20,iy/20);
+        float bumpnoise = Mathf.PerlinNoise(ix/50 + 2*bumpdistort,iy/50 + 2*bumpdistort);
+        //return noise1;
+        return (noise1 + Mathf.Sqrt(Mathf.Sqrt(noise2)) + roughness*bumpnoise-0.8f)/2;
     }
 
     //returns noise value at pos, normalized globally

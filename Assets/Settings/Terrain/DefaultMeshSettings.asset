@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: DefaultMeshSettings
   m_EditorClassIdentifier: 
   autoUpdate: 1
-  meshScale: 0.3
+  meshScale: 0.5
   chunkSizeIndex: 3
