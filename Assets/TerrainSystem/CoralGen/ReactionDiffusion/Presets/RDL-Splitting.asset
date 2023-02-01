@@ -15,7 +15,30 @@ MonoBehaviour:
   <startOffset>k__BackingField: 25
   <step>k__BackingField: 50
   <size>k__BackingField: 256
-  <killIncrease>k__BackingField: 0.0001
+  <killIncrease>k__BackingField:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0.000034706667
+      inSlope: 0.0033959507
+      outSlope: 0.0033959507
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.07723755
+    - serializedVersion: 3
+      time: 1
+      value: 0.020081876
+      inSlope: 0.05470366
+      outSlope: 0.05470366
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.05235511
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   <builderTriangleBudget>k__BackingField: 65536
   <builderTargetValue>k__BackingField: 0.5
   <builderGridScale>k__BackingField: 1
