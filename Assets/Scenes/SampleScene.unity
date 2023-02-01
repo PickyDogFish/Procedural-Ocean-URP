@@ -267,7 +267,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d6fc4c49efb4054695aa108b7185554, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  verticalOffset: -6
+  verticalOffset: -6.5
   colliderLODIndex: 0
   detailLevels:
   - lod: 0
