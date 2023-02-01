@@ -154,11 +154,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7bcfa158556764459dc7d02a5e3f3bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  settings: {fileID: 11400000, guid: 897d7bd1fe6da0a4ca674836221a4c5a, type: 2}
+  settings: {fileID: 11400000, guid: 7a20d7a71f109b742967317bc4bbca6b, type: 2}
   previewMaterial: {fileID: 2100000, guid: 72c6aa19bf73bdb48a37dacd5330145b, type: 2}
   preview: 1
   computeShader: {fileID: 7200000, guid: 69edcc6cbe19fc741ace0a9866a26ce5, type: 3}
   extraKill: 0
+  playSpeedDivider: 1
 --- !u!4 &689944786
 Transform:
   m_ObjectHideFlags: 0
@@ -255,7 +256,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0921089e378c11e47986342eeef04e77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  layerSettings: {fileID: 11400000, guid: 6aa7e145245c43b47b916a2b9e083de3, type: 2}
+  layerSettings: {fileID: 11400000, guid: d06a77d3bc5bac042a464b85e80783f7, type: 2}
   _builderCompute: {fileID: 7200000, guid: 9f19ed91e8aa34430ac0ea80fb20eead, type: 3}
 --- !u!23 &780970629
 MeshRenderer:

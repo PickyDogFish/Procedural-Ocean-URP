@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 04cbaf5885b25754da159b5789594791, type: 3}
-  m_Name: New RD Layer Settings
+  m_Name: RDL-Splitting
   m_EditorClassIdentifier: 
   <startOffset>k__BackingField: 25
   <step>k__BackingField: 50
   <size>k__BackingField: 256
-  <killIncrease>k__BackingField: 0.0002
+  <killIncrease>k__BackingField: 0.0001
   <builderTriangleBudget>k__BackingField: 65536
-  <builderTargetValue>k__BackingField: 0.3
+  <builderTargetValue>k__BackingField: 0.5
   <builderGridScale>k__BackingField: 1
