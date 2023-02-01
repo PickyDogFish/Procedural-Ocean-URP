@@ -20,6 +20,7 @@ namespace ReactionDiffusion
         void Awake()
         {
             rd = FindObjectOfType<RDOnGPU>();
+            rd.settings = layerSettings.simulationSettings;
             values = new float[size * size * size];
             _voxelBuffer = new ComputeBuffer(size * size * size, sizeof(float));
             _builder = new MeshBuilder(new Vector3Int(size, size, size), layerSettings.builderTriangleBudget, _builderCompute);

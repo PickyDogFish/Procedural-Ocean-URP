@@ -19,3 +19,4 @@ MonoBehaviour:
   <builderTriangleBudget>k__BackingField: 65536
   <builderTargetValue>k__BackingField: 0.5
   <builderGridScale>k__BackingField: 1
+  <simulationSettings>k__BackingField: {fileID: 11400000, guid: 7a20d7a71f109b742967317bc4bbca6b, type: 2}
