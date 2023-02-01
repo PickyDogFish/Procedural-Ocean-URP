@@ -57,7 +57,7 @@ namespace ReactionDiffusion
 
         void Update()
         {
-            if (preview)
+            if (preview && Time.frameCount % 10 == 0)
             {
                 Iterate();
             }

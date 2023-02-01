@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: New RD Layer Settings
   m_EditorClassIdentifier: 
   <startOffset>k__BackingField: 10
-  <step>k__BackingField: 50
+  <step>k__BackingField: 75
   <size>k__BackingField: 256
-  <killIncrease>k__BackingField: 0.001
+  <killIncrease>k__BackingField: 0.0001
   <builderTriangleBudget>k__BackingField: 65536
   <builderTargetValue>k__BackingField: 0.3
   <builderGridScale>k__BackingField: 1

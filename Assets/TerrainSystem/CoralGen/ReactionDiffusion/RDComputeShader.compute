@@ -45,7 +45,7 @@ float2 GetLaplacian(int2 pos){
 
 [numthreads(8,8,1)]
 void Init (uint3 id : SV_DispatchThreadID){
-    Write[id.xy] = float2(0, Read2D(id.xy).y);
+    Write[id.xy] = Read2D(id.xy).xy;
 }
 
 [numthreads(8,8,1)]

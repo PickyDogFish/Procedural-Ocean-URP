@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 698031c1e0fc0234d9c5d3b88f60aca1, type: 3}
-  m_Name: New RD Settings
+  m_Name: RDSquiglyLines
   m_EditorClassIdentifier: 
-  feed: 0.043
+  feed: 0.055
   useFeedTexture: 1
   feedTexture: {fileID: 2800000, guid: e98d03927fb7cac46a98f32099947a8b, type: 3}
-  feedTexStrength: 0
-  kill: 0.088
-  du: 0.529
-  dv: 0.609
-  speed: 0.07
-  initialTexture: {fileID: 2800000, guid: b38b4a8d515db52448385974db6f0487, type: 3}
-  resolution: 128
+  feedTexStrength: 0.02
+  kill: 0.062
+  du: 1
+  dv: 0.5
+  speed: 1
+  initialTexture: {fileID: 2800000, guid: 7b9cf13f9b9feb54cb94634b9dea39db, type: 3}
+  resolution: 512
