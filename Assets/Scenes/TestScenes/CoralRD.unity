@@ -156,7 +156,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   settings: {fileID: 11400000, guid: 897d7bd1fe6da0a4ca674836221a4c5a, type: 2}
   previewMaterial: {fileID: 2100000, guid: 72c6aa19bf73bdb48a37dacd5330145b, type: 2}
-  preview: 0
+  preview: 1
   computeShader: {fileID: 7200000, guid: 69edcc6cbe19fc741ace0a9866a26ce5, type: 3}
   extraKill: 0
 --- !u!4 &689944786

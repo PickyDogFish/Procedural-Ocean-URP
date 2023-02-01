@@ -24,6 +24,8 @@ namespace ReactionDiffusion
 
         private RenderTexture[] _textures = new RenderTexture[2];
 
+        public int playSpeedDivider = 1;
+
         private RenderTexture readBuffer
         {
             get { return _textures[0]; }
@@ -57,7 +59,7 @@ namespace ReactionDiffusion
 
         void Update()
         {
-            if (preview && Time.frameCount % 10 == 0)
+            if (preview && Time.frameCount % playSpeedDivider == 0)
             {
                 Iterate();
             }
