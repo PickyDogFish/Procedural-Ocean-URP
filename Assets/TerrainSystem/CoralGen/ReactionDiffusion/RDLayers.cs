@@ -34,7 +34,6 @@ namespace ReactionDiffusion
             {
                 AddNextLayerToValues(layerIndex);
                 rd.extraKill += layerSettings.killIncrease.Evaluate((float)layerIndex/size);
-                Debug.Log(rd.extraKill);
             }
             _voxelBuffer.SetData(values);
             _builder.BuildIsosurface(_voxelBuffer, layerSettings.builderTargetValue, layerSettings.builderGridScale);
