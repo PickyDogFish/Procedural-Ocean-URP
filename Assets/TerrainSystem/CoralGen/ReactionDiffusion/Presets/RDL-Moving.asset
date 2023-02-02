@@ -20,7 +20,7 @@ MonoBehaviour:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0.00023818086
+      value: 0.00539105
       inSlope: 0.0027477865
       outSlope: 0.0027477865
       tangentMode: 0
@@ -29,7 +29,7 @@ MonoBehaviour:
       outWeight: 0.17488801
     - serializedVersion: 3
       time: 0.31283113
-      value: 0.0001977646
+      value: 0.0036330107
       inSlope: 0.005572091
       outSlope: 0.005572091
       tangentMode: 0
@@ -51,4 +51,4 @@ MonoBehaviour:
   <builderTriangleBudget>k__BackingField: 524288
   <builderTargetValue>k__BackingField: 0.3
   <builderGridScale>k__BackingField: 1
-  <simulationSettings>k__BackingField: {fileID: 11400000, guid: d44e4d3b7871c5f4f93cac7fc5e08f90, type: 2}
+  <simulationSettings>k__BackingField: {fileID: 11400000, guid: 897d7bd1fe6da0a4ca674836221a4c5a, type: 2}
