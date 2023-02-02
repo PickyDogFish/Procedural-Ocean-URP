@@ -24,8 +24,8 @@ namespace ReactionDiffusion
 
         float[] values;
 
-        void Awake()
-        {
+
+        public void Initialize(){
             values = new float[size * size * size];
             _voxelBuffer = new ComputeBuffer(size * size * size, sizeof(float));
             _builder = new MeshBuilder(new Vector3Int(size, size, size), layerSettings.builderTriangleBudget, _builderCompute);
@@ -39,6 +39,8 @@ namespace ReactionDiffusion
         }
 
         public Mesh GenerateCoral(){
+            Debug.Log("Generating coral");
+            Initialize();
             RDSimulator.InitializeComputeShader(ref simulationCompute, layerSettings.simulationSettings, ref simulationRead);
 
             //building the values array from layers from RDOnGPU
@@ -73,6 +75,10 @@ namespace ReactionDiffusion
 
         void OnDestroy()
         {
+            CleanUp();
+        }
+
+        public void CleanUp(){
             _voxelBuffer.Dispose();
             _builder.Dispose();
         }

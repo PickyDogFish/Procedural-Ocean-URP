@@ -49,7 +49,7 @@ sealed class MeshBuilder : System.IDisposable
     void ReleaseAll()
     {
         ReleaseBuffers();
-        ReleaseMesh();
+        ReleaseMeshBuffers();
     }
 
     void RunCompute(ComputeBuffer voxels, float target, float scale)
@@ -177,7 +177,7 @@ sealed class MeshBuilder : System.IDisposable
         _indexBuffer = _mesh.GetIndexBuffer();
     }
 
-    void ReleaseMesh()
+    void ReleaseMeshBuffers()
     {
         _vertexBuffer.Dispose();
         _indexBuffer.Dispose();
