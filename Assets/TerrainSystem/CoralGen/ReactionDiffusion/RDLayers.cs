@@ -27,6 +27,10 @@ namespace ReactionDiffusion
         }
         void Start()
         {
+            GetComponent<MeshFilter>().sharedMesh = GenerateCoral();
+        }
+
+        public Mesh GenerateCoral(){
             Debug.Log(layerSettings.killIncrease.Evaluate(0.1f));
 
             //building the values array from layers from RDOnGPU
@@ -37,7 +41,7 @@ namespace ReactionDiffusion
             }
             _voxelBuffer.SetData(values);
             _builder.BuildIsosurface(_voxelBuffer, layerSettings.builderTargetValue, layerSettings.builderGridScale);
-            GetComponent<MeshFilter>().sharedMesh = _builder.Mesh;
+            return _builder.Mesh;
         }
 
         // Update is called once per frame
