@@ -20,7 +20,7 @@ namespace ReactionDiffusion
 
 
 
-        int size { get { return layerSettings.size; } }
+        private int size { get { return layerSettings.size; } }
 
         float[] values;
 
@@ -48,7 +48,6 @@ namespace ReactionDiffusion
             {
                 AddNextLayerToValues(layerIndex);
             }
-            Debug.Log(values);
             _voxelBuffer.SetData(values);
             _builder.BuildIsosurface(_voxelBuffer, layerSettings.builderTargetValue, layerSettings.builderGridScale);
             return _builder.Mesh;
@@ -62,7 +61,8 @@ namespace ReactionDiffusion
 
         void AddNextLayerToValues(int layerIndex)
         {
-            RDSimulator.Iterate(ref simulationRead, ref simulationWrite, ref simulationCompute, layerSettings.simulationSettings, layerSettings.killIncrease.Evaluate(layerIndex/size), layerSettings.step);
+            float extraKill = layerSettings.killIncrease.Evaluate((float)layerIndex/size);
+            RDSimulator.Iterate(ref simulationRead, ref simulationWrite, ref simulationCompute, layerSettings.simulationSettings, extraKill, layerSettings.step);
             Texture2D tex = RDSimulator.ToTexture2D(simulationWrite, layerSettings.simulationSettings.resolution);
             TextureScaler.Scale(tex, size, size);
 

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <startOffset>k__BackingField: 25
   <step>k__BackingField: 25
-  <size>k__BackingField: 256
+  <size>k__BackingField: 128
   <killIncrease>k__BackingField:
     serializedVersion: 2
     m_Curve:
@@ -38,17 +38,17 @@ MonoBehaviour:
       outWeight: 0.33333334
     - serializedVersion: 3
       time: 1.0000113
-      value: 0.09960187
-      inSlope: 0.46685272
-      outSlope: 0.46685272
+      value: 1.0080986
+      inSlope: 0.008539731
+      outSlope: 0.008539731
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.0676854
+      inWeight: 0.48860487
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  <builderTriangleBudget>k__BackingField: 2097152
+  <builderTriangleBudget>k__BackingField: 524288
   <builderTargetValue>k__BackingField: 0.3
   <builderGridScale>k__BackingField: 1
   <simulationSettings>k__BackingField: {fileID: 11400000, guid: d44e4d3b7871c5f4f93cac7fc5e08f90, type: 2}

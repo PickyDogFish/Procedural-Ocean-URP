@@ -181,7 +181,6 @@ sealed class MeshBuilder : System.IDisposable
     {
         _vertexBuffer.Dispose();
         _indexBuffer.Dispose();
-        Object.Destroy(_mesh);
     }
 
     #endregion
