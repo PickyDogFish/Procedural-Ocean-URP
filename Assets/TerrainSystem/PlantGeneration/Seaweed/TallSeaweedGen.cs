@@ -13,6 +13,7 @@ public class TallSeaweedGen : MonoBehaviour
     public float diameter = 0.05f;
     [SerializeField] private Mesh leaf;
     [SerializeField] private bool showGizmos;
+    public float minAngle,maxAngle = 135;
 
     private struct Segment
     {
@@ -132,7 +133,7 @@ public class TallSeaweedGen : MonoBehaviour
             tris[triIndex + i] = leaf.triangles[i] + vertIndex;
         }
         triIndex += leaf.triangles.Length;
-        Quaternion randomAngle = Quaternion.Euler(135, Random.Range(0f, 360f), 0);
+        Quaternion randomAngle = Quaternion.Euler(Random.Range(minAngle, maxAngle), Random.Range(0f, 360f), Random.Range(-5f, 5f));
         for (int i = 0; i < leaf.vertices.Length; i++)
         {
             verts[vertIndex] = randomAngle * (leaf.vertices[i] * leafScale) + seg.from;
