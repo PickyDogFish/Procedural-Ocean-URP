@@ -65,53 +65,50 @@ public class TallSeaweedGen : MonoBehaviour
     {
         Mesh mesh = new Mesh();
         int leafCount = segments.Count - stemSegmentCount;
-        Vector3[] verts = new Vector3[leafCount * leaf.vertexCount + stemSegmentCount * radialSubdivs];
-        Vector3[] normals = new Vector3[leafCount * leaf.vertexCount + stemSegmentCount * radialSubdivs];
-        int[] tris = new int[leafCount * leaf.triangles.Length + stemSegmentCount * radialSubdivs * 6];
-        int vertIndex = 0;
-        int triIndex = 0;
+        int vertexCount = leafCount * leaf.vertexCount + stemSegmentCount * radialSubdivs;
+        int triIndexCount = leafCount * leaf.triangles.Length + stemSegmentCount * radialSubdivs * 6;
+        MeshGenData meshData = new MeshGenData(vertexCount, triIndexCount);
         for (int i = stemSegmentCount + 1; i < segments.Count; i++)
         {
-            GenerateLeafMesh((Segment)segments[i], ref verts, ref normals, ref tris, ref vertIndex, ref triIndex);
+            GenerateLeafMesh((Segment)segments[i], ref meshData);
         }
-        GenerateStemMesh(ref verts, ref normals, ref tris, ref vertIndex, ref triIndex);
-        mesh.vertices = verts;
-        mesh.triangles = tris;
-        mesh.normals = normals;
+        GenerateStemMesh(ref meshData);
+        mesh.vertices = meshData.vertices;
+        mesh.triangles = meshData.triangles;
+        mesh.normals = meshData.normals;
         return mesh;
     }
 
-    private void GenerateStemMesh(ref Vector3[] verts, ref Vector3[] normals, ref int[] tris, ref int vertIndex, ref int triIndex)
+    private void GenerateStemMesh(ref MeshGenData meshData)
     {
-        AddVertCircle((Segment)segments[0], radialSubdivs, ref verts, ref vertIndex);
+        AddVertCircle((Segment)segments[0], radialSubdivs, ref meshData);
         for (int i = 1; i < stemSegmentCount; i++)
         {
-            int firstCircleIndex = vertIndex - radialSubdivs;
-            AddVertCircle((Segment)segments[i], radialSubdivs, ref verts, ref vertIndex);
-            int secondCircleIndex = vertIndex - radialSubdivs;
+            int firstCircleIndex = meshData.vertexIndex - radialSubdivs;
+            AddVertCircle((Segment)segments[i], radialSubdivs, ref meshData);
+            int secondCircleIndex = meshData.vertexIndex - radialSubdivs;
             for (int quad = 0; quad < radialSubdivs-1; quad++)
             {
-                tris[triIndex++] = firstCircleIndex + quad;
-                tris[triIndex++] = firstCircleIndex + quad + 1;
-                tris[triIndex++] = secondCircleIndex + quad;
+                meshData.triangles[meshData.triangleIndex++] = firstCircleIndex + quad;
+                meshData.triangles[meshData.triangleIndex++] = firstCircleIndex + quad + 1;
+                meshData.triangles[meshData.triangleIndex++] = secondCircleIndex + quad;
                 
-                tris[triIndex++] = firstCircleIndex + quad + 1;
-                tris[triIndex++] = secondCircleIndex + quad + 1;
-                tris[triIndex++] = secondCircleIndex + quad;
+                meshData.triangles[meshData.triangleIndex++] = firstCircleIndex + quad + 1;
+                meshData.triangles[meshData.triangleIndex++] = secondCircleIndex + quad + 1;
+                meshData.triangles[meshData.triangleIndex++] = secondCircleIndex + quad;
             }
-
-            tris[triIndex++] = firstCircleIndex + radialSubdivs -1 ;
-            tris[triIndex++] = firstCircleIndex;
-            tris[triIndex++] = secondCircleIndex + radialSubdivs - 1;
+            meshData.triangles[meshData.triangleIndex++] = firstCircleIndex + radialSubdivs -1 ;
+            meshData.triangles[meshData.triangleIndex++] = firstCircleIndex;
+            meshData.triangles[meshData.triangleIndex++] = secondCircleIndex + radialSubdivs - 1;
             
-            tris[triIndex++] = firstCircleIndex;
-            tris[triIndex++] = secondCircleIndex;
-            tris[triIndex++] = secondCircleIndex + radialSubdivs - 1;
+            meshData.triangles[meshData.triangleIndex++] = firstCircleIndex;
+            meshData.triangles[meshData.triangleIndex++] = secondCircleIndex;
+            meshData.triangles[meshData.triangleIndex++] = secondCircleIndex + radialSubdivs - 1;
         }
     }
 
     //creates a circle of vertices at the end of segment and inserts them into the vertices array
-    private void AddVertCircle(Segment seg, int radialSubdivisions, ref Vector3[] vertices, ref int vertIndex)
+    private void AddVertCircle(Segment seg, int radialSubdivisions, ref MeshGenData meshData)
     {
         for (int circularIndex = 0; circularIndex < radialSubdivisions; circularIndex++)
         {
@@ -121,24 +118,24 @@ public class TallSeaweedGen : MonoBehaviour
 
             pos += seg.to;
 
-            vertices[vertIndex] = pos;// - transform.position; // from tree object coordinates to [0; 0; 0]
-            vertIndex++;
+            meshData.vertices[meshData.vertexIndex] = pos;// - transform.position; // from tree object coordinates to [0; 0; 0]
+            meshData.vertexIndex++;
         }
     }
 
-    private void GenerateLeafMesh(Segment seg, ref Vector3[] verts, ref Vector3[] normals, ref int[] tris, ref int vertIndex, ref int triIndex)
+    private void GenerateLeafMesh(Segment seg, ref MeshGenData meshData)
     {
         for (int i = 0; i < leaf.triangles.Length; i++)
         {
-            tris[triIndex + i] = leaf.triangles[i] + vertIndex;
+            meshData.triangles[meshData.triangleIndex + i] = leaf.triangles[i] + meshData.vertexIndex;
         }
-        triIndex += leaf.triangles.Length;
+        meshData.triangleIndex += leaf.triangles.Length;
         Quaternion randomAngle = Quaternion.Euler(Random.Range(minAngle, maxAngle), Random.Range(0f, 360f), Random.Range(-5f, 5f));
         for (int i = 0; i < leaf.vertices.Length; i++)
         {
-            verts[vertIndex] = randomAngle * (leaf.vertices[i] * leafScale) + seg.from;
-            normals[vertIndex] = randomAngle * -leaf.normals[i];
-            vertIndex++;
+            meshData.vertices[meshData.vertexIndex] = randomAngle * (leaf.vertices[i] * leafScale) + seg.from;
+            meshData.normals[meshData.vertexIndex] = randomAngle * -leaf.normals[i];
+            meshData.vertexIndex++;
         }
 
 
@@ -167,4 +164,20 @@ public class TallSeaweedGen : MonoBehaviour
         }
         Debug.Log(arrString);
     }
+
+    class MeshGenData{
+        public Vector3[] vertices;
+        public Vector3[] normals;
+        public Vector2[] uvs;
+        public int[] triangles;
+        public int vertexIndex = 0;
+        public int triangleIndex = 0;
+        public MeshGenData(int vertexCount, int triangleIndexCount){
+            vertices = new Vector3[vertexCount];
+            normals = new Vector3[vertexCount];
+            uvs = new Vector2[vertexCount];
+            triangles = new int[triangleIndexCount];
+        }
+    }
 }
+
