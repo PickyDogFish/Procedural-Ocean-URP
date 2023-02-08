@@ -41,7 +41,7 @@ public class TerrainPreview : MonoBehaviour {
         meshFilter.gameObject.SetActive(false);
     }
 
-    public void DrawMesh(MeshData meshData) {
+    public void DrawMesh(TerrainMeshData meshData) {
         meshFilter.sharedMesh = meshData.CreateMesh();
 
         textureRender.gameObject.SetActive(false);

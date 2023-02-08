@@ -4,14 +4,14 @@ using System.Collections;
 public static class MeshGenerator {
 
 
-    public static MeshData GenerateTerrainMesh(float[,] heightMap, int levelOfDetail, MeshSettings meshSettings) {
+    public static TerrainMeshData GenerateTerrainMesh(float[,] heightMap, int levelOfDetail, MeshSettings meshSettings) {
 
         int skipIncrement = (levelOfDetail == 0) ? 1 : levelOfDetail * 2;
         int numVertsPerLine = meshSettings.numVertsPerLine;
 
         Vector2 topLeft = new Vector2(-1, 1) * meshSettings.meshWorldSize / 2f;
 
-        MeshData meshData = new MeshData(numVertsPerLine, skipIncrement);
+        TerrainMeshData meshData = new TerrainMeshData(numVertsPerLine, skipIncrement);
 
         int[,] vertexIndicesMap = new int[numVertsPerLine, numVertsPerLine];
         int meshVertexIndex = 0;
@@ -113,7 +113,7 @@ public class EdgeConnectionVertexData {
 
 
 }
-public class MeshData {
+public class TerrainMeshData {
     Vector3[] vertices;
     int[] triangles;
     Vector2[] uvs;
@@ -128,7 +128,7 @@ public class MeshData {
     EdgeConnectionVertexData[] edgeConnectionVertices;
     int edgeConnectionVertexIndex;
 
-    public MeshData(int numVertsPerLine, int skipIncrement) {
+    public TerrainMeshData(int numVertsPerLine, int skipIncrement) {
 
         int numMeshEdgeVertices = (numVertsPerLine - 2) * 4 - 4;
         int numEdgeConnectionVertices = (skipIncrement - 1) * (numVertsPerLine - 5) / skipIncrement * 4;

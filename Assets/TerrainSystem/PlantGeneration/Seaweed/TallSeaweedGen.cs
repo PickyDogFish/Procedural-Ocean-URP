@@ -67,7 +67,7 @@ public class TallSeaweedGen : MonoBehaviour
         int leafCount = segments.Count - stemSegmentCount;
         int vertexCount = leafCount * leaf.vertexCount + stemSegmentCount * radialSubdivs;
         int triIndexCount = leafCount * leaf.triangles.Length + stemSegmentCount * radialSubdivs * 6;
-        MeshGenData meshData = new MeshGenData(vertexCount, triIndexCount);
+        MeshData meshData = new MeshData(vertexCount, triIndexCount);
         for (int i = stemSegmentCount + 1; i < segments.Count; i++)
         {
             GenerateLeafMesh((Segment)segments[i], ref meshData);
@@ -76,10 +76,11 @@ public class TallSeaweedGen : MonoBehaviour
         mesh.vertices = meshData.vertices;
         mesh.triangles = meshData.triangles;
         mesh.normals = meshData.normals;
+        mesh.uv = meshData.uvs;
         return mesh;
     }
 
-    private void GenerateStemMesh(ref MeshGenData meshData)
+    private void GenerateStemMesh(ref MeshData meshData)
     {
         AddVertCircle((Segment)segments[0], radialSubdivs, ref meshData);
         for (int i = 1; i < stemSegmentCount; i++)
@@ -108,7 +109,7 @@ public class TallSeaweedGen : MonoBehaviour
     }
 
     //creates a circle of vertices at the end of segment and inserts them into the vertices array
-    private void AddVertCircle(Segment seg, int radialSubdivisions, ref MeshGenData meshData)
+    private void AddVertCircle(Segment seg, int radialSubdivisions, ref MeshData meshData)
     {
         for (int circularIndex = 0; circularIndex < radialSubdivisions; circularIndex++)
         {
@@ -123,7 +124,7 @@ public class TallSeaweedGen : MonoBehaviour
         }
     }
 
-    private void GenerateLeafMesh(Segment seg, ref MeshGenData meshData)
+    private void GenerateLeafMesh(Segment seg, ref MeshData meshData)
     {
         for (int i = 0; i < leaf.triangles.Length; i++)
         {
@@ -135,6 +136,7 @@ public class TallSeaweedGen : MonoBehaviour
         {
             meshData.vertices[meshData.vertexIndex] = randomAngle * (leaf.vertices[i] * leafScale) + seg.from;
             meshData.normals[meshData.vertexIndex] = randomAngle * -leaf.normals[i];
+            meshData.uvs[meshData.vertexIndex] = leaf.uv[i];
             meshData.vertexIndex++;
         }
 
@@ -165,14 +167,14 @@ public class TallSeaweedGen : MonoBehaviour
         Debug.Log(arrString);
     }
 
-    class MeshGenData{
+    class MeshData{
         public Vector3[] vertices;
         public Vector3[] normals;
         public Vector2[] uvs;
         public int[] triangles;
         public int vertexIndex = 0;
         public int triangleIndex = 0;
-        public MeshGenData(int vertexCount, int triangleIndexCount){
+        public MeshData(int vertexCount, int triangleIndexCount){
             vertices = new Vector3[vertexCount];
             normals = new Vector3[vertexCount];
             uvs = new Vector2[vertexCount];

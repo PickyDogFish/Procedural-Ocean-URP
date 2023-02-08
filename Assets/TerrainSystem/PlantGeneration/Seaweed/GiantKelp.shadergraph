@@ -134,6 +134,9 @@
         },
         {
             "m_Id": "12d529de7ce24baeb6e3b203db6e7e76"
+        },
+        {
+            "m_Id": "1952f6653fb54769a5dae201e965415c"
         }
     ],
     "m_GroupDatas": [
@@ -208,6 +211,20 @@
         {
             "m_OutputSlot": {
                 "m_Node": {
+                    "m_Id": "1952f6653fb54769a5dae201e965415c"
+                },
+                "m_SlotId": 0
+            },
+            "m_InputSlot": {
+                "m_Node": {
+                    "m_Id": "c716374e55a74c5bb99e8b528e495d83"
+                },
+                "m_SlotId": 0
+            }
+        },
+        {
+            "m_OutputSlot": {
+                "m_Node": {
                     "m_Id": "19d62ca30fd04c758128b1f43c166e91"
                 },
                 "m_SlotId": 0
@@ -273,20 +290,6 @@
                     "m_Id": "c716374e55a74c5bb99e8b528e495d83"
                 },
                 "m_SlotId": 1
-            }
-        },
-        {
-            "m_OutputSlot": {
-                "m_Node": {
-                    "m_Id": "2fdf49b1aece49d89fd63729908f8c6a"
-                },
-                "m_SlotId": 0
-            },
-            "m_InputSlot": {
-                "m_Node": {
-                    "m_Id": "c716374e55a74c5bb99e8b528e495d83"
-                },
-                "m_SlotId": 0
             }
         },
         {
@@ -413,6 +416,20 @@
                     "m_Id": "3fdd905a9b854c068b13c6a636cf65d1"
                 },
                 "m_SlotId": 1
+            }
+        },
+        {
+            "m_OutputSlot": {
+                "m_Node": {
+                    "m_Id": "c716374e55a74c5bb99e8b528e495d83"
+                },
+                "m_SlotId": 2
+            },
+            "m_InputSlot": {
+                "m_Node": {
+                    "m_Id": "3fdd905a9b854c068b13c6a636cf65d1"
+                },
+                "m_SlotId": 0
             }
         },
         {
@@ -907,6 +924,43 @@
         "z": 0.0,
         "w": 0.0
     }
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.UVNode",
+    "m_ObjectId": "1952f6653fb54769a5dae201e965415c",
+    "m_Group": {
+        "m_Id": ""
+    },
+    "m_Name": "UV",
+    "m_DrawState": {
+        "m_Expanded": true,
+        "m_Position": {
+            "serializedVersion": "2",
+            "x": -1956.0,
+            "y": 502.0000305175781,
+            "width": 207.9998779296875,
+            "height": 313.0000305175781
+        }
+    },
+    "m_Slots": [
+        {
+            "m_Id": "850ef74cbc86474e87433ea7c8f9694b"
+        }
+    ],
+    "synonyms": [
+        "texcoords",
+        "coords",
+        "coordinates"
+    ],
+    "m_Precision": 0,
+    "m_PreviewExpanded": true,
+    "m_PreviewMode": 0,
+    "m_CustomColors": {
+        "m_SerializableColors": []
+    },
+    "m_OutputChannel": 0
 }
 
 {
@@ -1823,7 +1877,7 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -652.0,
+            "x": -651.0,
             "y": 751.0,
             "width": 208.0,
             "height": 302.0
@@ -2457,6 +2511,31 @@
         "m_SerializableColors": []
     },
     "m_SerializedDescriptor": "VertexDescription.Normal"
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.Vector4MaterialSlot",
+    "m_ObjectId": "850ef74cbc86474e87433ea7c8f9694b",
+    "m_Id": 0,
+    "m_DisplayName": "Out",
+    "m_SlotType": 1,
+    "m_Hidden": false,
+    "m_ShaderOutputName": "Out",
+    "m_StageCapability": 3,
+    "m_Value": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 0.0
+    },
+    "m_DefaultValue": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 0.0
+    },
+    "m_Labels": []
 }
 
 {
@@ -3199,9 +3278,9 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -1448.9998779296875,
+            "x": -1482.0,
             "y": 751.0000610351563,
-            "width": 208.0,
+            "width": 207.9998779296875,
             "height": 301.99993896484377
         }
     },

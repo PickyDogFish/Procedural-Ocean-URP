@@ -168,7 +168,7 @@ class LODMesh {
     }
 
     void OnMeshDataReceived(object meshDataObject) {
-        mesh = ((MeshData)meshDataObject).CreateMesh();
+        mesh = ((TerrainMeshData)meshDataObject).CreateMesh();
         hasMesh = true;
         updateCallback();
     }
