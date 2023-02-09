@@ -4,10 +4,10 @@ using UnityEngine;
 using UnityEditor;
 using MarkupAttributes.Editor;
 
-[CustomEditor(typeof(TallSeaweedGen))]
+[CustomEditor(typeof(GiantKelpGen)]
 public class SeaweedEditor : MarkedUpEditor {
     public override void OnInspectorGUI() {
-        TallSeaweedGen seaweedGen = (TallSeaweedGen) target;
+        GiantKelpGen seaweedGen = (GiantKelpGen) target;
         DrawDefaultInspector();
         if (GUILayout.Button("Generate")){
             seaweedGen.GenerateSeaweed();

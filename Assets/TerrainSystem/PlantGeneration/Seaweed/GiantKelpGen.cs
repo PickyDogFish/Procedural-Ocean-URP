@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class TallSeaweedGen : MonoBehaviour
+public class GiantKelpGen : MonoBehaviour
 {
     [ExecuteInEditMode]
     public float maxHeight = 3f;
