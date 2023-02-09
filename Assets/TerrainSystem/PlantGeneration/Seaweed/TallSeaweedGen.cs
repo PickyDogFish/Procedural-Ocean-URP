@@ -77,6 +77,7 @@ public class TallSeaweedGen : MonoBehaviour
         mesh.triangles = meshData.triangles;
         mesh.normals = meshData.normals;
         mesh.uv = meshData.uvs;
+        mesh.RecalculateBounds();
         return mesh;
     }
 
