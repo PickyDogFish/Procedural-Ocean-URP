@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEditor;
 using MarkupAttributes.Editor;
 
-[CustomEditor(typeof(GiantKelpGen)]
+[CustomEditor(typeof(GiantKelpGen))]
 public class SeaweedEditor : MarkedUpEditor {
     public override void OnInspectorGUI() {
         GiantKelpGen seaweedGen = (GiantKelpGen) target;
