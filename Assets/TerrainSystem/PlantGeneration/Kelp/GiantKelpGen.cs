@@ -121,6 +121,7 @@ public class GiantKelpGen : MonoBehaviour
             pos += seg.to;
 
             meshData.vertices[meshData.vertexIndex] = pos;// - transform.position; // from tree object coordinates to [0; 0; 0]
+            meshData.uvs[meshData.vertexIndex] = new Vector2(0.5f,0.5f);
             meshData.vertexIndex++;
         }
     }
