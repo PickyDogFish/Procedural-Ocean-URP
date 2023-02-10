@@ -18,7 +18,7 @@ MonoBehaviour:
   castShadows: 1
   receiveShadows: 1
   scale: 1
-  minBladeHeight: 0
-  maxBladeHeight: 0
+  minBladeHeight: 0.1
+  maxBladeHeight: 1.2
   minOffset: 0
   maxOffset: 0
