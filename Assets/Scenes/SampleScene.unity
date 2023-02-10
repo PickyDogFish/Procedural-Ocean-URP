@@ -447,6 +447,7 @@ MonoBehaviour:
   coralSpawner: {fileID: 86254344}
   viewer: {fileID: 2142228579}
   viewerPosition: {x: 0, y: 0}
+  grassSettings: {fileID: 11400000, guid: 7d7949f1db854444096bad18f4f222d0, type: 2}
 --- !u!4 &865255151
 Transform:
   m_ObjectHideFlags: 0

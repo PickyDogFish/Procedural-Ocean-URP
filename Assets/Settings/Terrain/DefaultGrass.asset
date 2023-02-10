@@ -13,12 +13,12 @@ MonoBehaviour:
   m_Name: DefaultGrass
   m_EditorClassIdentifier: 
   computeShader: {fileID: 7200000, guid: 85eb8b57078edb244a4bd94931192469, type: 3}
-  grassMesh: {fileID: 2949893962580367973, guid: 2ee0db09a64d3a742b2693ce8474621a, type: 3}
+  grassMesh: {fileID: 240824333094594727, guid: 9235fb16cba3fe749844b1898ec1c658, type: 3}
   material: {fileID: 2100000, guid: 584c0960552d4994bb315e2a77475cbc, type: 2}
   castShadows: 1
   receiveShadows: 1
-  scale: 0.1
-  minBladeHeight: 0.5
-  maxBladeHeight: 1.5
-  minOffset: -0.1
-  maxOffset: 0.1
+  scale: 1
+  minBladeHeight: 0
+  maxBladeHeight: 0
+  minOffset: 0
+  maxOffset: 0

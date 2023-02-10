@@ -30,14 +30,14 @@ public class GrassSettings : ScriptableObject
 
     [Header("Grass Blade Properties")]
 
-    [Range(0.0f, 1.0f)]
+    [Range(0.0f, 5.0f)]
     [Tooltip("Base size of grass blades in all three axes.")]
     public float scale = 0.1f;
     [Range(0.0f, 5.0f)]
-    [Tooltip("Minimum height multiplier.")]
+    [Tooltip("Minimum y scale multiplier.")]
     public float minBladeHeight = 0.5f;
     [Range(0.0f, 5.0f)]
-    [Tooltip("Maximum height multiplier.")]
+    [Tooltip("Maximum y scale multiplier.")]
     public float maxBladeHeight = 1.5f;
 
     [Range(-1.0f, 1.0f)]
