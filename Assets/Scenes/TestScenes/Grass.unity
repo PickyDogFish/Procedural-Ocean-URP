@@ -319,16 +319,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8cfe0addd7923941a9b3ce789af4083, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  computeShader: {fileID: 7200000, guid: 85eb8b57078edb244a4bd94931192469, type: 3}
-  grassMesh: {fileID: 2949893962580367973, guid: 2ee0db09a64d3a742b2693ce8474621a, type: 3}
-  material: {fileID: 2100000, guid: 584c0960552d4994bb315e2a77475cbc, type: 2}
-  castShadows: 1
-  receiveShadows: 1
-  scale: 0.1
-  minBladeHeight: 0.5
-  maxBladeHeight: 1.5
-  minOffset: -0.1
-  maxOffset: 0.1
+  settings: {fileID: 11400000, guid: 7d7949f1db854444096bad18f4f222d0, type: 2}
 --- !u!4 &1262710327
 Transform:
   m_ObjectHideFlags: 0
