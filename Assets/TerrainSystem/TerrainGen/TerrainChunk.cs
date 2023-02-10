@@ -29,14 +29,16 @@ public class TerrainChunk {
     HeightMapSettings heightMapSettings;
     MeshSettings meshSettings;
     Transform viewer;
+    ProceduralGrass grass;
 
-    public TerrainChunk(Vector2 coord, float verticalOffset, HeightMapSettings heightMapSettings, MeshSettings meshSettings, LODInfo[] detailLevels, int colliderLODIndex, Transform parent, Transform viewer, Material material) {
+    public TerrainChunk(Vector2 coord, float verticalOffset, HeightMapSettings heightMapSettings, MeshSettings meshSettings, LODInfo[] detailLevels, int colliderLODIndex, Transform parent, Transform viewer, Material material, GrassSettings grassSettings) {
         this.coord = coord;
         this.detailLevels = detailLevels;
         this.colliderLODIndex = colliderLODIndex;
         this.heightMapSettings = heightMapSettings;
         this.meshSettings = meshSettings;
         this.viewer = viewer;
+
 
         sampleCentre = coord * meshSettings.meshWorldSize / meshSettings.meshScale;
         Vector2 position = coord * meshSettings.meshWorldSize;
@@ -48,6 +50,9 @@ public class TerrainChunk {
         meshFilter = meshObject.AddComponent<MeshFilter>();
         meshCollider = meshObject.AddComponent<MeshCollider>();
         meshRenderer.material = material;
+
+        this.grass = meshObject.AddComponent<ProceduralGrass>();
+        this.grass.settings = grassSettings;
 
         meshObject.transform.position = new Vector3(position.x, verticalOffset * meshSettings.meshWorldSize, position.y);
         meshObject.transform.parent = parent;
@@ -92,9 +97,16 @@ public class TerrainChunk {
 
             bool wasVisible = IsVisible();
             bool visible = viewerDstFromNearestEdge <= maxViewDst;
+            grass.drawGrass = false;
 
             if (visible) {
                 int lodIndex = 0;
+                grass.drawGrass = true;
+                if (!grass.dataGenerated){
+                    if (lodMeshes[0].hasMesh){
+                        grass.GenerateData(lodMeshes[0].mesh);
+                    }
+                }
 
                 for (int i = 0; i < detailLevels.Length - 1; i++) {
                     if (viewerDstFromNearestEdge > detailLevels[i].visibleDistThreshold) {

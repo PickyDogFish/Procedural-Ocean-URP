@@ -320,6 +320,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   settings: {fileID: 11400000, guid: 7d7949f1db854444096bad18f4f222d0, type: 2}
+  drawGrass: 1
 --- !u!4 &1262710327
 Transform:
   m_ObjectHideFlags: 0

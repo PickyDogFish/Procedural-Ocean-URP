@@ -16,19 +16,18 @@ public class ProceduralGrass : MonoBehaviour
 
     private Bounds bounds;
     private MaterialPropertyBlock properties;
-    
+
     private int kernel;
     private uint threadGroupSize;
     private int terrainTriangleCount = 0;
 
-    private void Start()
-    {
-        Generate(GetComponent<MeshFilter>().mesh);
-    }
+    public bool drawGrass = false;
+    public bool dataGenerated { get; private set; }
 
-    public void Generate(Mesh terrainMesh){
+    public void GenerateData(Mesh terrainMesh)
+    {
         kernel = settings.computeShader.FindKernel("CalculateBladePositions");
-        
+
         // Terrain data for the compute shader.
         Vector3[] terrainVertices = terrainMesh.vertices;
         terrainVertexBuffer = new GraphicsBuffer(GraphicsBuffer.Target.Structured, terrainVertices.Length, sizeof(float) * 3);
@@ -57,7 +56,6 @@ public class ProceduralGrass : MonoBehaviour
         grassUVBuffer.SetData(grassUVs);
 
         // Set up buffer for the grass blade transformation matrices.
-        Debug.Log(terrainTriangleCount);
         transformMatrixBuffer = new GraphicsBuffer(GraphicsBuffer.Target.Structured, terrainTriangleCount, sizeof(float) * 16);
         settings.computeShader.SetBuffer(kernel, "_TransformMatrices", transformMatrixBuffer);
 
@@ -73,6 +71,7 @@ public class ProceduralGrass : MonoBehaviour
         properties.SetBuffer("_UVs", grassUVBuffer);
 
         RunComputeShader();
+        dataGenerated = true;
     }
 
     private void RunComputeShader()
@@ -95,21 +94,25 @@ public class ProceduralGrass : MonoBehaviour
     // Run a single draw call to render all the grass blade meshes each frame.
     private void Update()
     {
-        /*
-        RenderParams rp = new RenderParams(material);
-        rp.worldBounds = bounds;
-        rp.matProps = new MaterialPropertyBlock();
-        rp.matProps.SetBuffer("_TransformMatrices", transformMatrixBuffer);
-        rp.matProps.SetBuffer("_Positions", grassVertexBuffer);
-        rp.matProps.SetBuffer("_UVs", grassUVBuffer);
-        */
-        //Graphics.RenderPrimitivesIndexed(rp, MeshTopology.Triangles, grassTriangleBuffer, grassTriangleBuffer.count, instanceCount: terrainTriangleCount);
-        //Debug.Log(terrainTriangleCount);
-        Graphics.DrawProcedural(settings.material, bounds, MeshTopology.Triangles, grassTriangleBuffer, grassTriangleBuffer.count, 
-            instanceCount: terrainTriangleCount, 
-            properties: properties, 
-            castShadows: settings.castShadows, 
-            receiveShadows: settings.receiveShadows);
+        if (dataGenerated && drawGrass)
+        {
+
+            /*
+            RenderParams rp = new RenderParams(material);
+            rp.worldBounds = bounds;
+            rp.matProps = new MaterialPropertyBlock();
+            rp.matProps.SetBuffer("_TransformMatrices", transformMatrixBuffer);
+            rp.matProps.SetBuffer("_Positions", grassVertexBuffer);
+            rp.matProps.SetBuffer("_UVs", grassUVBuffer);
+            */
+            //Graphics.RenderPrimitivesIndexed(rp, MeshTopology.Triangles, grassTriangleBuffer, grassTriangleBuffer.count, instanceCount: terrainTriangleCount);
+            //Debug.Log(terrainTriangleCount);
+            Graphics.DrawProcedural(settings.material, bounds, MeshTopology.Triangles, grassTriangleBuffer, grassTriangleBuffer.count,
+                instanceCount: terrainTriangleCount,
+                properties: properties,
+                castShadows: settings.castShadows,
+                receiveShadows: settings.receiveShadows);
+        }
     }
 
     private void OnDestroy()
@@ -117,13 +120,31 @@ public class ProceduralGrass : MonoBehaviour
         CleanUp();
     }
 
-    public void CleanUp(){
-        terrainTriangleBuffer.Dispose();
-        terrainVertexBuffer.Dispose();
-        transformMatrixBuffer.Dispose();
-
-        grassTriangleBuffer.Dispose();
-        grassVertexBuffer.Dispose();
-        grassUVBuffer.Dispose();
+    public void CleanUp()
+    {
+        if (terrainTriangleBuffer != null)
+        {
+            terrainTriangleBuffer.Dispose();
+        }
+        if (terrainVertexBuffer != null)
+        {
+            terrainVertexBuffer.Dispose();
+        }
+        if (transformMatrixBuffer != null)
+        {
+            transformMatrixBuffer.Dispose();
+        }
+        if (grassTriangleBuffer != null)
+        {
+            grassTriangleBuffer.Dispose();
+        }
+        if (grassVertexBuffer != null)
+        {
+            grassVertexBuffer.Dispose();
+        }
+        if (grassUVBuffer != null)
+        {
+            grassUVBuffer.Dispose();
+        }
     }
 }

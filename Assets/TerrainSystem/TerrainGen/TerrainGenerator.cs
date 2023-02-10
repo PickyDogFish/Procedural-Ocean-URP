@@ -22,7 +22,7 @@ public class TerrainGenerator : MonoBehaviour {
     public Transform viewer;
     public Vector2 viewerPosition;
     Vector2 viewerPositionOld;
-
+    public GrassSettings grassSettings;
     float meshWorldSize;
     int chunksVisibleInViewDist;
 
@@ -72,7 +72,7 @@ public class TerrainGenerator : MonoBehaviour {
                     if (terrainChunkDict.ContainsKey(viewedChunkCoord)) {
                         terrainChunkDict[viewedChunkCoord].UpdateTerrainChunk();
                     } else {
-                        TerrainChunk newChunk = new TerrainChunk(viewedChunkCoord, verticalOffset, heightMapSettings, meshSettings, detailLevels, colliderLODIndex, transform, viewer, terrainMaterial);
+                        TerrainChunk newChunk = new TerrainChunk(viewedChunkCoord, verticalOffset, heightMapSettings, meshSettings, detailLevels, colliderLODIndex, transform, viewer, terrainMaterial, grassSettings);
                         terrainChunkDict.Add(viewedChunkCoord, newChunk);
                         newChunk.onVisibilityChanged += OnTerrainChunkVisibilityChanged;
                         coralSpawner.SpawnColony(newChunk, 5);
