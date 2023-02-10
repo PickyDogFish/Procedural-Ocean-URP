@@ -62,13 +62,12 @@ public class ProceduralGrass : MonoBehaviour
 
     private void Start()
     {
+        Generate(GetComponent<MeshFilter>().mesh);
+    }
+
+    public void Generate(Mesh terrainMesh){
         kernel = computeShader.FindKernel("CalculateBladePositions");
-
-        terrainMesh = GetComponent<MeshFilter>().mesh;
-        print(terrainMesh.isReadable);
-        print(terrainMesh.vertices.Length);
         
-
         // Terrain data for the compute shader.
         Vector3[] terrainVertices = terrainMesh.vertices;
         terrainVertexBuffer = new GraphicsBuffer(GraphicsBuffer.Target.Structured, terrainVertices.Length, sizeof(float) * 3);
@@ -154,6 +153,10 @@ public class ProceduralGrass : MonoBehaviour
 
     private void OnDestroy()
     {
+        CleanUp();
+    }
+
+    public void CleanUp(){
         terrainTriangleBuffer.Dispose();
         terrainVertexBuffer.Dispose();
         transformMatrixBuffer.Dispose();

@@ -3,7 +3,10 @@ guid: a8cfe0addd7923941a9b3ce789af4083
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - computeShader: {fileID: 7200000, guid: 85eb8b57078edb244a4bd94931192469, type: 3}
+  - grassMesh: {fileID: 2949893962580367973, guid: 2ee0db09a64d3a742b2693ce8474621a, type: 3}
+  - material: {fileID: 2100000, guid: 584c0960552d4994bb315e2a77475cbc, type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
