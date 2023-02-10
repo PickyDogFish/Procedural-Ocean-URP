@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace ReactionDiffusion
 {
-    [CreateAssetMenu()]
+    [CreateAssetMenu(fileName = "New RD Layer Settings", menuName = "Flora/RD Layer Settings")]
     public class RDLayerSettings : ScriptableObject
     {
         [field: SerializeField] public int startOffset {get; private set;} = 100;

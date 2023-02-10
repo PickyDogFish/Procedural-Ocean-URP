@@ -29,7 +29,6 @@ public class TerrainChunk {
     HeightMapSettings heightMapSettings;
     MeshSettings meshSettings;
     Transform viewer;
-    ProceduralGrass grass;
 
     public TerrainChunk(Vector2 coord, float verticalOffset, HeightMapSettings heightMapSettings, MeshSettings meshSettings, LODInfo[] detailLevels, int colliderLODIndex, Transform parent, Transform viewer, Material material) {
         this.coord = coord;
@@ -38,8 +37,6 @@ public class TerrainChunk {
         this.heightMapSettings = heightMapSettings;
         this.meshSettings = meshSettings;
         this.viewer = viewer;
-
-        grass = meshObject.AddComponent<ProceduralGrass>();
 
         sampleCentre = coord * meshSettings.meshWorldSize / meshSettings.meshScale;
         Vector2 position = coord * meshSettings.meshWorldSize;

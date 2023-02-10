@@ -2,7 +2,7 @@
 
 namespace ReactionDiffusion
 {
-    [CreateAssetMenu]
+    [CreateAssetMenu(fileName = "New RD Settings", menuName = "Flora/RD Settings")]
     public class RDSettings : ScriptableObject
     {
         [Header("Feed settings")]

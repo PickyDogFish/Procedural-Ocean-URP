@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
-[CreateAssetMenu()]
+[CreateAssetMenu(fileName = "New Texture Data", menuName = "Terrain/Texture Data")]
 public class TextureData : UpdatableData {
     const int textureSize = 512;
     const TextureFormat textureFormat = TextureFormat.RGB565;

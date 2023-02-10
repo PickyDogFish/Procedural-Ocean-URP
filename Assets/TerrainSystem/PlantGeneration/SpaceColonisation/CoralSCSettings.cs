@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using MarkupAttributes;
 
-[CreateAssetMenu()]
+[CreateAssetMenu(fileName = "New SC Settings", menuName = "Flora/SC Settings")]
 public class CoralSCSettings : UpdatableData {
     [Box("Spawn settings")]
     [Range(0,1), Tooltip("Change to grow another coral when colony is growing")] public float growChance = 0.3f;

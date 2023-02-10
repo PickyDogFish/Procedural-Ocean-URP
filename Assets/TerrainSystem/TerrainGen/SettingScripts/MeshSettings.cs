@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
-[CreateAssetMenu()]
+[CreateAssetMenu(fileName = "New Mesh Settings", menuName = "Terrain/Mesh Settings")]
 public class MeshSettings : UpdatableData {
     public float meshScale = 0.1f;
     public const int numOfSupportedLOD = 5;
