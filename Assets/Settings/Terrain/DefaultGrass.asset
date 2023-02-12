@@ -15,9 +15,9 @@ MonoBehaviour:
   computeShader: {fileID: 7200000, guid: 85eb8b57078edb244a4bd94931192469, type: 3}
   grassMesh: {fileID: 240824333094594727, guid: 9235fb16cba3fe749844b1898ec1c658, type: 3}
   material: {fileID: 2100000, guid: 584c0960552d4994bb315e2a77475cbc, type: 2}
-  castShadows: 1
-  receiveShadows: 1
-  scale: 1
+  castShadows: 0
+  receiveShadows: 0
+  scale: 2
   minBladeHeight: 0.1
   maxBladeHeight: 1.2
   minOffset: 0

@@ -5,6 +5,7 @@ Shader "Custom/ProceduralGrass"
 		_BaseColor("Base Color", Color) = (0, 0, 0, 1)
 		_TipColor("Tip Color", Color) = (1, 1, 1, 1)
 		_BaseTex("Base Texture", 2D) = "white" {}
+		_SwayTex("Sway Texture", 2D) = "black" {}
 	}
 
 	SubShader
@@ -35,6 +36,7 @@ Shader "Custom/ProceduralGrass"
 				float4 positionCS : SV_Position;
 				float4 positionWS : TEXCOORD0;
 				float2 uv : TEXCOORD1;
+				float bw : TEXCOORD2;
 			};
 
 			StructuredBuffer<float3> _Positions;
@@ -47,6 +49,8 @@ Shader "Custom/ProceduralGrass"
 				float4 _TipColor;
 				sampler2D _BaseTex;
 				float4 _BaseTex_ST;
+				sampler2D _SwayTex;
+				float4 _SwayTex_ST;
 
 				float _Cutoff;
 			CBUFFER_END
@@ -56,6 +60,7 @@ Shader "Custom/ProceduralGrass"
 		{
 			Name "GrassPass"
 			Tags { "LightMode" = "UniversalForward" }
+			Cull Off
 
 			HLSLPROGRAM
 			#pragma vertex vert
@@ -68,10 +73,15 @@ Shader "Custom/ProceduralGrass"
 				float4 positionOS = float4(_Positions[v.vertexID], 1.0f);
 				float4x4 objectToWorld = _TransformMatrices[v.instanceID];
 
-				o.positionWS = mul(objectToWorld, positionOS);
-				o.positionCS = mul(UNITY_MATRIX_VP, o.positionWS);
 				o.uv = _UVs[v.vertexID];
 
+				float4 posWS = mul(objectToWorld, positionOS);
+
+				float4 swayUV = float4(posWS.x + _Time[0], posWS.y + _Time[0], 0, 0);
+				float4 sway = tex2Dlod(_SwayTex, float4(posWS.xz + _Time[0].xx, 0, 0));
+				o.positionWS = posWS * 100 + float4((sway.xy * 200 * positionOS.y),0,0).xyzz;
+				o.positionCS = mul(UNITY_MATRIX_VP, o.positionWS);
+				
 				return o;
 			}
 
