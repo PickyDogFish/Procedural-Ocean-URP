@@ -6,8 +6,6 @@ public class TerrainGenerator : MonoBehaviour {
     const float viewerMoveChunkUpdateThreshold = 25f;
     const float sqrViewerMoveChunkUpdateThreshold = viewerMoveChunkUpdateThreshold * viewerMoveChunkUpdateThreshold;
 
-    public float verticalOffset = 0;
-
     public int colliderLODIndex;
     public LODInfo[] detailLevels;
 
@@ -31,7 +29,7 @@ public class TerrainGenerator : MonoBehaviour {
 
     void Start() {
         textureSettings.ApplyToMaterial(terrainMaterial);
-        textureSettings.UpdateMeshHeights(terrainMaterial, heightMapSettings.minHeight, heightMapSettings.maxHeight);
+        textureSettings.UpdateMeshHeights(terrainMaterial, heightMapSettings.minHeight + meshSettings.verticalOffset, heightMapSettings.maxHeight + meshSettings.verticalOffset);
 
         float maxViewDist = detailLevels[detailLevels.Length - 1].visibleDistThreshold;
         meshWorldSize = meshSettings.meshWorldSize;
@@ -72,7 +70,7 @@ public class TerrainGenerator : MonoBehaviour {
                     if (terrainChunkDict.ContainsKey(viewedChunkCoord)) {
                         terrainChunkDict[viewedChunkCoord].UpdateTerrainChunk();
                     } else {
-                        TerrainChunk newChunk = new TerrainChunk(viewedChunkCoord, verticalOffset, heightMapSettings, meshSettings, detailLevels, colliderLODIndex, transform, viewer, terrainMaterial, grassSettings);
+                        TerrainChunk newChunk = new TerrainChunk(viewedChunkCoord, heightMapSettings, meshSettings, detailLevels, colliderLODIndex, transform, viewer, terrainMaterial, grassSettings);
                         terrainChunkDict.Add(viewedChunkCoord, newChunk);
                         newChunk.onVisibilityChanged += OnTerrainChunkVisibilityChanged;
                         coralSpawner.SpawnColony(newChunk, 5);
@@ -96,7 +94,7 @@ public class TerrainGenerator : MonoBehaviour {
     /// Returns the theoretical height of the terrain at the given global position. Because the terrain's resolution is limited there can be differences between theoretical and actual height at the given point.
     ///</summary>
     public float GetHeightAt(Vector2 pos) {
-        float height = HeightMapGenerator.GetHeight(heightMapSettings, pos / meshSettings.meshScale) + verticalOffset * meshSettings.meshWorldSize;
+        float height = HeightMapGenerator.GetHeight(heightMapSettings, pos / meshSettings.meshScale) + meshSettings.verticalOffset;
         return height;
     }
 }

@@ -31,7 +31,7 @@ public class TerrainChunk {
     Transform viewer;
     ProceduralGrass grass;
 
-    public TerrainChunk(Vector2 coord, float verticalOffset, HeightMapSettings heightMapSettings, MeshSettings meshSettings, LODInfo[] detailLevels, int colliderLODIndex, Transform parent, Transform viewer, Material material, GrassSettings grassSettings) {
+    public TerrainChunk(Vector2 coord, HeightMapSettings heightMapSettings, MeshSettings meshSettings, LODInfo[] detailLevels, int colliderLODIndex, Transform parent, Transform viewer, Material material, GrassSettings grassSettings) {
         this.coord = coord;
         this.detailLevels = detailLevels;
         this.colliderLODIndex = colliderLODIndex;
@@ -54,7 +54,7 @@ public class TerrainChunk {
         this.grass = meshObject.AddComponent<ProceduralGrass>();
         this.grass.settings = grassSettings;
 
-        meshObject.transform.position = new Vector3(position.x, verticalOffset * meshSettings.meshWorldSize, position.y);
+        meshObject.transform.position = new Vector3(position.x, 0, position.y);
         meshObject.transform.parent = parent;
         SetVisible(false);
 

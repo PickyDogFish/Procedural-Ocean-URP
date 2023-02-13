@@ -66,7 +66,7 @@ v2f vert(Attributes input){
 }
 
 float4 frag(v2f input) : SV_TARGET{
-    float heightPercent = InverseLerp(minHeight, maxHeight, input.positionOS.y);
+    float heightPercent = InverseLerp(minHeight, maxHeight, input.positionWS.y);
 
     float3 blendAxes = abs(input.normalWS);
     blendAxes /= blendAxes.x + blendAxes.y + blendAxes.z;
