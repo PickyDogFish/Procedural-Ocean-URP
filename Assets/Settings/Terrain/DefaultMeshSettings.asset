@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   autoUpdate: 0
   meshScale: 0.5
-  verticalOffset: -350
+  verticalOffset: -425
   chunkSizeIndex: 3

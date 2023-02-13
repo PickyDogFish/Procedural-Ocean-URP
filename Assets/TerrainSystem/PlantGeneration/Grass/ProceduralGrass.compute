@@ -5,7 +5,7 @@ StructuredBuffer<float3> _TerrainPositions;
 
 RWStructuredBuffer<float4x4> _TransformMatrices;
 uniform float3 _ObjectPos;
-uniform int _TerrainTriangleCount;
+uniform uint _TerrainTriangleCount;
 uniform float _Scale;
 uniform float _MinBladeHeight;
 uniform float _MaxBladeHeight;
