@@ -17,8 +17,8 @@ MonoBehaviour:
     downsampling: 2
     stage: 2
     tint: {r: 1, g: 0.83791596, b: 0.740566, a: 1}
-    intensity: 2
-    scattering: 0
+    intensity: 3
+    scattering: 0.1
     threshold: 0.15
     scale: 50
     speed: 1
