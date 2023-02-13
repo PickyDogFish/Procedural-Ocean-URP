@@ -4,6 +4,7 @@ StructuredBuffer<int> _TerrainTriangles;
 StructuredBuffer<float3> _TerrainPositions;
 
 RWStructuredBuffer<float4x4> _TransformMatrices;
+uniform float3 _ObjectPos;
 uniform int _TerrainTriangleCount;
 uniform float _Scale;
 uniform float _MinBladeHeight;
@@ -56,8 +57,13 @@ void CalculateBladePositions(uint3 id : SV_DispatchThreadID)
 
 	float3 triangleCenterPos = (posA + posB + posC) / 3.0f;
 
-	float2 randomSeed1 = float2(id.x, id.y);
-	float2 randomSeed2 = float2(id.y, id.x);
+	//Limiting seaweed grass to only underwater
+	if ((_ObjectPos + triangleCenterPos).y > -1.0){
+		return;
+	}
+
+	float2 randomSeed1 = id.xy;
+	float2 randomSeed2 = id.yx;
 
 	float scaleY = _Scale * randomRange(randomSeed1, _MinBladeHeight, _MaxBladeHeight);
 

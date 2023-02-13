@@ -39,6 +39,7 @@ public class ProceduralGrass : MonoBehaviour
 
         terrainTriangleCount = terrainTriangles.Length / 3;
 
+        settings.computeShader.SetVector("_ObjectPos", gameObject.transform.position);
         settings.computeShader.SetBuffer(kernel, "_TerrainPositions", terrainVertexBuffer);
         settings.computeShader.SetBuffer(kernel, "_TerrainTriangles", terrainTriangleBuffer);
 
