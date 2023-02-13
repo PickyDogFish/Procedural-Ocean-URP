@@ -6,6 +6,7 @@ using System.Linq;
 [CreateAssetMenu(fileName = "New Mesh Settings", menuName = "Terrain/Mesh Settings")]
 public class MeshSettings : UpdatableData {
     public float meshScale = 0.1f;
+    public float verticalOffset = 0;
     public const int numOfSupportedLOD = 5;
     public const int numSupportedChunkSizes = 9;
     public static readonly int[] supportedChunkSizes = {48, 72, 96, 120, 144, 168, 192, 216, 240};

@@ -17,7 +17,7 @@ MonoBehaviour:
   material: {fileID: 2100000, guid: 584c0960552d4994bb315e2a77475cbc, type: 2}
   castShadows: 0
   receiveShadows: 0
-  scale: 2
+  scale: 3
   minBladeHeight: 0.1
   maxBladeHeight: 1.2
   minOffset: 0

@@ -44,7 +44,7 @@ public static class MeshGenerator {
                     int vertexIndex = vertexIndicesMap[x, y];
                     Vector2 percent = new Vector2(x - 1, y - 1) / (numVertsPerLine - 3);
                     Vector2 vertexPosition2D = topLeft + new Vector2(percent.x, -percent.y) * meshSettings.meshWorldSize;
-                    float height = heightMap[x, y];
+                    float height = heightMap[x, y] + meshSettings.verticalOffset;
 
                     if (isEdgeConnectionVertex) {
                         bool isVertical = x == 2 || x == numVertsPerLine - 3;
@@ -55,8 +55,8 @@ public static class MeshGenerator {
                         Coord coordA = new Coord((isVertical) ? x : x - dstToMainVertexA, (isVertical) ? y - dstToMainVertexA : y);
                         Coord coordB = new Coord((isVertical) ? x : x + dstToMainVertexB, (isVertical) ? y + dstToMainVertexB : y);
 
-                        float heightMainVertexA = heightMap[coordA.x, coordA.y];
-                        float heightMainVertexB = heightMap[coordB.x, coordB.y];
+                        float heightMainVertexA = heightMap[coordA.x, coordA.y] + meshSettings.verticalOffset;
+                        float heightMainVertexB = heightMap[coordB.x, coordB.y] + meshSettings.verticalOffset;
 
                         height = heightMainVertexA * (1 - dstPercentFromAToB) + heightMainVertexB * dstPercentFromAToB;
 

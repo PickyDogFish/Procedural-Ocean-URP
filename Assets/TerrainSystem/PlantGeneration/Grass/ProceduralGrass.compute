@@ -58,7 +58,7 @@ void CalculateBladePositions(uint3 id : SV_DispatchThreadID)
 	float3 triangleCenterPos = (posA + posB + posC) / 3.0f;
 
 	//Limiting seaweed grass to only underwater
-	if ((_ObjectPos + triangleCenterPos).y > -1.0){
+	if ((_ObjectPos + triangleCenterPos).y > -1.5){
 		return;
 	}
 
