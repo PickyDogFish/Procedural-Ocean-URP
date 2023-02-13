@@ -18,6 +18,7 @@ MonoBehaviour:
   castShadows: 0
   receiveShadows: 0
   scale: 3
+  swayScale: 0.163
   minBladeHeight: 0.1
   maxBladeHeight: 1.2
   minOffset: 0

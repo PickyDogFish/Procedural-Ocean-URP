@@ -70,6 +70,7 @@ public class ProceduralGrass : MonoBehaviour
         properties.SetBuffer("_TransformMatrices", transformMatrixBuffer);
         properties.SetBuffer("_Positions", grassVertexBuffer);
         properties.SetBuffer("_UVs", grassUVBuffer);
+        properties.SetFloat("_SwayScale", settings.swayScale);
 
         RunComputeShader();
         dataGenerated = true;

@@ -49,6 +49,7 @@ Shader "Custom/ProceduralGrass"
 				float4 _TipColor;
 				sampler2D _BaseTex;
 				float4 _BaseTex_ST;
+				float _SwayScale;
 				sampler2D _SwayTex;
 				float4 _SwayTex_ST;
 
@@ -77,8 +78,8 @@ Shader "Custom/ProceduralGrass"
 
 				float4 posWS = mul(objectToWorld, positionOS);
 
-				float4 swayUV = float4(posWS.x + _Time[0], posWS.y + _Time[0], 0, 0);
-				float4 sway = tex2Dlod(_SwayTex, float4(posWS.xz + _Time[0].xx, 0, 0));
+				float4 swayUV = float4(posWS.xz * _SwayScale + _Time[0].xx, 0, 0);
+				float4 sway = tex2Dlod(_SwayTex, swayUV);
 				o.positionWS = posWS * 100 + float4((sway.xy * 200 * positionOS.y),0,0).xyzz;
 				o.positionCS = mul(UNITY_MATRIX_VP, o.positionWS);
 				

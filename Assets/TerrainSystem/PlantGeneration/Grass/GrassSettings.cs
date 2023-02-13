@@ -33,6 +33,9 @@ public class GrassSettings : ScriptableObject
     [Range(0.0f, 5.0f)]
     [Tooltip("Base size of grass blades in all three axes.")]
     public float scale = 0.1f;
+    [Range(0.0f, 1.0f)]
+    [Tooltip("Scale of the sway texture.")]
+    public float swayScale = 0.1f;
     [Range(0.0f, 5.0f)]
     [Tooltip("Minimum y scale multiplier.")]
     public float minBladeHeight = 0.5f;
