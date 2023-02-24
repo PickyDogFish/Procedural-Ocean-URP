@@ -6,7 +6,7 @@ namespace PlantGeneration {
 
     public class PlantSpawner : MonoBehaviour {
         public float coralVisibilityRange = 50;
-        [SerializeField] private CoralSpeciesCollection coralSpeciesCollection;
+        [SerializeField] private PlantSpeciesCollection coralSpeciesCollection;
         [SerializeField] private TerrainGenerator terrainGenerator;
         private Transform viewer;
 

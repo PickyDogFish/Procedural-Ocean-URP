@@ -6,7 +6,7 @@ namespace PlantGeneration {
     /// <summary>
     /// Creates a CoralSpecies with x corals for every CoralSCSettings object
     /// </summary>
-    public class CoralSpeciesCollection : MonoBehaviour {
+    public class PlantSpeciesCollection : MonoBehaviour {
 
         [HideInInspector] public PlantSpecies[] species;
 

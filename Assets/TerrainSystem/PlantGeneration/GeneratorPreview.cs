@@ -1,11 +1,11 @@
 using UnityEngine;
 
 
-namespace PlantGeneration.Kelp {
+namespace PlantGeneration {
     [RequireComponent(typeof(MeshFilter))]
-    public class KelpPreview : MonoBehaviour {
-        public KelpSettings settings;
-        public GiantKelpGen generator;
+    public class GeneratorPreview : MonoBehaviour {
+        public PlantGenSettings settings;
+        public PlantGenerator generator;
         // Start is called before the first frame update
         public void Generate() {
             GetComponent<MeshFilter>().mesh = generator.Generate(settings);

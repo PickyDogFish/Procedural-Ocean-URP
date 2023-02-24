@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace PlantGeneration.Kelp {
 
-    public class GiantKelpGen : MonoBehaviour {
+    public class GiantKelpGen : PlantGenerator {
         [ExecuteInEditMode]
         private int stemSegmentCount = 0;
 
@@ -34,7 +34,8 @@ namespace PlantGeneration.Kelp {
             }
         }
 
-        public Mesh Generate(KelpSettings settings) {
+        public override Mesh Generate(PlantGenSettings plantSettings) {
+            KelpSettings settings = (KelpSettings)plantSettings;
             segments = new ArrayList();
             GenerateStemSkeleton(settings);
             GenerateBranchSkeleton();
