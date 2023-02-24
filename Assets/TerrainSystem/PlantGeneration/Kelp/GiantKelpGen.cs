@@ -4,16 +4,9 @@ using UnityEngine;
 public class GiantKelpGen : MonoBehaviour
 {
     [ExecuteInEditMode]
-    public float maxHeight = 3f;
-    public float segmentLength = 0.1f;
+
+    public KelpSettings settings;
     private int stemSegmentCount = 0;
-    public float branchAngle = 0.3f;
-    public float leafScale = 1;
-    public int radialSubdivs = 3;
-    public float diameter = 0.05f;
-    [SerializeField] private Mesh leaf;
-    [SerializeField] private bool showGizmos;
-    public float minAngle,maxAngle = 135;
 
     private struct Segment
     {
@@ -39,12 +32,12 @@ public class GiantKelpGen : MonoBehaviour
 
     private void GenerateStem()
     {
-        stemSegmentCount = (int)(maxHeight / segmentLength);
-        for (float i = 0; i < maxHeight; i += segmentLength)
+        stemSegmentCount = (int)(settings.maxHeight / settings.segmentLength);
+        for (float i = 0; i < settings.maxHeight; i += settings.segmentLength)
         {
             Segment newSegment = new Segment();
             newSegment.from = new Vector3(0, i, 0);
-            newSegment.to = new Vector3(0, i + segmentLength, 0);
+            newSegment.to = new Vector3(0, i + settings.segmentLength, 0);
             segments.Add(newSegment);
         }
     }
@@ -65,8 +58,8 @@ public class GiantKelpGen : MonoBehaviour
     {
         Mesh mesh = new Mesh();
         int leafCount = segments.Count - stemSegmentCount;
-        int vertexCount = leafCount * leaf.vertexCount + stemSegmentCount * radialSubdivs;
-        int triIndexCount = leafCount * leaf.triangles.Length + stemSegmentCount * radialSubdivs * 6;
+        int vertexCount = leafCount * settings.leaf.vertexCount + stemSegmentCount * settings.radialSubdivs;
+        int triIndexCount = leafCount * settings.leaf.triangles.Length + stemSegmentCount * settings.radialSubdivs * 6;
         MeshData meshData = new MeshData(vertexCount, triIndexCount);
         for (int i = stemSegmentCount + 1; i < segments.Count; i++)
         {
@@ -83,13 +76,13 @@ public class GiantKelpGen : MonoBehaviour
 
     private void GenerateStemMesh(ref MeshData meshData)
     {
-        AddVertCircle((Segment)segments[0], radialSubdivs, ref meshData);
+        AddVertCircle((Segment)segments[0], settings.radialSubdivs, ref meshData);
         for (int i = 1; i < stemSegmentCount; i++)
         {
-            int firstCircleIndex = meshData.vertexIndex - radialSubdivs;
-            AddVertCircle((Segment)segments[i], radialSubdivs, ref meshData);
-            int secondCircleIndex = meshData.vertexIndex - radialSubdivs;
-            for (int quad = 0; quad < radialSubdivs-1; quad++)
+            int firstCircleIndex = meshData.vertexIndex - settings.radialSubdivs;
+            AddVertCircle((Segment)segments[i], settings.radialSubdivs, ref meshData);
+            int secondCircleIndex = meshData.vertexIndex - settings.radialSubdivs;
+            for (int quad = 0; quad < settings.radialSubdivs-1; quad++)
             {
                 meshData.triangles[meshData.triangleIndex++] = firstCircleIndex + quad;
                 meshData.triangles[meshData.triangleIndex++] = firstCircleIndex + quad + 1;
@@ -99,13 +92,13 @@ public class GiantKelpGen : MonoBehaviour
                 meshData.triangles[meshData.triangleIndex++] = secondCircleIndex + quad + 1;
                 meshData.triangles[meshData.triangleIndex++] = secondCircleIndex + quad;
             }
-            meshData.triangles[meshData.triangleIndex++] = firstCircleIndex + radialSubdivs -1 ;
+            meshData.triangles[meshData.triangleIndex++] = firstCircleIndex + settings.radialSubdivs -1 ;
             meshData.triangles[meshData.triangleIndex++] = firstCircleIndex;
-            meshData.triangles[meshData.triangleIndex++] = secondCircleIndex + radialSubdivs - 1;
+            meshData.triangles[meshData.triangleIndex++] = secondCircleIndex + settings.radialSubdivs - 1;
             
             meshData.triangles[meshData.triangleIndex++] = firstCircleIndex;
             meshData.triangles[meshData.triangleIndex++] = secondCircleIndex;
-            meshData.triangles[meshData.triangleIndex++] = secondCircleIndex + radialSubdivs - 1;
+            meshData.triangles[meshData.triangleIndex++] = secondCircleIndex + settings.radialSubdivs - 1;
         }
     }
 
@@ -116,7 +109,7 @@ public class GiantKelpGen : MonoBehaviour
         {
             float alpha = ((float)circularIndex / radialSubdivisions) * Mathf.PI * 2f;
 
-            Vector3 pos = new Vector3(Mathf.Cos(alpha) * diameter, 0, Mathf.Sin(alpha) * diameter);
+            Vector3 pos = new Vector3(Mathf.Cos(alpha) * settings.diameter, 0, Mathf.Sin(alpha) * settings.diameter);
 
             pos += seg.to;
 
@@ -128,17 +121,17 @@ public class GiantKelpGen : MonoBehaviour
 
     private void GenerateLeafMesh(Segment seg, ref MeshData meshData)
     {
-        for (int i = 0; i < leaf.triangles.Length; i++)
+        for (int i = 0; i < settings.leaf.triangles.Length; i++)
         {
-            meshData.triangles[meshData.triangleIndex + i] = leaf.triangles[i] + meshData.vertexIndex;
+            meshData.triangles[meshData.triangleIndex + i] = settings.leaf.triangles[i] + meshData.vertexIndex;
         }
-        meshData.triangleIndex += leaf.triangles.Length;
-        Quaternion randomAngle = Quaternion.Euler(Random.Range(minAngle, maxAngle), Random.Range(0f, 360f), Random.Range(-5f, 5f));
-        for (int i = 0; i < leaf.vertices.Length; i++)
+        meshData.triangleIndex += settings.leaf.triangles.Length;
+        Quaternion randomAngle = Quaternion.Euler(Random.Range(settings.minAngle, settings.maxAngle), Random.Range(0f, 360f), Random.Range(-5f, 5f));
+        for (int i = 0; i < settings.leaf.vertices.Length; i++)
         {
-            meshData.vertices[meshData.vertexIndex] = randomAngle * (leaf.vertices[i] * leafScale) + seg.from;
-            meshData.normals[meshData.vertexIndex] = randomAngle * -leaf.normals[i];
-            meshData.uvs[meshData.vertexIndex] = leaf.uv[i];
+            meshData.vertices[meshData.vertexIndex] = randomAngle * (settings.leaf.vertices[i] * settings.leafScale) + seg.from;
+            meshData.normals[meshData.vertexIndex] = randomAngle * -settings.leaf.normals[i];
+            meshData.uvs[meshData.vertexIndex] = settings.leaf.uv[i];
             meshData.vertexIndex++;
         }
 
@@ -148,7 +141,7 @@ public class GiantKelpGen : MonoBehaviour
     void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.blue;
-        if (showGizmos && segments != null)
+        if (settings.showGizmos && segments != null)
         {
 
             foreach (Segment seg in segments)
