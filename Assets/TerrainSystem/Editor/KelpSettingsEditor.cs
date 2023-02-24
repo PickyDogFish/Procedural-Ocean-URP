@@ -1,9 +1,11 @@
 using UnityEditor;
-using ReactionDiffusion;
-[CustomPropertyDrawer(typeof(KelpSettings), true)]
-public class KelpSettingsPropertyDrawer : ExtendedScriptableObjectDrawer
-{
 
+namespace PlantGeneration.Kelp {
+
+    [CustomPropertyDrawer(typeof(KelpSettings), true)]
+    public class KelpSettingsPropertyDrawer : ExtendedScriptableObjectDrawer {
+
+    }
 }
 
 
