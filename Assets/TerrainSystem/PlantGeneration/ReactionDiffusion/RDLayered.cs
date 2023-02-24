@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using MarchingCubes;
 
-namespace ReactionDiffusion
+namespace PlantGeneration.ReactionDiffusion
 {
     public class RDLayered : MonoBehaviour
     {

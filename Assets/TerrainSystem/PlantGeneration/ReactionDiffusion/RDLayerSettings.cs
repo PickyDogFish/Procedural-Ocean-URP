@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using MarkupAttributes;
 
-namespace ReactionDiffusion
+namespace PlantGeneration.ReactionDiffusion
 {
     [CreateAssetMenu(fileName = "New RD Layer Settings", menuName = "Flora/RD Layer Settings")]
     public class RDLayerSettings : PlantGenSettings

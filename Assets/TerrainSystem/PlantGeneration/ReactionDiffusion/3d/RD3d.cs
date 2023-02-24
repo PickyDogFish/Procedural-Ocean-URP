@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using MarchingCubes;
 
-namespace ReactionDiffusion
+namespace PlantGeneration.ReactionDiffusion
 {
 
     public class RD3d : MonoBehaviour

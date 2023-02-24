@@ -1,9 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using MarkupAttributes.Editor;
-namespace ReactionDiffusion
+
+namespace PlantGeneration.ReactionDiffusion
 {
 
     [CustomEditor(typeof(RDLayered))]
