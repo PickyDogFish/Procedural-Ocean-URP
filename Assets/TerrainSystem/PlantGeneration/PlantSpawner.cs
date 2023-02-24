@@ -6,7 +6,7 @@ namespace PlantGeneration {
 
     public class PlantSpawner : MonoBehaviour {
         public float coralVisibilityRange = 50;
-        [SerializeField] private PlantSpeciesCollection coralSpeciesCollection;
+        [SerializeField] private PlantSpeciesCollection plantSpeciesCollection;
         [SerializeField] private TerrainGenerator terrainGenerator;
         private Transform viewer;
 
@@ -39,7 +39,7 @@ namespace PlantGeneration {
             Vector2 randomPos = offset + RandomUtils.RandomVector2(random) * terrainGenerator.meshSettings.meshWorldSize / 2;
             float height = terrainGenerator.GetHeightAt(randomPos);
             if (height < 0) {
-                PlantColony newColony = new PlantColony(coralSpeciesCollection.GetRandomCoralSpecies(), new Vector3(randomPos.x, height, randomPos.y), terrainGenerator);
+                PlantColony newColony = new PlantColony(plantSpeciesCollection.GetRandomCoralSpecies(), new Vector3(randomPos.x, height, randomPos.y), terrainGenerator);
                 //newColony.onVisibilityChanged += OnColonyVisibilityChanged;
                 newColony.gameObject.transform.parent = transform;
                 newColony.GrowNTimes(growth);

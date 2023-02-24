@@ -10,14 +10,14 @@ namespace PlantGeneration {
 
         [HideInInspector] public PlantSpecies[] species;
 
-        public CoralSCSettings[] speciesSettings;
+        public PlantGenSettings[] speciesSettings;
 
         [SerializeField] private int coralsPerSpecies = 3;
 
         void Awake() {
             species = new PlantSpecies[speciesSettings.Length];
             for (int i = 0; i < speciesSettings.Length; i++) {
-                CoralSCSettings settings = speciesSettings[i];
+                PlantGenSettings settings = speciesSettings[i];
                 PlantSpecies newSpecies = new PlantSpecies(coralsPerSpecies, settings);
                 species[i] = newSpecies;
             }
