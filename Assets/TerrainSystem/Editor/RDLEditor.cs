@@ -15,7 +15,7 @@ namespace ReactionDiffusion
             RDLayered coralGen = (RDLayered)target;
             if (GUILayout.Button("Generate"))
             {
-                coralGen.gameObject.GetComponent<MeshFilter>().mesh = coralGen.GenerateCoral();
+                coralGen.gameObject.GetComponentInChildren<MeshFilter>().mesh = coralGen.GenerateCoral();
                 coralGen.CleanUp();
             }
         }

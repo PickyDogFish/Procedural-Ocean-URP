@@ -4,14 +4,7 @@ using UnityEngine;
 using MarkupAttributes;
 
 [CreateAssetMenu(fileName = "New SC Settings", menuName = "Flora/SC Settings")]
-public class CoralSCSettings : UpdatableData {
-    [Box("Spawn settings")]
-    [Range(0,1), Tooltip("Change to grow another coral when colony is growing")] public float growChance = 0.3f;
-    public float maxSpawnHeight = 0;
-    public float minSpawnHeight = float.MinValue;
-
-    public float growSpread = 5;
-    
+public class CoralSCSettings : PlantGenSettings {
     [Box("Coral settings")]
     public Material material;
     public int maxIterations = 500;

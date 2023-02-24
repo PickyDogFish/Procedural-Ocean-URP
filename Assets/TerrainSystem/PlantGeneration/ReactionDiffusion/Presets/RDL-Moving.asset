@@ -12,43 +12,48 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04cbaf5885b25754da159b5789594791, type: 3}
   m_Name: RDL-Moving
   m_EditorClassIdentifier: 
-  <startOffset>k__BackingField: 25
-  <step>k__BackingField: 25
-  <size>k__BackingField: 128
-  <killIncrease>k__BackingField:
+  autoUpdate: 0
+  growChance: 0.3
+  maxSpawnHeight: -0.3
+  minSpawnHeight: -3.4028235e+38
+  growSpread: 5
+  startOffset: 100
+  step: 20
+  size: 256
+  killIncrease:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0.00051061204
-      inSlope: 0.0027477865
-      outSlope: 0.0027477865
+      value: 0
+      inSlope: 0
+      outSlope: 0
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0.17488801
+      outWeight: 0
     - serializedVersion: 3
-      time: 0.31283113
-      value: 0.0036330107
-      inSlope: 0.005572091
-      outSlope: 0.005572091
+      time: 0.5003823
+      value: 0.010297861
+      inSlope: 0.004226559
+      outSlope: 0.004226559
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.18093404
-      outWeight: 0.33333334
+      inWeight: 0.12127317
+      outWeight: 0.07245436
     - serializedVersion: 3
-      time: 1.0000113
-      value: 1.0080986
-      inSlope: 0.008539731
-      outSlope: 0.008539731
+      time: 1
+      value: 1
+      inSlope: 2.4640117
+      outSlope: 2.4640117
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.48860487
+      inWeight: 0.039244175
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  <builderTriangleBudget>k__BackingField: 524288
-  <builderTargetValue>k__BackingField: 0.3
-  <builderGridScale>k__BackingField: 1
-  <simulationSettings>k__BackingField: {fileID: 11400000, guid: 897d7bd1fe6da0a4ca674836221a4c5a, type: 2}
+  simulationSettings: {fileID: 11400000, guid: d44e4d3b7871c5f4f93cac7fc5e08f90, type: 2}
+  builderTriangleBudget: 524288
+  builderTargetValue: 0.3
+  builderGridScale: 0.0625

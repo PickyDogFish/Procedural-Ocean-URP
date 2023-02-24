@@ -20,7 +20,7 @@ public class NormalsVisualizer : Editor {
     }
 
     private void OnSceneGUI() {
-        if (mesh == null) {
+        if (mesh == null || normalsLength == 0) {
             return;
         }
 

@@ -35,11 +35,11 @@ namespace ReactionDiffusion
 
         void Start()
         {
-            GetComponent<MeshFilter>().sharedMesh = GenerateCoral();
+            GetComponentInChildren<MeshFilter>().sharedMesh = GenerateCoral();
         }
 
         public Mesh GenerateCoral(){
-            Debug.Log("Generating coral");
+            Debug.Log("Initializing coral generation");
             Initialize();
             RDSimulator.InitializeComputeShader(ref simulationCompute, layerSettings.simulationSettings, ref simulationRead);
 
@@ -50,6 +50,7 @@ namespace ReactionDiffusion
             }
             _voxelBuffer.SetData(values);
             _builder.BuildIsosurface(_voxelBuffer, layerSettings.builderTargetValue, layerSettings.builderGridScale);
+            Debug.Log("Finished generating coral");
             return _builder.Mesh;
         }
 
