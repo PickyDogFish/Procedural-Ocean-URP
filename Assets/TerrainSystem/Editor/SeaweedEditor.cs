@@ -10,7 +10,12 @@ public class SeaweedEditor : MarkedUpEditor {
         GiantKelpGen kelpGen = (GiantKelpGen) target;
         DrawDefaultInspector();
         if (GUILayout.Button("Generate")){
-            kelpGen.GenerateSeaweed();
+            MeshFilter meshFilter = kelpGen.GetComponentInChildren<MeshFilter>();
+            if (meshFilter == null){
+                Debug.Log("Please attach a child with Mesh Filter component");
+                return;
+            }
+            meshFilter.mesh = kelpGen.Generate();
         }
     }
 }

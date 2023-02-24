@@ -16,18 +16,13 @@ public class GiantKelpGen : MonoBehaviour
 
     private ArrayList segments;
 
-    void Start()
-    {
-
-    }
-
-    public void GenerateSeaweed()
+    public Mesh Generate()
     {
         segments = new ArrayList();
         GenerateStem();
         GenerateBranches();
 
-        GetComponentInChildren<MeshFilter>().mesh = GenerateMesh();
+        return GenerateMesh();
     }
 
     private void GenerateStem()
