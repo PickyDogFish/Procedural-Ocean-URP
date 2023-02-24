@@ -4,8 +4,6 @@ using UnityEngine;
 public class GiantKelpGen : MonoBehaviour
 {
     [ExecuteInEditMode]
-
-    public KelpSettings settings;
     private int stemSegmentCount = 0;
 
     private struct Segment
@@ -16,16 +14,7 @@ public class GiantKelpGen : MonoBehaviour
 
     private ArrayList segments;
 
-    public Mesh Generate()
-    {
-        segments = new ArrayList();
-        GenerateStem();
-        GenerateBranches();
-
-        return GenerateMesh();
-    }
-
-    private void GenerateStem()
+    private void GenerateStemSkeleton(KelpSettings settings)
     {
         stemSegmentCount = (int)(settings.maxHeight / settings.segmentLength);
         for (float i = 0; i < settings.maxHeight; i += settings.segmentLength)
@@ -37,7 +26,7 @@ public class GiantKelpGen : MonoBehaviour
         }
     }
 
-    private void GenerateBranches()
+    private void GenerateBranchSkeleton()
     {
         for (int i = 0; i < stemSegmentCount; i++)
         {
@@ -49,8 +38,12 @@ public class GiantKelpGen : MonoBehaviour
         }
     }
 
-    private Mesh GenerateMesh()
+    public Mesh Generate(KelpSettings settings)
     {
+        segments = new ArrayList();
+        GenerateStemSkeleton(settings);
+        GenerateBranchSkeleton();
+
         Mesh mesh = new Mesh();
         int leafCount = segments.Count - stemSegmentCount;
         int vertexCount = leafCount * settings.leaf.vertexCount + stemSegmentCount * settings.radialSubdivs;
@@ -58,9 +51,9 @@ public class GiantKelpGen : MonoBehaviour
         MeshData meshData = new MeshData(vertexCount, triIndexCount);
         for (int i = stemSegmentCount + 1; i < segments.Count; i++)
         {
-            GenerateLeafMesh((Segment)segments[i], ref meshData);
+            GenerateLeafMesh(settings, (Segment)segments[i], ref meshData);
         }
-        GenerateStemMesh(ref meshData);
+        GenerateStemMesh(settings, ref meshData);
         mesh.vertices = meshData.vertices;
         mesh.triangles = meshData.triangles;
         mesh.normals = meshData.normals;
@@ -69,13 +62,13 @@ public class GiantKelpGen : MonoBehaviour
         return mesh;
     }
 
-    private void GenerateStemMesh(ref MeshData meshData)
+    private void GenerateStemMesh(KelpSettings settings, ref MeshData meshData)
     {
-        AddVertCircle((Segment)segments[0], settings.radialSubdivs, ref meshData);
+        AddVertCircle(settings, (Segment)segments[0], settings.radialSubdivs, ref meshData);
         for (int i = 1; i < stemSegmentCount; i++)
         {
             int firstCircleIndex = meshData.vertexIndex - settings.radialSubdivs;
-            AddVertCircle((Segment)segments[i], settings.radialSubdivs, ref meshData);
+            AddVertCircle(settings, (Segment)segments[i], settings.radialSubdivs, ref meshData);
             int secondCircleIndex = meshData.vertexIndex - settings.radialSubdivs;
             for (int quad = 0; quad < settings.radialSubdivs-1; quad++)
             {
@@ -98,7 +91,7 @@ public class GiantKelpGen : MonoBehaviour
     }
 
     //creates a circle of vertices at the end of segment and inserts them into the vertices array
-    private void AddVertCircle(Segment seg, int radialSubdivisions, ref MeshData meshData)
+    private void AddVertCircle(KelpSettings settings, Segment seg, int radialSubdivisions, ref MeshData meshData)
     {
         for (int circularIndex = 0; circularIndex < radialSubdivisions; circularIndex++)
         {
@@ -114,7 +107,7 @@ public class GiantKelpGen : MonoBehaviour
         }
     }
 
-    private void GenerateLeafMesh(Segment seg, ref MeshData meshData)
+    private void GenerateLeafMesh(KelpSettings settings, Segment seg, ref MeshData meshData)
     {
         for (int i = 0; i < settings.leaf.triangles.Length; i++)
         {
@@ -131,30 +124,6 @@ public class GiantKelpGen : MonoBehaviour
         }
 
 
-    }
-
-    void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.blue;
-        if (settings.showGizmos && segments != null)
-        {
-
-            foreach (Segment seg in segments)
-            {
-                Gizmos.DrawLine(seg.from, seg.to);
-            }
-        }
-    }
-
-    void PrintSegments()
-    {
-        string arrString = "";
-        for (int i = 0; i < segments.Count; i++)
-        {
-            Segment seg = (Segment)segments[i];
-            arrString += "seg " + i + " " + seg.from + " " + seg.to + "\n";
-        }
-        Debug.Log(arrString);
     }
 
     class MeshData{
