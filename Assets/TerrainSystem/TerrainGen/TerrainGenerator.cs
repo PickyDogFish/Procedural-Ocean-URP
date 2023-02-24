@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using PlantGeneration;
 using PlantGeneration.ProceduralGrass;
 
 public class TerrainGenerator : MonoBehaviour {
@@ -15,7 +16,7 @@ public class TerrainGenerator : MonoBehaviour {
 
     public Material terrainMaterial;
 
-    public CoralSpawner coralSpawner;
+    public PlantSpawner coralSpawner;
 
     public Transform viewer;
     public Vector2 viewerPosition;
