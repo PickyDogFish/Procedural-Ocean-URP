@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace PlantGeneration {
     [RequireComponent(typeof(MeshFilter))]
+    [RequireComponent(typeof(MeshRenderer))]
     public class GeneratorPreview : MonoBehaviour {
         public PlantGenSettings settings;
         public PlantGenerator generator;

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace PlantGeneration.SpaceColonisation {
-    public static class SpaceColonization {
+    public class SpaceColonization : PlantGenerator{
         //public NOISE_TYPE noiseType = NOISE_TYPE.WORLEY;
 
         private static List<Vector3> attractorList = new List<Vector3>();
@@ -36,7 +36,8 @@ namespace PlantGeneration.SpaceColonisation {
                 }
             } */
 
-        public static GameObject GenerateCoral(CoralSCSettings settings, int seed) {
+        public override Mesh Generate(PlantGenSettings plantSettings, int seed) {
+            CoralSCSettings settings = (CoralSCSettings) plantSettings;
             attractorList.Clear();
             activeAttractors.Clear();
             killedAttractors.Clear();
@@ -49,12 +50,7 @@ namespace PlantGeneration.SpaceColonisation {
             //}
             Colonize(settings);
             Mesh mesh = ToMesh(settings);
-            GameObject coralGO = new GameObject();
-            MeshFilter meshFilter = coralGO.AddComponent<MeshFilter>();
-            meshFilter.mesh = mesh;
-            MeshRenderer meshRenderer = coralGO.AddComponent<MeshRenderer>();
-            meshRenderer.material = settings.material;
-            return coralGO;
+            return mesh;
         }
 
         static void GenerateAttractorsNoiseSphere(int attractorCount, float radius, Vector3 offset, int seed, float noiseScale) {

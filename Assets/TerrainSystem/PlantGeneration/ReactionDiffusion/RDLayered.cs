@@ -28,7 +28,7 @@ namespace PlantGeneration.ReactionDiffusion
             simulationWrite = RDSimulator.CreateRenderTexture(layerSettings.simulationSettings.resolution);
         }
 
-        public override Mesh Generate(PlantGenSettings settings){
+        public override Mesh Generate(PlantGenSettings settings, int seed){
             RDLayerSettings layerSettings = (RDLayerSettings)settings;
             Debug.Log("Initializing coral generation");
             Initialize(layerSettings);

@@ -6,15 +6,12 @@ namespace PlantGeneration {
     /// <summary>
     /// Holds coralCount amount of corals generated with the same settings but with random seeds.
     /// </summary>
-    public class PlantSpecies {
+    public class PlantSpecies : MonoBehaviour{
         public PlantGenSettings settings;
         private GameObject[] corals;
         private int coralCount;
-        private GameObject gameObject;
 
         public PlantSpecies(int coralCount, PlantGenSettings settings) {
-            gameObject = new GameObject();
-            gameObject.name = "CoralSpecies";
             gameObject.SetActive(false);
             this.coralCount = coralCount;
             this.settings = settings;
@@ -24,10 +21,18 @@ namespace PlantGeneration {
 
         private void GenerateCorals() {
             for (int i = 0; i < coralCount; i++) {
-                corals[i] = SpaceColonization.GenerateCoral((CoralSCSettings)settings, Random.Range(-10000, 10000));
+                corals[i] = CreateGameObject();
                 corals[i].name = "Coral" + i.ToString();
-                corals[i].transform.parent = gameObject.transform;
+                corals[i].transform.parent = transform;
             }
+        }
+
+        private GameObject CreateGameObject(){
+            GameObject newGO = new GameObject();
+            newGO.AddComponent<MeshFilter>();
+            newGO.AddComponent<MeshRenderer>();
+            newGO.GetComponent<MeshFilter>().mesh = FindObjectOfType<SpaceColonization>().Generate(settings, Random.Range(-10000, 10000));
+            return newGO;
         }
 
         public GameObject GetCoralInstance(int index) {

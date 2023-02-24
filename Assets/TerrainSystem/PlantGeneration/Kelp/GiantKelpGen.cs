@@ -34,7 +34,7 @@ namespace PlantGeneration.Kelp {
             }
         }
 
-        public override Mesh Generate(PlantGenSettings plantSettings) {
+        public override Mesh Generate(PlantGenSettings plantSettings, int seed) {
             KelpSettings settings = (KelpSettings)plantSettings;
             segments = new ArrayList();
             GenerateStemSkeleton(settings);
