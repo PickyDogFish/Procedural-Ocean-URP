@@ -6,12 +6,12 @@ using UnityEngine;
 /// Holds coralCount amount of corals generated with the same settings but with random seeds.
 /// </summary>
 public class CoralSpecies{
-    public CoralSCSettings settings;
+    public PlantGenSettings settings;
     private GameObject[] corals;
     private int coralCount;
     private GameObject gameObject;
 
-    public CoralSpecies(int coralCount, CoralSCSettings settings){
+    public CoralSpecies(int coralCount, PlantGenSettings settings){
         gameObject = new GameObject();
         gameObject.name = "CoralSpecies";
         gameObject.SetActive(false);
@@ -24,7 +24,7 @@ public class CoralSpecies{
     private void GenerateCorals(){
         for (int i = 0; i < coralCount; i++)
         {
-            corals[i] = SpaceColonization.GenerateCoral(settings, Random.Range(-10000,10000));
+            corals[i] = SpaceColonization.GenerateCoral((CoralSCSettings) settings, Random.Range(-10000,10000));
             corals[i].name = "Coral" + i.ToString();
             corals[i].transform.parent = gameObject.transform;
         }
