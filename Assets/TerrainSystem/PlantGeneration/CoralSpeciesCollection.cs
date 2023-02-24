@@ -1,6 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using PlantGeneration.SpaceColonisation;
 
 /// <summary>
 /// Creates a CoralSpecies with x corals for every CoralSCSettings object

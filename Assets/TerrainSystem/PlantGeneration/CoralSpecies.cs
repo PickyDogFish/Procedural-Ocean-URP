@@ -1,6 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using PlantGeneration.SpaceColonisation;
 
 /// <summary>
 /// Holds coralCount amount of corals generated with the same settings but with random seeds.
