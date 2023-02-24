@@ -1,5 +1,5 @@
 using UnityEngine;
-
+using PlantGeneration.ProceduralGrass;
 public class TerrainChunk {
 
     const float colliderGenerationDistanceThreshold = 10;

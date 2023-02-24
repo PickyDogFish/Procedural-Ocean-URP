@@ -1,152 +1,130 @@
 using UnityEngine;
-using UnityEngine.Rendering;
 
-public class ProceduralGrass : MonoBehaviour
-{
-    public GrassSettings settings;
+namespace PlantGeneration.ProceduralGrass {
 
-    private GraphicsBuffer terrainTriangleBuffer;
-    private GraphicsBuffer terrainVertexBuffer;
+    public class ProceduralGrass : MonoBehaviour {
+        public GrassSettings settings;
 
-    private GraphicsBuffer transformMatrixBuffer;
+        private GraphicsBuffer terrainTriangleBuffer;
+        private GraphicsBuffer terrainVertexBuffer;
 
-    private GraphicsBuffer grassTriangleBuffer;
-    private GraphicsBuffer grassVertexBuffer;
-    private GraphicsBuffer grassUVBuffer;
+        private GraphicsBuffer transformMatrixBuffer;
 
-    private Bounds bounds;
-    private MaterialPropertyBlock properties;
+        private GraphicsBuffer grassTriangleBuffer;
+        private GraphicsBuffer grassVertexBuffer;
+        private GraphicsBuffer grassUVBuffer;
 
-    private int kernel;
-    private uint threadGroupSize;
-    private int terrainTriangleCount = 0;
+        private Bounds bounds;
+        private MaterialPropertyBlock properties;
 
-    public bool drawGrass = false;
-    public bool dataGenerated { get; private set; }
+        private int kernel;
+        private uint threadGroupSize;
+        private int terrainTriangleCount = 0;
 
-    public void GenerateData(Mesh terrainMesh)
-    {
-        kernel = settings.computeShader.FindKernel("CalculateBladePositions");
+        public bool drawGrass = false;
+        public bool dataGenerated { get; private set; }
 
-        // Terrain data for the compute shader.
-        Vector3[] terrainVertices = terrainMesh.vertices;
-        terrainVertexBuffer = new GraphicsBuffer(GraphicsBuffer.Target.Structured, terrainVertices.Length, sizeof(float) * 3);
-        terrainVertexBuffer.SetData(terrainVertices);
+        public void GenerateData(Mesh terrainMesh) {
+            kernel = settings.computeShader.FindKernel("CalculateBladePositions");
 
-        int[] terrainTriangles = terrainMesh.triangles;
-        terrainTriangleBuffer = new GraphicsBuffer(GraphicsBuffer.Target.Structured, terrainTriangles.Length, sizeof(int));
-        terrainTriangleBuffer.SetData(terrainTriangles);
+            // Terrain data for the compute shader.
+            Vector3[] terrainVertices = terrainMesh.vertices;
+            terrainVertexBuffer = new GraphicsBuffer(GraphicsBuffer.Target.Structured, terrainVertices.Length, sizeof(float) * 3);
+            terrainVertexBuffer.SetData(terrainVertices);
 
-        terrainTriangleCount = terrainTriangles.Length / 3;
+            int[] terrainTriangles = terrainMesh.triangles;
+            terrainTriangleBuffer = new GraphicsBuffer(GraphicsBuffer.Target.Structured, terrainTriangles.Length, sizeof(int));
+            terrainTriangleBuffer.SetData(terrainTriangles);
 
-        settings.computeShader.SetVector("_ObjectPos", gameObject.transform.position);
-        settings.computeShader.SetBuffer(kernel, "_TerrainPositions", terrainVertexBuffer);
-        settings.computeShader.SetBuffer(kernel, "_TerrainTriangles", terrainTriangleBuffer);
+            terrainTriangleCount = terrainTriangles.Length / 3;
 
-        // Grass data for RenderPrimitives.
-        Vector3[] grassVertices = settings.grassMesh.vertices;
-        grassVertexBuffer = new GraphicsBuffer(GraphicsBuffer.Target.Structured, grassVertices.Length, sizeof(float) * 3);
-        grassVertexBuffer.SetData(grassVertices);
+            settings.computeShader.SetVector("_ObjectPos", gameObject.transform.position);
+            settings.computeShader.SetBuffer(kernel, "_TerrainPositions", terrainVertexBuffer);
+            settings.computeShader.SetBuffer(kernel, "_TerrainTriangles", terrainTriangleBuffer);
 
-        int[] grassTriangles = settings.grassMesh.triangles;
-        grassTriangleBuffer = new GraphicsBuffer(GraphicsBuffer.Target.Structured, grassTriangles.Length, sizeof(int));
-        grassTriangleBuffer.SetData(grassTriangles);
+            // Grass data for RenderPrimitives.
+            Vector3[] grassVertices = settings.grassMesh.vertices;
+            grassVertexBuffer = new GraphicsBuffer(GraphicsBuffer.Target.Structured, grassVertices.Length, sizeof(float) * 3);
+            grassVertexBuffer.SetData(grassVertices);
 
-        Vector2[] grassUVs = settings.grassMesh.uv;
-        grassUVBuffer = new GraphicsBuffer(GraphicsBuffer.Target.Structured, grassUVs.Length, sizeof(float) * 2);
-        grassUVBuffer.SetData(grassUVs);
+            int[] grassTriangles = settings.grassMesh.triangles;
+            grassTriangleBuffer = new GraphicsBuffer(GraphicsBuffer.Target.Structured, grassTriangles.Length, sizeof(int));
+            grassTriangleBuffer.SetData(grassTriangles);
 
-        // Set up buffer for the grass blade transformation matrices.
-        transformMatrixBuffer = new GraphicsBuffer(GraphicsBuffer.Target.Structured, terrainTriangleCount, sizeof(float) * 16);
-        settings.computeShader.SetBuffer(kernel, "_TransformMatrices", transformMatrixBuffer);
+            Vector2[] grassUVs = settings.grassMesh.uv;
+            grassUVBuffer = new GraphicsBuffer(GraphicsBuffer.Target.Structured, grassUVs.Length, sizeof(float) * 2);
+            grassUVBuffer.SetData(grassUVs);
 
-        // Set bounds.
-        bounds = terrainMesh.bounds;
-        bounds.center += transform.position;
-        bounds.Expand(settings.maxBladeHeight);
+            // Set up buffer for the grass blade transformation matrices.
+            transformMatrixBuffer = new GraphicsBuffer(GraphicsBuffer.Target.Structured, terrainTriangleCount, sizeof(float) * 16);
+            settings.computeShader.SetBuffer(kernel, "_TransformMatrices", transformMatrixBuffer);
 
-        // Bind buffers to a MaterialPropertyBlock which will get used for the draw call.
-        properties = new MaterialPropertyBlock();
-        properties.SetBuffer("_TransformMatrices", transformMatrixBuffer);
-        properties.SetBuffer("_Positions", grassVertexBuffer);
-        properties.SetBuffer("_UVs", grassUVBuffer);
-        properties.SetFloat("_SwayScale", settings.swayScale);
+            // Set bounds.
+            bounds = terrainMesh.bounds;
+            bounds.center += transform.position;
+            bounds.Expand(settings.maxBladeHeight);
 
-        RunComputeShader();
-        dataGenerated = true;
-    }
+            // Bind buffers to a MaterialPropertyBlock which will get used for the draw call.
+            properties = new MaterialPropertyBlock();
+            properties.SetBuffer("_TransformMatrices", transformMatrixBuffer);
+            properties.SetBuffer("_Positions", grassVertexBuffer);
+            properties.SetBuffer("_UVs", grassUVBuffer);
+            properties.SetFloat("_SwayScale", settings.swayScale);
 
-    private void RunComputeShader()
-    {
-        // Bind variables to the compute shader.
-        settings.computeShader.SetMatrix("_TerrainObjectToWorld", transform.localToWorldMatrix);
-        settings.computeShader.SetInt("_TerrainTriangleCount", terrainTriangleCount);
-        settings.computeShader.SetFloat("_MinBladeHeight", settings.minBladeHeight);
-        settings.computeShader.SetFloat("_MaxBladeHeight", settings.maxBladeHeight);
-        settings.computeShader.SetFloat("_MinOffset", settings.minOffset);
-        settings.computeShader.SetFloat("_MaxOffset", settings.maxOffset);
-        settings.computeShader.SetFloat("_Scale", settings.scale);
-
-        // Run the compute shader's kernel function.
-        settings.computeShader.GetKernelThreadGroupSizes(kernel, out threadGroupSize, out _, out _);
-        int threadGroups = Mathf.CeilToInt(terrainTriangleCount / threadGroupSize);
-        settings.computeShader.Dispatch(kernel, threadGroups, 1, 1);
-    }
-
-    // Run a single draw call to render all the grass blade meshes each frame.
-    private void Update()
-    {
-        if (dataGenerated && drawGrass)
-        {
-
-            /*
-            RenderParams rp = new RenderParams(material);
-            rp.worldBounds = bounds;
-            rp.matProps = new MaterialPropertyBlock();
-            rp.matProps.SetBuffer("_TransformMatrices", transformMatrixBuffer);
-            rp.matProps.SetBuffer("_Positions", grassVertexBuffer);
-            rp.matProps.SetBuffer("_UVs", grassUVBuffer);
-            */
-            //Graphics.RenderPrimitivesIndexed(rp, MeshTopology.Triangles, grassTriangleBuffer, grassTriangleBuffer.count, instanceCount: terrainTriangleCount);
-            //Debug.Log(terrainTriangleCount);
-            Graphics.DrawProcedural(settings.material, bounds, MeshTopology.Triangles, grassTriangleBuffer, grassTriangleBuffer.count,
-                instanceCount: terrainTriangleCount,
-                properties: properties,
-                castShadows: settings.castShadows,
-                receiveShadows: settings.receiveShadows);
+            RunComputeShader();
+            dataGenerated = true;
         }
-    }
 
-    private void OnDestroy()
-    {
-        CleanUp();
-    }
+        private void RunComputeShader() {
+            // Bind variables to the compute shader.
+            settings.computeShader.SetMatrix("_TerrainObjectToWorld", transform.localToWorldMatrix);
+            settings.computeShader.SetInt("_TerrainTriangleCount", terrainTriangleCount);
+            settings.computeShader.SetFloat("_MinBladeHeight", settings.minBladeHeight);
+            settings.computeShader.SetFloat("_MaxBladeHeight", settings.maxBladeHeight);
+            settings.computeShader.SetFloat("_MinOffset", settings.minOffset);
+            settings.computeShader.SetFloat("_MaxOffset", settings.maxOffset);
+            settings.computeShader.SetFloat("_Scale", settings.scale);
 
-    public void CleanUp()
-    {
-        if (terrainTriangleBuffer != null)
-        {
-            terrainTriangleBuffer.Dispose();
+            // Run the compute shader's kernel function.
+            settings.computeShader.GetKernelThreadGroupSizes(kernel, out threadGroupSize, out _, out _);
+            int threadGroups = Mathf.CeilToInt(terrainTriangleCount / threadGroupSize);
+            settings.computeShader.Dispatch(kernel, threadGroups, 1, 1);
         }
-        if (terrainVertexBuffer != null)
-        {
-            terrainVertexBuffer.Dispose();
+
+        // Run a single draw call to render all the grass blade meshes each frame.
+        private void Update() {
+            if (dataGenerated && drawGrass) {
+                Graphics.DrawProcedural(settings.material, bounds, MeshTopology.Triangles, grassTriangleBuffer, grassTriangleBuffer.count,
+                    instanceCount: terrainTriangleCount,
+                    properties: properties,
+                    castShadows: settings.castShadows,
+                    receiveShadows: settings.receiveShadows);
+            }
         }
-        if (transformMatrixBuffer != null)
-        {
-            transformMatrixBuffer.Dispose();
+
+        private void OnDestroy() {
+            CleanUp();
         }
-        if (grassTriangleBuffer != null)
-        {
-            grassTriangleBuffer.Dispose();
-        }
-        if (grassVertexBuffer != null)
-        {
-            grassVertexBuffer.Dispose();
-        }
-        if (grassUVBuffer != null)
-        {
-            grassUVBuffer.Dispose();
+
+        public void CleanUp() {
+            if (terrainTriangleBuffer != null) {
+                terrainTriangleBuffer.Dispose();
+            }
+            if (terrainVertexBuffer != null) {
+                terrainVertexBuffer.Dispose();
+            }
+            if (transformMatrixBuffer != null) {
+                transformMatrixBuffer.Dispose();
+            }
+            if (grassTriangleBuffer != null) {
+                grassTriangleBuffer.Dispose();
+            }
+            if (grassVertexBuffer != null) {
+                grassVertexBuffer.Dispose();
+            }
+            if (grassUVBuffer != null) {
+                grassUVBuffer.Dispose();
+            }
         }
     }
 }

@@ -1,6 +1,6 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using PlantGeneration.ProceduralGrass;
 
 public class TerrainGenerator : MonoBehaviour {
     const float viewerMoveChunkUpdateThreshold = 25f;
