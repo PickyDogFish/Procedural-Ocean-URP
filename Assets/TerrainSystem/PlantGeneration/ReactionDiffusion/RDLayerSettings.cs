@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using MarkupAttributes;
 
 namespace PlantGeneration.ReactionDiffusion
 {
@@ -18,5 +15,10 @@ namespace PlantGeneration.ReactionDiffusion
         [SerializeField] public int builderTriangleBudget = 524288;
         [SerializeField] public float builderTargetValue = 0.3f;
         [SerializeField] public float builderGridScale = 4.0f / 64;
+
+        public override PlantGenerator GetGenerator()
+        {
+            return FindObjectOfType<RDLayered>();
+        }
     }
 }

@@ -27,5 +27,10 @@ namespace PlantGeneration.SpaceColonisation {
         public float maxAngleDegrees = 90;
         [Tooltip("diameter should be less than branchLength")] public float branchBaseDiameter = 0.1f;
 
+        public override PlantGenerator GetGenerator()
+        {
+            return FindObjectOfType<SpaceColonization>();
+        }
+
     }
 }

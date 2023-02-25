@@ -19,5 +19,10 @@ namespace PlantGeneration.Kelp {
 
         [Header("Debug")]
         public bool showGizmos;
+
+        public override PlantGenerator GetGenerator()
+        {
+            return FindObjectOfType<GiantKelpGen>();
+        }
     }
 }
