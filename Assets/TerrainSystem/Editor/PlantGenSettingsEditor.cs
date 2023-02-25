@@ -1,6 +1,6 @@
 using UnityEditor;
 
-namespace PlantGeneration.ReactionDiffusion {
+namespace PlantGeneration {
 
     [CustomPropertyDrawer(typeof(PlantGenSettings), true)]
     public class PlantGenSettingsPropertyDrawer : ExtendedScriptableObjectDrawer {
