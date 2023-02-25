@@ -20,10 +20,13 @@ namespace PlantGeneration.ReactionDiffusion
         float[] values;
 
 
-        public void Initialize(RDLayerSettings layerSettings){
+        public override void Initialize(PlantGenSettings settings){
+            RDLayerSettings layerSettings = (RDLayerSettings) settings;
             values = new float[layerSettings.size * layerSettings.size * layerSettings.size];
             _voxelBuffer = new ComputeBuffer(layerSettings.size * layerSettings.size * layerSettings.size, sizeof(float));
             _builder = new MeshBuilder(new Vector3Int(layerSettings.size, layerSettings.size, layerSettings.size), layerSettings.builderTriangleBudget, _builderCompute);
+            Debug.Log(layerSettings);
+            Debug.Log(layerSettings.simulationSettings);
             simulationRead = RDSimulator.CreateRenderTexture(layerSettings.simulationSettings.resolution);
             simulationWrite = RDSimulator.CreateRenderTexture(layerSettings.simulationSettings.resolution);
         }
@@ -43,12 +46,6 @@ namespace PlantGeneration.ReactionDiffusion
             _builder.BuildIsosurface(_voxelBuffer, layerSettings.builderTargetValue, layerSettings.builderGridScale);
             Debug.Log("Finished generating coral");
             return _builder.Mesh;
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-
         }
 
         void AddNextLayerToValues(RDLayerSettings layerSettings, int layerIndex)

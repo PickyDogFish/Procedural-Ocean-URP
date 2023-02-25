@@ -17,8 +17,7 @@ namespace PlantGeneration {
         void Awake() {
             species = new PlantSpecies[speciesSettings.Length];
             for (int i = 0; i < speciesSettings.Length; i++) {
-                PlantGenSettings settings = speciesSettings[i];
-                PlantSpecies newSpecies = new PlantSpecies(coralsPerSpecies, settings);
+                PlantSpecies newSpecies = new PlantSpecies(coralsPerSpecies, speciesSettings[i]);
                 species[i] = newSpecies;
             }
         }

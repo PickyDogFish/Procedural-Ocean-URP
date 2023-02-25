@@ -36,13 +36,16 @@ namespace PlantGeneration.SpaceColonisation {
                 }
             } */
 
-        public override Mesh Generate(PlantGenSettings plantSettings, int seed) {
-            CoralSCSettings settings = (CoralSCSettings) plantSettings;
+        public override void Initialize(PlantGenSettings settings){
             attractorList.Clear();
             activeAttractors.Clear();
             killedAttractors.Clear();
             branches.Clear();
             newBranches.Clear();
+        }
+
+        public override Mesh Generate(PlantGenSettings plantSettings, int seed) {
+            CoralSCSettings settings = (CoralSCSettings) plantSettings;
             /* if (settings.useNoise){
                 GenerateAttractorsNoiseSphere(settings.attractorCount, settings.radius, settings.attractorFieldOffset, settings.seed, settings.noiseScale);
             } else{ */

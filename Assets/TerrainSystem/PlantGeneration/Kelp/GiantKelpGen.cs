@@ -14,6 +14,10 @@ namespace PlantGeneration.Kelp {
 
         private ArrayList segments;
 
+        public override void Initialize(PlantGenSettings settings){
+            segments = new ArrayList();
+        }
+
         private void GenerateStemSkeleton(KelpSettings settings) {
             stemSegmentCount = (int)(settings.maxHeight / settings.segmentLength);
             for (float i = 0; i < settings.maxHeight; i += settings.segmentLength) {
@@ -36,10 +40,9 @@ namespace PlantGeneration.Kelp {
 
         public override Mesh Generate(PlantGenSettings plantSettings, int seed) {
             KelpSettings settings = (KelpSettings)plantSettings;
-            segments = new ArrayList();
             GenerateStemSkeleton(settings);
             GenerateBranchSkeleton();
-
+            
             Mesh mesh = new Mesh();
             int leafCount = segments.Count - stemSegmentCount;
             int vertexCount = leafCount * settings.leaf.vertexCount + stemSegmentCount * settings.radialSubdivs;

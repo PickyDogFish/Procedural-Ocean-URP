@@ -8,7 +8,6 @@ namespace PlantGeneration.SpaceColonisation {
     [CreateAssetMenu(fileName = "New SC Settings", menuName = "Flora/SC Settings")]
     public class CoralSCSettings : PlantGenSettings {
         [Box("Coral settings")]
-        public Material material;
         public int maxIterations = 500;
         public float radius = 1;
 

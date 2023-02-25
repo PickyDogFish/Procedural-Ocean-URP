@@ -12,52 +12,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04cbaf5885b25754da159b5789594791, type: 3}
   m_Name: RDL-Splitting
   m_EditorClassIdentifier: 
-  <startOffset>k__BackingField: 25
-  <step>k__BackingField: 50
-  <size>k__BackingField: 256
-  <killIncrease>k__BackingField:
+  autoUpdate: 0
+  growChance: 0.3
+  maxSpawnHeight: 0
+  minSpawnHeight: -3.4028235e+38
+  growSpread: 5
+  startOffset: 100
+  step: 100
+  size: 512
+  killIncrease:
     serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 0.5173196
-      value: 0.027910672
-      inSlope: 0.15515152
-      outSlope: 0.15515152
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.12097603
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.55340874
-      value: 1.0074856
-      inSlope: 38.372738
-      outSlope: 38.372738
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1.0044078
-      value: 1.0017548
-      inSlope: 0.05919809
-      outSlope: 0.05919809
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.1390235
-      outWeight: 0
+    m_Curve: []
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  <builderTriangleBudget>k__BackingField: 524288
-  <builderTargetValue>k__BackingField: 0.5
-  <builderGridScale>k__BackingField: 1
-  <simulationSettings>k__BackingField: {fileID: 11400000, guid: 7a20d7a71f109b742967317bc4bbca6b, type: 2}
+  simulationSettings: {fileID: 11400000, guid: 7a20d7a71f109b742967317bc4bbca6b, type: 2}
+  builderTriangleBudget: 524288
+  builderTargetValue: 0.3
+  builderGridScale: 0.0625
