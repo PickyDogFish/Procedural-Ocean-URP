@@ -6,10 +6,12 @@ namespace PlantGeneration {
     [RequireComponent(typeof(MeshRenderer))]
     public class GeneratorPreview : MonoBehaviour {
         public PlantGenSettings settings;
-        public PlantGenerator generator;
         // Start is called before the first frame update
         public void Generate() {
-            GetComponent<MeshFilter>().mesh = generator.Generate(settings);
+            GetComponent<MeshFilter>().mesh = settings.GetGenerator().Generate(settings);
+        }
+        public void Clear() {
+            GetComponent<MeshFilter>().mesh = null;
         }
     }
 }

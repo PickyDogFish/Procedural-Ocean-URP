@@ -10,9 +10,12 @@ namespace PlantGeneration {
     public class GeneratorPreviewer : MarkedUpEditor {
         public override void OnInspectorGUI() {
             DrawDefaultInspector();
-            GeneratorPreview plantGenerator = (GeneratorPreview)target;
+            GeneratorPreview plantPreviewer = (GeneratorPreview)target;
             if (GUILayout.Button("Generate")) {
-                plantGenerator.Generate();
+                plantPreviewer.Generate();
+            }
+            if (GUILayout.Button("Clear Mesh")) {
+                plantPreviewer.Clear();
             }
         }
     }
