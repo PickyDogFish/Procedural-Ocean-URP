@@ -17,6 +17,7 @@ namespace PlantGeneration {
             this.settings = settings;
             corals = new GameObject[coralCount];
             GenerateCorals();
+            gameObject.SetActive(false);
         }
 
         private void GenerateCorals() {
