@@ -16,14 +16,15 @@ namespace PlantGeneration {
             this.coralCount = coralCount;
             this.settings = settings;
             corals = new GameObject[coralCount];
-            GenerateCorals();
+            GenerateCorals(settings.speciesName);
+            gameObject.name = settings.speciesName;
             gameObject.SetActive(false);
         }
 
-        private void GenerateCorals() {
+        private void GenerateCorals(string name) {
             for (int i = 0; i < coralCount; i++) {
                 corals[i] = CreateGameObject();
-                corals[i].name = "Coral" + i.ToString();
+                corals[i].name = name + i.ToString();
             }
         }
 

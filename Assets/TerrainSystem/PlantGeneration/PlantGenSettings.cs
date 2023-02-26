@@ -8,6 +8,7 @@ namespace PlantGeneration {
     public abstract class PlantGenSettings : UpdatableData {
         public abstract PlantGenerator GetGenerator();
         public Material material;
+        public string speciesName = "GenericPlant";
 
         [Header("Spawn settings")]
         [Range(0, 1), Tooltip("Change to grow another coral when colony is growing")] public float growChance = 0.3f;
