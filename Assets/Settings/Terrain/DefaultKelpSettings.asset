@@ -15,7 +15,7 @@ MonoBehaviour:
   autoUpdate: 0
   material: {fileID: 2100000, guid: 90571a859feb6034baa200406832aa2d, type: 2}
   growChance: 0.3
-  maxSpawnHeight: 0
+  maxSpawnHeight: -2.5
   minSpawnHeight: -3.4028235e+38
   growSpread: 5
   maxHeight: 3
