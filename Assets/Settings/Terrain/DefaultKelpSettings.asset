@@ -19,6 +19,8 @@ MonoBehaviour:
   maxSpawnHeight: -2.5
   minSpawnHeight: -3.4028235e+38
   growSpread: 5
+  maxSize: 3
+  minSize: 1.5
   maxHeight: 3
   segmentLength: 0.02
   minAngle: 0

@@ -36,6 +36,7 @@ namespace PlantGeneration {
             
             newGO.AddComponent<MeshRenderer>();
             newGO.GetComponent<MeshRenderer>().material = settings.material;
+            newGO.transform.localScale = Vector3.one * Random.Range(settings.minSize, settings.maxSize);
             
             newGO.transform.parent = transform;
             return newGO;

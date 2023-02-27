@@ -15,5 +15,9 @@ namespace PlantGeneration {
         public float maxSpawnHeight = 0;
         public float minSpawnHeight = float.MinValue;
         public float growSpread = 5;
+
+        [Header("Variation")]
+        public float maxSize = 1;
+        public float minSize = 0.75f;
     }
 }

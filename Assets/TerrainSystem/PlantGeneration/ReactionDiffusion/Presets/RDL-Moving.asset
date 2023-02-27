@@ -19,6 +19,8 @@ MonoBehaviour:
   maxSpawnHeight: -0.3
   minSpawnHeight: -3.4028235e+38
   growSpread: 5
+  maxSize: 0.6
+  minSize: 0.35
   startOffset: 100
   step: 20
   size: 256
