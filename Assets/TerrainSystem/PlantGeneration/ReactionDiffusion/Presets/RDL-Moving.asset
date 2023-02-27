@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: RDL-Moving
   m_EditorClassIdentifier: 
   autoUpdate: 0
+  material: {fileID: 2100000, guid: 0a9904b194778de4cb0c1d95eaeaad47, type: 2}
+  speciesName: GenericPlant
   growChance: 0.3
   maxSpawnHeight: -0.3
   minSpawnHeight: -3.4028235e+38
