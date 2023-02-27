@@ -33,8 +33,6 @@ namespace PlantGeneration.ReactionDiffusion
 
         public override Mesh Generate(PlantGenSettings settings, int seed){
             RDLayerSettings layerSettings = (RDLayerSettings)settings;
-            Debug.Log("Initializing coral generation");
-            Initialize(layerSettings);
             RDSimulator.InitializeComputeShader(ref simulationCompute, layerSettings.simulationSettings, ref simulationRead);
 
             //building the values array from layers from RDOnGPU
