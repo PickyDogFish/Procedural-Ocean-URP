@@ -22,7 +22,7 @@ MonoBehaviour:
   maxSize: 0.6
   minSize: 0.35
   startOffset: 100
-  step: 100
+  step: 50
   size: 256
   killIncrease:
     serializedVersion: 2
