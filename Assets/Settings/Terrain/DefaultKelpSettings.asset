@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   autoUpdate: 0
   material: {fileID: 2100000, guid: 90571a859feb6034baa200406832aa2d, type: 2}
+  speciesName: GiantKelp
   growChance: 0.3
   maxSpawnHeight: -2.5
   minSpawnHeight: -3.4028235e+38

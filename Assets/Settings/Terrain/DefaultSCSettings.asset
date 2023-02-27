@@ -13,11 +13,12 @@ MonoBehaviour:
   m_Name: DefaultSCSettings
   m_EditorClassIdentifier: 
   autoUpdate: 0
+  material: {fileID: 2100000, guid: 0a9904b194778de4cb0c1d95eaeaad47, type: 2}
+  speciesName: SCCoral
   growChance: 0.3
   maxSpawnHeight: -2.5
   minSpawnHeight: -3.4028235e+38
   growSpread: 3
-  material: {fileID: 2100000, guid: 0a9904b194778de4cb0c1d95eaeaad47, type: 2}
   maxIterations: 100
   radius: 1
   attractorCount: 250
