@@ -95,6 +95,7 @@ namespace PlantGeneration.Kelp {
                 pos += seg.to;
 
                 meshData.vertices[meshData.vertexIndex] = pos;// - transform.position; // from tree object coordinates to [0; 0; 0]
+                meshData.normals[meshData.vertexIndex] = -new Vector3(pos.x, 0, pos.z).normalized;
                 meshData.uvs[meshData.vertexIndex] = new Vector2(0.5f, 0.5f);
                 meshData.vertexIndex++;
             }
@@ -108,7 +109,7 @@ namespace PlantGeneration.Kelp {
             Quaternion randomAngle = Quaternion.Euler(Random.Range(settings.minAngle, settings.maxAngle), Random.Range(0f, 360f), Random.Range(-5f, 5f));
             for (int i = 0; i < settings.leaf.vertices.Length; i++) {
                 meshData.vertices[meshData.vertexIndex] = randomAngle * (settings.leaf.vertices[i] * settings.leafScale) + seg.from;
-                meshData.normals[meshData.vertexIndex] = randomAngle * -settings.leaf.normals[i];
+                meshData.normals[meshData.vertexIndex] = randomAngle * settings.leaf.normals[i];
                 meshData.uvs[meshData.vertexIndex] = settings.leaf.uv[i];
                 meshData.vertexIndex++;
             }
