@@ -56,7 +56,6 @@ namespace PlantGeneration.Kelp {
             mesh.triangles = meshData.triangles;
             mesh.normals = meshData.normals;
             mesh.uv = meshData.uvs;
-            mesh.RecalculateBounds();
             return mesh;
         }
 
