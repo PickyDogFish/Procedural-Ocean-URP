@@ -14,7 +14,9 @@ float Isovalue;
 // Grid space to object space transformation
 float3 TransformPoint(float3 p)
 {
-    return (p + 0.5 - Dims / 2) * Scale;
+    //offset so the origin is at the bottom of the mesh
+    float3 vOffset = float3(0, Dims.y/2, 0);
+    return (p + 0.5 - Dims / 2 +vOffset) * Scale;
 }
 
 //
@@ -40,10 +42,11 @@ Texture3D<float2> VoxelsTex;
 float VoxelValue(uint x, uint y, uint z)
 {
     if (Use3dTex){
-        return VoxelsTex[uint3(x,y,z)].y;
+        return VoxelsTex[uint3(x,z,y)].y;
     } 
     else {
-        return Voxels[x + Dims.x * (y + Dims.y * z)];
+        //return Voxels[x + Dims.x * (z + Dims.z * y)]; rotated correctly, but moved down
+        return Voxels[x + Dims.x * (z + Dims.z * y)];
     }
 }
 
