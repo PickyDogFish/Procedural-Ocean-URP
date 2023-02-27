@@ -30,12 +30,15 @@ namespace PlantGeneration {
 
         private GameObject CreateGameObject(){
             GameObject newGO = new GameObject();
-            newGO.transform.parent = transform;
-            newGO.AddComponent<MeshFilter>();
-            newGO.AddComponent<MeshRenderer>();
             settings.GetGenerator().Initialize(settings);
-            newGO.GetComponent<MeshFilter>().mesh = settings.GetGenerator().Generate(settings, Random.Range(-10000, 10000));
+            newGO.AddComponent<MeshFilter>();
+            newGO.GetComponent<MeshFilter>().sharedMesh = settings.GetGenerator().Generate(settings, Random.Range(-10000, 10000));
+            newGO.GetComponent<MeshFilter>().sharedMesh.RecalculateBounds();
+            
+            newGO.AddComponent<MeshRenderer>();
             newGO.GetComponent<MeshRenderer>().material = settings.material;
+            
+            newGO.transform.parent = transform;
             return newGO;
         }
 
