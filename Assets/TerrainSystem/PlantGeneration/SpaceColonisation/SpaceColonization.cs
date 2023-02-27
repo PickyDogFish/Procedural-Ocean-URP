@@ -53,6 +53,7 @@ namespace PlantGeneration.SpaceColonisation {
             //}
             Colonize(settings);
             Mesh mesh = ToMesh(settings);
+            mesh.RecalculateBounds();
             return mesh;
         }
 

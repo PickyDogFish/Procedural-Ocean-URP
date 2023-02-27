@@ -33,7 +33,6 @@ namespace PlantGeneration {
             settings.GetGenerator().Initialize(settings);
             newGO.AddComponent<MeshFilter>();
             newGO.GetComponent<MeshFilter>().sharedMesh = settings.GetGenerator().Generate(settings, Random.Range(-10000, 10000));
-            newGO.GetComponent<MeshFilter>().sharedMesh.RecalculateBounds();
             
             newGO.AddComponent<MeshRenderer>();
             newGO.GetComponent<MeshRenderer>().material = settings.material;
