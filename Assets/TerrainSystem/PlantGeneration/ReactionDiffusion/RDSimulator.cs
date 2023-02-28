@@ -21,8 +21,12 @@ namespace PlantGeneration.ReactionDiffusion
         {
             int kernel = RDShader.FindKernel("Init");
             RDShader.SetTexture(kernel, "Write", readBuffer);
+
             Texture2D initialTexture = TextureScaler.Scaled(settings.initialTexture, settings.resolution, settings.resolution);
             RDShader.SetTexture(kernel, "Read", initialTexture);
+
+            Texture2D flowTexture = TextureScaler.Scaled(settings.flowTexture, settings.resolution, settings.resolution);
+            RDShader.SetTexture(kernel, "FlowTex", flowTexture);
             RDShader.Dispatch(kernel, settings.resolution / 8, settings.resolution / 8, 1);
         }
 
@@ -46,21 +50,29 @@ namespace PlantGeneration.ReactionDiffusion
             return renderTexture;
         }
 
-        public static void Iterate(ref RenderTexture readBuffer, ref RenderTexture writeBuffer, ref ComputeShader RDShader, RDSettings settings, float extraKill, int iterations = 1)
+        public static void Iterate(ref RenderTexture readBuffer, ref RenderTexture writeBuffer, ref ComputeShader RDShader, RDSettings settings, float extraKill, int layer, int iterations)
         {
+            int kernel = RDShader.FindKernel("Update");
+            Texture2D flowTexture = TextureScaler.Scaled(settings.flowTexture, settings.resolution, settings.resolution);
+            RDShader.SetTexture(kernel, "FlowTex", flowTexture);
+
             for (int i = 0; i < iterations; i++)
             {
-                int kernel = RDShader.FindKernel("Update");
                 RDShader.SetInt("resolution", settings.resolution);
                 RDShader.SetFloat("speed", settings.speed);
                 RDShader.SetVector("diffusion", new Vector2(settings.du, settings.dv));
                 RDShader.SetFloat("kill", settings.kill + extraKill);
 
+                RDShader.SetFloat("flowIntensity", settings.flowIntensity);
+
+                int[] offset = new int[2]{(int)Mathf.Cos(layer + i) * 10, (int)Mathf.Sin(layer + i) * 10};
+                RDShader.SetInts("flowOffset", offset);
+
                 //Setting feed parameters
+                RDShader.SetTexture(kernel, "FeedTex", settings.feedTexture);
                 RDShader.SetFloat("feed", settings.feed);
                 RDShader.SetFloat("feedTexStrength", settings.feedTexStrength);
                 RDShader.SetBool("useFeedTex", settings.useFeedTexture);
-                RDShader.SetTexture(kernel, "FeedTex", settings.feedTexture);
 
                 //setting up the textures we are operation on
                 RDShader.SetTexture(kernel, "Read", readBuffer);

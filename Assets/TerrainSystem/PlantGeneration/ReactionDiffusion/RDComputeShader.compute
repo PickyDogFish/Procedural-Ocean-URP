@@ -7,6 +7,7 @@
 bool useFeedTex;
 float feedTexStrength;
 Texture2D<float> FeedTex;
+Texture2D<float> FlowTex;
 
 Texture2D<float2> Read;
 RWTexture2D<float2> Write;
@@ -18,8 +19,22 @@ float feed;
 float kill;
 float speed;
 
+float flowIntensity;
+int2 flowOffset;
+
+int2 Flow2D(int2 pos){
+    float3 texVal = FlowTex.Load(int3(pos + flowOffset, 0)) + float3(-0.5,-0.5,0);
+    texVal = texVal * 2;
+    return (int2) (texVal * flowIntensity);
+}
+
+
 float2 Read2D(int2 pos){
     return Read.Load(int3(pos, 0));
+}
+
+float2 Read2DOffset(int2 pos){
+    return Read.Load(int3(pos + Flow2D(pos), 0));
 }
 
 float Feed2D(int2 pos){
@@ -30,15 +45,15 @@ float2 GetLaplacian(int2 pos){
     float2 val = -Read2D(pos);
     float3 dir = float3(1, -1, 0.0);
 	//direct
-    val += Read2D(pos.xy + dir.xz).xy * 0.20; // +1, 0
-	val += Read2D(pos.xy + dir.zx).xy * 0.20; // 0, +1
-	val += Read2D(pos.xy - dir.zx).xy * 0.20; // 0, -1
-	val += Read2D(pos.xy - dir.xz).xy * 0.20; // -1, 0
+    val += Read2DOffset(pos.xy + dir.xz).xy * 0.20; // +1, 0
+	val += Read2DOffset(pos.xy + dir.zx).xy * 0.20; // 0, +1
+	val += Read2DOffset(pos.xy - dir.zx).xy * 0.20; // 0, -1
+	val += Read2DOffset(pos.xy - dir.xz).xy * 0.20; // -1, 0
     //diagonal
-	val += Read2D(pos.xy + dir.xx).xy * 0.05; // +1, +1
-	val += Read2D(pos.xy - dir.yx).xy * 0.05; // +1, -1
-    val += Read2D(pos.xy - dir.xx).xy * 0.05; // -1,-1
-	val += Read2D(pos.xy + dir.yx).xy * 0.05; // -1, +1
+	val += Read2DOffset(pos.xy + dir.xx).xy * 0.05; // +1, +1
+	val += Read2DOffset(pos.xy - dir.yx).xy * 0.05; // +1, -1
+    val += Read2DOffset(pos.xy - dir.xx).xy * 0.05; // -1,-1
+	val += Read2DOffset(pos.xy + dir.yx).xy * 0.05; // -1, +1
     return val;
 }
 
@@ -56,7 +71,7 @@ void Update (uint3 id : SV_DispatchThreadID){
     }
 
 
-    float2 prevq = Read2D(id.xy);
+    float2 prevq = Read2DOffset(id.xy);
     float2 newq = GetLaplacian(id.xy);
     float reactionTerm = prevq.r * prevq.g * prevq.g;
     float a = prevq.x + (diffusion.x * newq.x - reactionTerm + newFeed * (1.0 - prevq.x)) * speed;

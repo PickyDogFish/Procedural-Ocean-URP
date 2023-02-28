@@ -11,6 +11,8 @@ namespace PlantGeneration.ReactionDiffusion
         [SerializeField] public int size = 512;
         [SerializeField] public AnimationCurve killIncrease = null;
         [SerializeField] public RDSettings simulationSettings = null;
+
+        
         [Header("Marching cubes settings")]
         [SerializeField] public int builderTriangleBudget = 524288;
         [SerializeField] public float builderTargetValue = 0.3f;

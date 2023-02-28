@@ -25,8 +25,6 @@ namespace PlantGeneration.ReactionDiffusion
             values = new float[layerSettings.size * layerSettings.size * layerSettings.size];
             _voxelBuffer = new ComputeBuffer(layerSettings.size * layerSettings.size * layerSettings.size, sizeof(float));
             _builder = new MeshBuilder(new Vector3Int(layerSettings.size, layerSettings.size, layerSettings.size), layerSettings.builderTriangleBudget, _builderCompute);
-            Debug.Log(layerSettings);
-            Debug.Log(layerSettings.simulationSettings);
             simulationRead = RDSimulator.CreateRenderTexture(layerSettings.simulationSettings.resolution);
             simulationWrite = RDSimulator.CreateRenderTexture(layerSettings.simulationSettings.resolution);
         }
@@ -48,8 +46,8 @@ namespace PlantGeneration.ReactionDiffusion
 
         void AddNextLayerToValues(RDLayerSettings layerSettings, int layerIndex)
         {
-            float extraKill = layerSettings.killIncrease.Evaluate((float)layerIndex/layerSettings.size);
-            RDSimulator.Iterate(ref simulationRead, ref simulationWrite, ref simulationCompute, layerSettings.simulationSettings, extraKill, layerSettings.step);
+            float extraKill = Mathf.Clamp01(layerSettings.killIncrease.Evaluate((float)layerIndex/layerSettings.size));
+            RDSimulator.Iterate(ref simulationRead, ref simulationWrite, ref simulationCompute, layerSettings.simulationSettings, extraKill, layerIndex, layerSettings.step);
             Texture2D tex = RDSimulator.ToTexture2D(simulationWrite, layerSettings.simulationSettings.resolution);
             TextureScaler.Scale(tex, layerSettings.size, layerSettings.size);
 

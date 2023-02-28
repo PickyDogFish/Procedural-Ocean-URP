@@ -103,7 +103,7 @@ Material:
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _Surface: 0
-    - _VoronoiScale: 80
+    - _VoronoiScale: 30
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:

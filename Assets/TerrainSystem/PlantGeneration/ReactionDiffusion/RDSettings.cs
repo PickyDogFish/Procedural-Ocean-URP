@@ -11,6 +11,10 @@ namespace PlantGeneration.ReactionDiffusion
         public Texture2D feedTexture;
         [Range(0,1f)] public float feedTexStrength = 0;
 
+
+        [Header("Flow settings")]
+        public Texture2D flowTexture;
+        public float flowIntensity = 1;
         
         [Header("Other settings")]
         [Range(0,0.25f)] public float kill = 0.01f;
