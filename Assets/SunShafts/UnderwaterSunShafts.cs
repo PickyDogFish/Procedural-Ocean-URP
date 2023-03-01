@@ -37,6 +37,8 @@ public class UnderwaterSunShafts : ScriptableRendererFeature
         public float scale = 50;
         public float speed = 1;
 
+        public float depthIntensity = 1;
+
         [Space(10)]
         [Header("Performance")]
         public float steps = 24;
@@ -136,8 +138,11 @@ public class UnderwaterSunShafts : ScriptableRendererFeature
                 material.SetFloat("_Intensity", settings.intensity);
                 material.SetFloat("_GaussSamples", settings.gaussBlur.samples);
                 material.SetFloat("_GaussAmount", settings.gaussBlur.amount);
-                
+
                 material.SetColor("_Tint", settings.tint);
+                
+                material.SetFloat("_DepthIntensity", settings.depthIntensity);
+                
 
 
                 switch (settings.stage)

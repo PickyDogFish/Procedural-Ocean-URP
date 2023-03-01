@@ -47,4 +47,10 @@ MonoBehaviour:
     value: 1
   - key: CoralSCSettings/Spawn settings
     value: 1
+  - key: PlantGeneration.SpaceColonisation.CoralSCSettings/Coral settings
+    value: 1
+  - key: PlantGeneration.SpaceColonisation.CoralSCSettings/Attractor settings
+    value: 1
+  - key: PlantGeneration.SpaceColonisation.CoralSCSettings/Branch settings
+    value: 1
   serializedIntEntries: []

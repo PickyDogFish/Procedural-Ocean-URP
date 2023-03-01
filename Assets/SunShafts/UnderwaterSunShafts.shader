@@ -58,10 +58,9 @@ Shader "Hidden/UnderwaterSunShafts"
             real _Threshold;
             real _Scale;
             real _Speed;
-
-
-
-
+            
+            
+            float _DepthIntensity;
 
 
             float3 CalculateNormal(real3 positionWS, float3 delta)
@@ -81,7 +80,7 @@ Shader "Hidden/UnderwaterSunShafts"
                 return 1.0 - 2.0*acos(dot(lightDir, normal)) / 3.1415926535;
             }
 
-            real WaveAten1(real3 positionWS)
+            real WaveAten(real3 positionWS)
             {
                 float3 lightDir = _MainLightPosition.xyz;
                 //adding vertical offset for angled shafts
@@ -176,15 +175,17 @@ Shader "Hidden/UnderwaterSunShafts"
                 //we ask for the shadow map value at different depths, if the sample is in light we compute the contribution at that point and add it
                 for (real j = 0; j < _Steps - 1; j++)
                 {
-                    real shadowMapValue = WaveAten1(currentPosition);
+                    real lightValue = WaveAten(currentPosition);
                     
                     //if it is in light
-                    if(shadowMapValue > _Threshold)
+                    if(lightValue > _Threshold)
                     {                       
                         real kernelColor = ComputeScattering(dot(rayDirection, _SunDirection)) ;
                         float waterHeight = SampleHeight(worldPos.xz, 1, 1);
                         if (currentPosition.y < waterHeight){
-                            accumFog += kernelColor * (((currentPosition.y + waterHeight)/10.0)+2.0);
+                            //accumFog += kernelColor * (1/(1 + (-currentPosition.y + waterHeight)/_DepthIntensity));
+                            //brightness should follow exponential function. _DepthIntensity is user controlled.
+                            accumFog += pow(kernelColor, (1 + (-currentPosition.y + waterHeight)/_DepthIntensity));
                         }
                     }
                     currentPosition += step;
