@@ -5,10 +5,15 @@
 Procedural ocean landscape generator for Unity.
 Currently includes:
 - Simple terrain generation.
-- Ocean simulation.
-- Coral Generation:
-  - space colonization algorithm.
-  - reaction-diffusion.
+- Ocean simulation:
+  - Wave simulation
+  - Underwater sun shafts
+  - Caustics
+- Plant Generation:
+  - Corals with space colonization algorithm.
+  - Corals with reaction-diffusion.
+  - Giant kelp
+  - Seaweed
   
 References:
 - https://github.com/gasgiant/Ocean-URP
