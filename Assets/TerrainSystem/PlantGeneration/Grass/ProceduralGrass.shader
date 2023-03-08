@@ -6,6 +6,7 @@ Shader "Custom/ProceduralGrass"
 		_TipColor("Tip Color", Color) = (1, 1, 1, 1)
 		_BaseTex("Base Texture", 2D) = "white" {}
 		_SwayTex("Sway Texture", 2D) = "black" {}
+		_SwaySpeed("Sway Speed", float) = 1
 	}
 
 	SubShader
@@ -52,6 +53,7 @@ Shader "Custom/ProceduralGrass"
 				float _SwayScale;
 				sampler2D _SwayTex;
 				float4 _SwayTex_ST;
+				float _SwaySpeed;
 
 				float _Cutoff;
 			CBUFFER_END
@@ -78,7 +80,7 @@ Shader "Custom/ProceduralGrass"
 
 				float4 posWS = mul(objectToWorld, positionOS);
 
-				float4 swayUV = float4(posWS.xz * _SwayScale + _Time[0].xx, 0, 0);
+				float4 swayUV = float4(posWS.xz * _SwayScale + _Time[0].xx * _SwaySpeed, 0, 0);
 				float4 sway = tex2Dlod(_SwayTex, swayUV);
 				o.positionWS = posWS * 100 + float4((sway.xy * 200 * positionOS.y),0,0).xyzz;
 				o.positionCS = mul(UNITY_MATRIX_VP, o.positionWS);
@@ -99,7 +101,7 @@ Shader "Custom/ProceduralGrass"
 				float4 shadowColor = lerp(0.0f, 1.0f, shadowAttenuation);
 				color *= shadowColor;
 //#endif
-				return color * lerp(_BaseColor, _TipColor, i.uv.y);
+				return color * lerp(_TipColor, _BaseColor, i.uv.x);
 			}
 
             ENDHLSL
