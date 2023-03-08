@@ -38,6 +38,36 @@ float4x4 rotationMatrixY(float angle)
 	);
 }
 
+// Function to rotate around the y-axis by a specified angle.
+float4x4 rotationMatrixX(float angle)
+{
+	float s, c;
+	sincos(angle, s, c);
+
+	return float4x4
+	(
+		 1, 0, 0, 0,
+		 0, c,-s, 0,
+		 0, s, c, 0,
+		 0, 0, 0, 1
+	);
+}
+
+// Function to rotate around the y-axis by a specified angle.
+float4x4 rotationMatrixZ(float angle)
+{
+	float s, c;
+	sincos(angle, s, c);
+
+	return float4x4
+	(
+		 c,-s, 0, 0,
+		 s, c, 0, 0,
+		 0, 0, 1, 0,
+		 0, 0, 0, 1
+	);
+}
+
 // This kernel calculates transformation matrices for each grass blade
 // to place them in different positions on the terrain mesh.
 [numthreads(64, 1, 1)]
@@ -77,8 +107,12 @@ void CalculateBladePositions(uint3 id : SV_DispatchThreadID)
 		0,		0,		_Scale,	triangleCenterPos.z + offsetZ,
 		0,		0,		0,		1
 	);
+	// TWO_PI/6 offset to make it point straight up. Dont know why its rotated in the first place...
+	float4x4 rotX = rotationMatrixX(randomRange(randomSeed1, TWO_PI/6 - 0.3, TWO_PI/6 + 0.3));
+	float4x4 rotZ = rotationMatrixZ(randomRange(randomSeed1, -0.3, 0.3));
+	float4x4 rotY = rotationMatrixY(randomRange(randomSeed1, 0.0f, TWO_PI));
 
-	float4x4 randomRotationMatrix = rotationMatrixY(randomRange(randomSeed1, 0.0f, TWO_PI));
+	float4x4 randomRotationMatrix = mul(rotY, mul(rotZ, rotX));
 
 	_TransformMatrices[id.x] = mul(_TerrainObjectToWorld, mul(grassTransformMatrix, randomRotationMatrix));
 }

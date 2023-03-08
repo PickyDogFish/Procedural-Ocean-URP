@@ -7,6 +7,7 @@ Shader "Custom/ProceduralGrass"
 		_BaseTex("Base Texture", 2D) = "white" {}
 		_SwayTex("Sway Texture", 2D) = "black" {}
 		_SwaySpeed("Sway Speed", float) = 1
+		_SwayIntensity("Sway Intensity",float) = 1
 	}
 
 	SubShader
@@ -54,6 +55,7 @@ Shader "Custom/ProceduralGrass"
 				sampler2D _SwayTex;
 				float4 _SwayTex_ST;
 				float _SwaySpeed;
+				float _SwayIntensity;
 
 				float _Cutoff;
 			CBUFFER_END
@@ -82,7 +84,7 @@ Shader "Custom/ProceduralGrass"
 
 				float4 swayUV = float4(posWS.xz * _SwayScale + _Time[0].xx * _SwaySpeed, 0, 0);
 				float4 sway = tex2Dlod(_SwayTex, swayUV);
-				o.positionWS = posWS * 100 + float4((sway.xy * 200 * positionOS.y),0,0).xyzz;
+				o.positionWS = posWS * 100 + float4((sway.xy * 200 * positionOS.y),0,0).xyzz * _SwayIntensity;
 				o.positionCS = mul(UNITY_MATRIX_VP, o.positionWS);
 				
 				return o;
