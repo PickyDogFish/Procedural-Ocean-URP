@@ -4,7 +4,7 @@ using PlantGeneration.SpaceColonisation;
 namespace PlantGeneration {
 
     /// <summary>
-    /// Creates a CoralSpecies with x corals for every CoralSCSettings object
+    /// Creates a CoralSpecies with x corals for every PlantGenSettings object
     /// </summary>
     public class PlantSpeciesCollection : MonoBehaviour {
 
