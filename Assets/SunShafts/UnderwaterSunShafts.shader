@@ -55,9 +55,6 @@ Shader "Hidden/UnderwaterSunShafts"
             real _JitterVolumetric;
             real _MaxDistance;
             real _Threshold;
-            real _Scale;
-            real _Speed;
-            
             
             float _DepthIntensity;
 

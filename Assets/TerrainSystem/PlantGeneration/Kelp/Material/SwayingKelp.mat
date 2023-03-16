@@ -119,9 +119,9 @@ Material:
     - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
-    - _SmallSwayIntensity: 0.008
+    - _SmallSwayIntensity: 0.03
     - _SmallSwayScale: 5
-    - _SmallSwaySpeed: 0.02
+    - _SmallSwaySpeed: 0.1
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
@@ -129,7 +129,7 @@ Material:
     - _Surface: 0
     - _SwayIntensity: 0.5
     - _SwayScale: 0.8
-    - _SwaySpeed: 0.05
+    - _SwaySpeed: 0.14
     - _SwayVerticalFalloff: 3
     - _WorkflowMode: 1
     - _ZWrite: 1

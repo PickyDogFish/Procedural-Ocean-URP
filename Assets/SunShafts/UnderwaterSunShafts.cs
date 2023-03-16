@@ -34,8 +34,6 @@ public class UnderwaterSunShafts : ScriptableRendererFeature
         public float intensity = 1;
         public float scattering = 0;
         public float threshold = 0;
-        public float scale = 50;
-        public float speed = 1;
 
         public float depthIntensity = 1;
 
@@ -131,8 +129,6 @@ public class UnderwaterSunShafts : ScriptableRendererFeature
                 material.SetFloat("_Scattering", settings.scattering);
                 material.SetFloat("_Threshold", settings.threshold);
                 material.SetFloat("_Steps", settings.steps);
-                material.SetFloat("_Scale", settings.scale);
-                material.SetFloat("_Speed", settings.speed);
                 material.SetFloat("_JitterVolumetric", settings.jitter);
                 material.SetFloat("_MaxDistance", settings.maxDistance);
                 material.SetFloat("_Intensity", settings.intensity);
