@@ -51,7 +51,6 @@ Shader "Hidden/UnderwaterSunShafts"
 
             //I set up these uniforms from the ScriptableRendererFeature
             real _Scattering;
-            real3 _SunDirection;
             real _Steps;
             real _JitterVolumetric;
             real _MaxDistance;
@@ -181,7 +180,7 @@ Shader "Hidden/UnderwaterSunShafts"
                     //if it is in light
                     if(shadowValue > _Threshold && lightValue > _Threshold)
                     {                       
-                        real kernelColor = ComputeScattering(dot(rayDirection, _SunDirection));
+                        real kernelColor = ComputeScattering(dot(rayDirection, _MainLightPosition.xyz));
                         float waterHeight = SampleHeight(worldPos.xz, 1, 1);
                         if (currentPosition.y < waterHeight){
                             //accumFog += kernelColor * (1/(1 + (-currentPosition.y + waterHeight)/_DepthIntensity));
