@@ -175,12 +175,13 @@ Shader "Hidden/UnderwaterSunShafts"
                 //we ask for the shadow map value at different depths, if the sample is in light we compute the contribution at that point and add it
                 for (real j = 0; j < _Steps - 1; j++)
                 {
+                    half shadowValue = MainLightRealtimeShadow(TransformWorldToShadowCoord(currentPosition));
                     real lightValue = WaveAten(currentPosition);
                     
                     //if it is in light
-                    if(lightValue > _Threshold)
+                    if(shadowValue > _Threshold && lightValue > _Threshold)
                     {                       
-                        real kernelColor = ComputeScattering(dot(rayDirection, _SunDirection)) ;
+                        real kernelColor = ComputeScattering(dot(rayDirection, _SunDirection));
                         float waterHeight = SampleHeight(worldPos.xz, 1, 1);
                         if (currentPosition.y < waterHeight){
                             //accumFog += kernelColor * (1/(1 + (-currentPosition.y + waterHeight)/_DepthIntensity));
