@@ -78,14 +78,10 @@ Shader "Hidden/UnderwaterSunShafts"
                 return 1.0 - 2.0*acos(dot(lightDir, normal)) / 3.1415926535;
             }
 
-            float WaveAten(float3 positionWS)
+            float WaveAten(float3 surfacePositionWS)
             {
-                float3 lightDir = _MainLightPosition.xyz;
-                //adding vertical offset for angled shafts
-                float3 newPositionWS = float3(positionWS.x, 0, positionWS.z) - positionWS.y * lightDir;
-
                 float3 delta = float3(1, 0, -1) * 0.1;
-                float angle = LightNormalAngle(delta, newPositionWS);
+                float angle = LightNormalAngle(delta, surfacePositionWS);
                 return angle;
             }
             
@@ -160,7 +156,7 @@ Shader "Hidden/UnderwaterSunShafts"
                 float3 step = rayDirection * stepLength;
                 
                 //to eliminate banding we sample at diffent depths for every ray, this way we obfuscate the shadowmap patterns
-                float rayStartOffset = random01(i.uv) * stepLength * _JitterVolumetric / 100;
+                float rayStartOffset = random01(i.uv) * stepLength * _JitterVolumetric;
                 float3 currentPosition = startPosition + rayStartOffset * rayDirection;
 
                 float accumFog = 0;
@@ -168,18 +164,21 @@ Shader "Hidden/UnderwaterSunShafts"
                 //we ask for the shadow map value at different depths, if the sample is in light we compute the contribution at that point and add it
                 for (float j = 0; j < _Steps - 1; j++)
                 {
+                    //getting the water surface position
+                    float3 surfacePositionWS = float3(currentPosition.x, 0, currentPosition.z) - currentPosition.y * _MainLightPosition.xyz;
                     half shadowValue = MainLightRealtimeShadow(TransformWorldToShadowCoord(currentPosition));
-                    float lightValue = WaveAten(currentPosition);
+                    //the amount of light that enters the water
+                    float lightValue = WaveAten(surfacePositionWS);
                     
                     //if it is in light
                     if(shadowValue > _Threshold && lightValue > _Threshold)
                     {                       
-                        float kernelColor = HGPhaseFunction(dot(rayDirection, _MainLightPosition.xyz));
+                        float phase = HGPhaseFunction(dot(rayDirection, _MainLightPosition.xyz));
+                        float inscattering = _Scattering * lightValue * phase;
                         float waterHeight = SampleHeight(worldPos.xz, 1, 1);
                         if (currentPosition.y < waterHeight){
-                            //accumFog += kernelColor * (1/(1 + (-currentPosition.y + waterHeight)/_DepthIntensity));
                             //brightness should follow exponential function. _DepthIntensity is user controlled.
-                            accumFog += pow(kernelColor, (1 + (-currentPosition.y + waterHeight)/_DepthIntensity));
+                            accumFog += pow(inscattering, (1 + (-currentPosition.y + waterHeight)/_DepthIntensity));
                         }
                     }
                     currentPosition += step;

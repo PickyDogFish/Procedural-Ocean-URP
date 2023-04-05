@@ -17,15 +17,15 @@ MonoBehaviour:
     downsampling: 2
     stage: 2
     tint: {r: 1, g: 0.83791596, b: 0.740566, a: 1}
-    intensity: 4
-    scattering: 0.17
+    intensity: 10
+    scattering: 0.5
     threshold: 0.39
     depthIntensity: 14.5
     steps: 16
     maxDistance: 35
     jitter: 100
     gaussBlur:
-      amount: 3
+      amount: 2
       samples: 2
     renderPassEvent: 550
 --- !u!114 &11400000
