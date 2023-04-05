@@ -45,23 +45,6 @@ float FrequencyDerivative(float k, float depth)
 // Directional spreads
 //---------------------------------
 
-float DonelanBannerBeta(float x)
-{
-	if (x < 0.95)
-		return 2.61 * pow(abs(x), 1.3);
-	if (x < 1.6)
-		return 2.28 * pow(abs(x), -1.3);
-	float p = -0.4 + 0.8393 * exp(-0.567 * log(x * x));
-	return pow(10, p);
-}
-
-float DonelanBanner(float theta, float omega, float peakOmega)
-{
-	float beta = DonelanBannerBeta(omega / peakOmega);
-	float sech = 1 / cosh(beta * theta);
-	return beta / 2 / tanh(beta * 3.1416) * sech * sech;
-}
-
 float NormalisationFactor(float s)
 {
 	float s2 = s * s;
@@ -93,8 +76,6 @@ float Cosine2s(float theta, float s)
 
 float DirectionSpectrum(float theta, float omega, float peakOmega, SpectrumParams pars)
 {
-	//float spread = DonelanBanner(angle, omega, peakOmega);
-	
 	float s = SpreadPowerHasselman(omega, peakOmega, pars.windSpeed)
 			+ lerp(16 * tanh(min(omega / peakOmega / 10, 20)), 25, pars.extraAlignment) * pars.extraAlignment * pars.extraAlignment;
 	float spread = Cosine2s(theta, s);
