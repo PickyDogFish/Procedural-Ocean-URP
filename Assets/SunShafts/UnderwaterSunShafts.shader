@@ -29,14 +29,14 @@ Shader "Hidden/UnderwaterSunShafts"
             // because technically we are working on a quad taking up the whole screen
             struct appdata
             {
-                real4 vertex : POSITION;
-                real2 uv : TEXCOORD0;
+                float4 vertex : POSITION;
+                float2 uv : TEXCOORD0;
             };
 
             struct v2f
             {
-                real2 uv : TEXCOORD0;
-                real4 vertex : SV_POSITION;
+                float2 uv : TEXCOORD0;
+                float4 vertex : SV_POSITION;
             };
 
             v2f vert (appdata v)
@@ -50,16 +50,17 @@ Shader "Hidden/UnderwaterSunShafts"
             sampler2D _MainTex;
 
             //I set up these uniforms from the ScriptableRendererFeature
-            real _Scattering;
-            real _Steps;
-            real _JitterVolumetric;
-            real _MaxDistance;
-            real _Threshold;
+            float _Scattering;
+            float _SchlickScattering;
+            float _Steps;
+            float _JitterVolumetric;
+            float _MaxDistance;
+            float _Threshold;
             
             float _DepthIntensity;
 
 
-            float3 CalculateNormal(real3 positionWS, float3 delta)
+            float3 CalculateNormal(float3 positionWS, float3 delta)
             {
 
                 float RMinusL = SampleHeight(positionWS.xz - delta.xy, 1, 1) - SampleHeight(positionWS.xz - delta.zy, 1, 1);
@@ -68,22 +69,23 @@ Shader "Hidden/UnderwaterSunShafts"
                 return normalize(float3(2 * RMinusL, 2* BMinusT, -4)).xzy;
             }
 
-            float InvertedLightAngle(float3 delta, real3 positionWS)
+            float LightNormalAngle(float3 delta, float3 positionWS)
             {
                 float3 lightDir = _MainLightPosition.xyz;
                 float3 normal = -CalculateNormal(positionWS, delta);
 
+                //mapping the angle to the 0-1 range.
                 return 1.0 - 2.0*acos(dot(lightDir, normal)) / 3.1415926535;
             }
 
-            real WaveAten(real3 positionWS)
+            float WaveAten(float3 positionWS)
             {
                 float3 lightDir = _MainLightPosition.xyz;
                 //adding vertical offset for angled shafts
-                real3 newPositionWS = real3(positionWS.x, 0, positionWS.z) - positionWS.y * lightDir;
+                float3 newPositionWS = float3(positionWS.x, 0, positionWS.z) - positionWS.y * lightDir;
 
                 float3 delta = float3(1, 0, -1) * 0.1;
-                real angle = InvertedLightAngle(delta, newPositionWS);
+                float angle = LightNormalAngle(delta, newPositionWS);
                 return angle;
             }
             
@@ -94,45 +96,45 @@ Shader "Hidden/UnderwaterSunShafts"
 
 
             //Unity already has a function that can reconstruct world space position from depth
-            real3 GetWorldPos(real2 uv)
+            float3 GetWorldPos(float2 uv)
             {
                 #if UNITY_REVERSED_Z
-                    real depth = SampleSceneDepth(uv);
+                    float depth = SampleSceneDepth(uv);
                 #else
                     // Adjust z to match NDC for OpenGL
-                    real depth = lerp(UNITY_NEAR_CLIP_VALUE, 1, SampleSceneDepth(uv));
+                    float depth = lerp(UNITY_NEAR_CLIP_VALUE, 1, SampleSceneDepth(uv));
                 #endif
                 return ComputeWorldSpacePosition(uv, depth, UNITY_MATRIX_I_VP);
             }
 
             // Mie scaterring approximated with Henyey-Greenstein phase function.
-            real ComputeScattering(real lightDotView)
+            float HGPhaseFunction(float lightDotView)
             {
-                real result = 1.0f - _Scattering * _Scattering;
+                float result = 1.0f - _Scattering * _Scattering;
                 result /= (4.0f * PI * pow(1.0f + _Scattering * _Scattering - (2.0f * _Scattering) * lightDotView, 1.5f));
                 return result;
             }
 
             //standart hash
-            real random( real2 p )
+            float random( float2 p )
             {
-                return frac(sin(dot(p, real2(41, 289)))*45758.5453 )-0.5; 
+                return frac(sin(dot(p, float2(41, 289)))*45758.5453 )-0.5; 
             }
 
-            real random01( real2 p )
+            float random01( float2 p )
             {
-                return frac(sin(dot(p, real2(41, 289)))*45758.5453 ); 
+                return frac(sin(dot(p, float2(41, 289)))*45758.5453 ); 
             }
             
             //from Ronja https://www.ronja-tutorials.com/post/047-invlerp_remap/
-            real invLerp(real from, real to, real value)
+            float invLerp(float from, float to, float value)
             {
                 return (value - from) / (to - from);
             }
 
-            real remap(real origFrom, real origTo, real targetFrom, real targetTo, real value)
+            float remap(float origFrom, float origTo, float targetFrom, float targetTo, float value)
             {
-                real rel = invLerp(origFrom, origTo, value);
+                float rel = invLerp(origFrom, origTo, value);
                 return lerp(targetFrom, targetTo, rel);
             }
 
@@ -140,44 +142,39 @@ Shader "Hidden/UnderwaterSunShafts"
 
             // #define MIN_STEPS 25
 
-            real3 frag (v2f i) : SV_Target
+            float3 frag (v2f i) : SV_Target
             {
                 //first we get the world space position of every pixel on screen
-                real3 worldPos = GetWorldPos(i.uv);
+                float3 worldPos = GetWorldPos(i.uv);
 
                 //we find out our ray info, that depends on the distance to the camera
-                real3 startPosition = _WorldSpaceCameraPos;
-                real3 rayVector = worldPos - startPosition;
-                real3 rayDirection =  normalize(rayVector);
-                real rayLength = length(rayVector);
+                float3 startPosition = _WorldSpaceCameraPos;
+                float3 rayVector = worldPos - startPosition;
+                float3 rayDirection =  normalize(rayVector);
+                float rayLength = length(rayVector);
 
                 rayLength = min(rayLength, _MaxDistance);
                 worldPos = startPosition + rayDirection * rayLength;
 
-                if(rayLength > _MaxDistance)
-                {
-                    rayLength = _MaxDistance;
-                }
-
-                real stepLength = rayLength / _Steps;
-                real3 step = rayDirection * stepLength;
+                float stepLength = rayLength / _Steps;
+                float3 step = rayDirection * stepLength;
                 
                 //to eliminate banding we sample at diffent depths for every ray, this way we obfuscate the shadowmap patterns
-                real rayStartOffset = random01(i.uv) * stepLength * _JitterVolumetric / 100;
-                real3 currentPosition = startPosition + rayStartOffset * rayDirection;
+                float rayStartOffset = random01(i.uv) * stepLength * _JitterVolumetric / 100;
+                float3 currentPosition = startPosition + rayStartOffset * rayDirection;
 
-                real accumFog = 0;
+                float accumFog = 0;
 
                 //we ask for the shadow map value at different depths, if the sample is in light we compute the contribution at that point and add it
-                for (real j = 0; j < _Steps - 1; j++)
+                for (float j = 0; j < _Steps - 1; j++)
                 {
                     half shadowValue = MainLightRealtimeShadow(TransformWorldToShadowCoord(currentPosition));
-                    real lightValue = WaveAten(currentPosition);
+                    float lightValue = WaveAten(currentPosition);
                     
                     //if it is in light
                     if(shadowValue > _Threshold && lightValue > _Threshold)
                     {                       
-                        real kernelColor = ComputeScattering(dot(rayDirection, _MainLightPosition.xyz));
+                        float kernelColor = HGPhaseFunction(dot(rayDirection, _MainLightPosition.xyz));
                         float waterHeight = SampleHeight(worldPos.xz, 1, 1);
                         if (currentPosition.y < waterHeight){
                             //accumFog += kernelColor * (1/(1 + (-currentPosition.y + waterHeight)/_DepthIntensity));
@@ -209,14 +206,14 @@ Shader "Hidden/UnderwaterSunShafts"
 
             struct appdata
             {
-                real4 vertex : POSITION;
-                real2 uv : TEXCOORD0;
+                float4 vertex : POSITION;
+                float2 uv : TEXCOORD0;
             };
 
             struct v2f
             {
-                real2 uv : TEXCOORD0;
-                real4 vertex : SV_POSITION;
+                float2 uv : TEXCOORD0;
+                float4 vertex : SV_POSITION;
             };
 
             v2f vert (appdata v)
@@ -229,18 +226,18 @@ Shader "Hidden/UnderwaterSunShafts"
 
             sampler2D _MainTex;
             int _GaussSamples;
-            real _GaussAmount;
+            float _GaussAmount;
             //bilateral blur from 
-            static const real gauss_filter_weights[] = { 0.14446445, 0.13543542, 0.11153505, 0.08055309, 0.05087564, 0.02798160, 0.01332457, 0.00545096} ;         
+            static const float gauss_filter_weights[] = { 0.14446445, 0.13543542, 0.11153505, 0.08055309, 0.05087564, 0.02798160, 0.01332457, 0.00545096} ;         
             #define BLUR_DEPTH_FALLOFF 100.0
 
-            real3 frag (v2f i) : SV_Target
+            float3 frag (v2f i) : SV_Target
             {
-                real col =0;
-                real accumResult =0;
-                real accumWeights=0;
+                float col =0;
+                float accumResult =0;
+                float accumWeights=0;
                 //depth at the current pixel
-                real depthCenter;  
+                float depthCenter;  
                 #if UNITY_REVERSED_Z
                     depthCenter = SampleSceneDepth(i.uv);  
                 #else
@@ -248,13 +245,13 @@ Shader "Hidden/UnderwaterSunShafts"
                     depthCenter = lerp(UNITY_NEAR_CLIP_VALUE, 1, SampleSceneDepth(i.uv));
                 #endif
 
-                for(real index=-_GaussSamples;index<=_GaussSamples;index++){
+                for(float index=-_GaussSamples;index<=_GaussSamples;index++){
                     //we offset our uvs by a tiny amount 
-                    real2 uv= i.uv+real2(  index*_GaussAmount/1000,0);
+                    float2 uv= i.uv+float2(  index*_GaussAmount/1000,0);
                     //sample the color at that location
-                    real kernelSample = tex2D(_MainTex, uv);
+                    float kernelSample = tex2D(_MainTex, uv);
                     //depth at the sampled pixel
-                    real depthKernel;
+                    float depthKernel;
                     #if UNITY_REVERSED_Z
                         depthKernel = SampleSceneDepth(uv);
                     #else
@@ -262,10 +259,10 @@ Shader "Hidden/UnderwaterSunShafts"
                         depthKernel = lerp(UNITY_NEAR_CLIP_VALUE, 1, SampleSceneDepth(uv));
                     #endif
                     //weight calculation depending on distance and depth difference
-                    real depthDiff = abs(depthKernel-depthCenter);
-                    real r2= depthDiff*BLUR_DEPTH_FALLOFF;
-                    real g = exp(-r2*r2);
-                    real weight = g * gauss_filter_weights[abs(index)];
+                    float depthDiff = abs(depthKernel-depthCenter);
+                    float r2= depthDiff*BLUR_DEPTH_FALLOFF;
+                    float g = exp(-r2*r2);
+                    float weight = g * gauss_filter_weights[abs(index)];
                     //sum for every iteration of the color and weight of this sample 
                     accumResult+=weight*kernelSample;
                     accumWeights+=weight;
@@ -293,14 +290,14 @@ Shader "Hidden/UnderwaterSunShafts"
 
             struct appdata
             {
-                real4 vertex : POSITION;
-                real2 uv : TEXCOORD0;
+                float4 vertex : POSITION;
+                float2 uv : TEXCOORD0;
             };
 
             struct v2f
             {
-                real2 uv : TEXCOORD0;
-                real4 vertex : SV_POSITION;
+                float2 uv : TEXCOORD0;
+                float4 vertex : SV_POSITION;
             };
 
             v2f vert (appdata v)
@@ -313,23 +310,23 @@ Shader "Hidden/UnderwaterSunShafts"
 
             sampler2D _MainTex;
             int _GaussSamples;
-            real _GaussAmount;
+            float _GaussAmount;
             #define BLUR_DEPTH_FALLOFF 100.0
-            static const real gauss_filter_weights[] = { 0.14446445, 0.13543542, 0.11153505, 0.08055309, 0.05087564, 0.02798160, 0.01332457, 0.00545096 } ;
+            static const float gauss_filter_weights[] = { 0.14446445, 0.13543542, 0.11153505, 0.08055309, 0.05087564, 0.02798160, 0.01332457, 0.00545096 } ;
 
 
-            real3 frag (v2f i) : SV_Target
+            float3 frag (v2f i) : SV_Target
             {
-                real col = 0;
-                real accumResult = 0;
-                real accumWeights = 0;
+                float col = 0;
+                float accumResult = 0;
+                float accumWeights = 0;
                 
                 if(_GaussAmount > 0){
-                    for(real index = -_GaussSamples; index <= _GaussSamples; index ++){
-                        real2 uv = i.uv + real2 (0, index * _GaussAmount / 1000);
-                        real kernelSample = tex2D(_MainTex, uv);
-                        real depthKernel;
-                        real depthCenter;  
+                    for(float index = -_GaussSamples; index <= _GaussSamples; index ++){
+                        float2 uv = i.uv + float2 (0, index * _GaussAmount / 1000);
+                        float kernelSample = tex2D(_MainTex, uv);
+                        float depthKernel;
+                        float depthCenter;  
                         #if UNITY_REVERSED_Z
                             depthCenter = SampleSceneDepth(i.uv);
                             depthKernel = SampleSceneDepth(uv);
@@ -338,10 +335,10 @@ Shader "Hidden/UnderwaterSunShafts"
                             depthCenter = lerp(UNITY_NEAR_CLIP_VALUE, 1, SampleSceneDepth(i.uv));
                             depthKernel = lerp(UNITY_NEAR_CLIP_VALUE, 1, SampleSceneDepth(uv));
                         #endif
-                        real depthDiff = abs(depthKernel - depthCenter);
-                        real r2 = depthDiff*BLUR_DEPTH_FALLOFF;
-                        real g = exp(-r2 * r2);
-                        real weight = g * gauss_filter_weights[abs(index)];
+                        float depthDiff = abs(depthKernel - depthCenter);
+                        float r2 = depthDiff*BLUR_DEPTH_FALLOFF;
+                        float g = exp(-r2 * r2);
+                        float weight = g * gauss_filter_weights[abs(index)];
                         accumResult += weight * kernelSample;
                         accumWeights += weight;
                     }
@@ -371,14 +368,14 @@ Shader "Hidden/UnderwaterSunShafts"
 
             struct appdata
             {
-                real4 vertex : POSITION;
-                real2 uv : TEXCOORD0;
+                float4 vertex : POSITION;
+                float2 uv : TEXCOORD0;
             };
 
             struct v2f
             {
-                real2 uv : TEXCOORD0;
-                real4 vertex : SV_POSITION;
+                float2 uv : TEXCOORD0;
+                float4 vertex : SV_POSITION;
             };
 
             v2f vert (appdata v)
@@ -396,32 +393,32 @@ Shader "Hidden/UnderwaterSunShafts"
             TEXTURE2D  (_LowResDepth);
             SAMPLER(sampler_LowResDepth);
 
-            real4 _SunMoonColor;
-            real4 _Tint;
-            real _Intensity;
-            real _Downsample;
+            float4 _SunMoonColor;
+            float4 _Tint;
+            float _Intensity;
+            float _Downsample;
 
-            real3 frag (v2f i) : SV_Target
+            float3 frag (v2f i) : SV_Target
             {
                 half3 skyColor = half3(unity_SHAr.w, unity_SHAg.w, unity_SHAb.w);
 
                 _SunMoonColor = _MainLightColor * _Tint * float4(skyColor, 1);
-                real col = 0;
+                float col = 0;
 
                 int offset =0;
-                real d0 = SampleSceneDepth(i.uv);
+                float d0 = SampleSceneDepth(i.uv);
 
-                real d1 = _LowResDepth.Sample(sampler_LowResDepth, i.uv, int2(0, 1)).x;
-                real d2 = _LowResDepth.Sample(sampler_LowResDepth, i.uv, int2(0, -1)).x;
-                real d3 =_LowResDepth.Sample(sampler_LowResDepth, i.uv, int2(1, 0)).x;
-                real d4 = _LowResDepth.Sample(sampler_LowResDepth, i.uv, int2(-1, 0)).x;
+                float d1 = _LowResDepth.Sample(sampler_LowResDepth, i.uv, int2(0, 1)).x;
+                float d2 = _LowResDepth.Sample(sampler_LowResDepth, i.uv, int2(0, -1)).x;
+                float d3 =_LowResDepth.Sample(sampler_LowResDepth, i.uv, int2(1, 0)).x;
+                float d4 = _LowResDepth.Sample(sampler_LowResDepth, i.uv, int2(-1, 0)).x;
 
                 d1 = abs(d0 - d1);
                 d2 = abs(d0 - d2);
                 d3 = abs(d0 - d3);
                 d4 = abs(d0 - d4);
 
-                real dmin = min(min(d1, d2), min(d3, d4));
+                float dmin = min(min(d1, d2), min(d3, d4));
 
                 if (dmin == d1)
                 offset = 0;
@@ -455,9 +452,9 @@ Shader "Hidden/UnderwaterSunShafts"
                     break;
                 }
 
-                real3 screen = tex2D(_MainTex, i.uv);
+                float3 screen = tex2D(_MainTex, i.uv);
 
-                real3 finalShaft = saturate(col) * normalize(_SunMoonColor) * _Intensity;
+                float3 finalShaft = saturate(col) * normalize(_SunMoonColor) * _Intensity;
 
                 float3 finalColor = screen + finalShaft;
 
@@ -479,14 +476,14 @@ Shader "Hidden/UnderwaterSunShafts"
 
             struct appdata
             {
-                real4 vertex : POSITION;
-                real2 uv : TEXCOORD0;
+                float4 vertex : POSITION;
+                float2 uv : TEXCOORD0;
             };
 
             struct v2f
             {
-                real2 uv : TEXCOORD0;
-                real4 vertex : SV_POSITION;
+                float2 uv : TEXCOORD0;
+                float4 vertex : SV_POSITION;
             };
 
             v2f vert (appdata v)
@@ -497,13 +494,13 @@ Shader "Hidden/UnderwaterSunShafts"
                 return o;
             }
 
-            real frag (v2f i) : SV_Target
+            float frag (v2f i) : SV_Target
             {
                 #if UNITY_REVERSED_Z
-                    real depth = SampleSceneDepth(i.uv);
+                    float depth = SampleSceneDepth(i.uv);
                 #else
                     // Adjust z to match NDC for OpenGL
-                    real depth = lerp(UNITY_NEAR_CLIP_VALUE, 1, SampleSceneDepth(i.uv));
+                    float depth = lerp(UNITY_NEAR_CLIP_VALUE, 1, SampleSceneDepth(i.uv));
                 #endif
                 return depth;
             }
