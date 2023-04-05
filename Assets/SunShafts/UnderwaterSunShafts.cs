@@ -33,6 +33,8 @@ public class UnderwaterSunShafts : ScriptableRendererFeature
         public Color tint = Color.white;
         public float intensity = 1;
         public float scattering = 0;
+        public float scatteringDirection = 0;
+        public float absorption = 0;
         public float threshold = 0;
 
         public float depthIntensity = 1;
@@ -127,6 +129,8 @@ public class UnderwaterSunShafts : ScriptableRendererFeature
                 Material material = new Material(Shader.Find("Hidden/UnderwaterSunShafts"));
 
                 material.SetFloat("_Scattering", settings.scattering);
+                material.SetFloat("_ScatteringDirection", settings.scatteringDirection);
+                material.SetFloat("_Absorption", settings.absorption);
                 material.SetFloat("_Threshold", settings.threshold);
                 material.SetFloat("_Steps", settings.steps);
                 material.SetFloat("_JitterVolumetric", settings.jitter);

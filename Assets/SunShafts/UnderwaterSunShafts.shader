@@ -51,6 +51,8 @@ Shader "Hidden/UnderwaterSunShafts"
 
             //I set up these uniforms from the ScriptableRendererFeature
             float _Scattering;
+            float _ScatteringDirection;
+            float _Absorption;
             float _SchlickScattering;
             float _Steps;
             float _JitterVolumetric;
@@ -106,8 +108,8 @@ Shader "Hidden/UnderwaterSunShafts"
             // Mie scaterring approximated with Henyey-Greenstein phase function.
             float HGPhaseFunction(float lightDotView)
             {
-                float result = 1.0f - _Scattering * _Scattering;
-                result /= (4.0f * PI * pow(1.0f + _Scattering * _Scattering - (2.0f * _Scattering) * lightDotView, 1.5f));
+                float result = 1.0f - _ScatteringDirection * _ScatteringDirection;
+                result /= (4.0f * PI * pow(1.0f + _ScatteringDirection * _ScatteringDirection - (2.0f * _ScatteringDirection) * lightDotView, 1.5f));
                 return result;
             }
 
@@ -161,24 +163,29 @@ Shader "Hidden/UnderwaterSunShafts"
 
                 float accumFog = 0;
 
+                float phase = HGPhaseFunction(dot(rayDirection, _MainLightPosition.xyz));
+
                 //we ask for the shadow map value at different depths, if the sample is in light we compute the contribution at that point and add it
                 for (float j = 0; j < _Steps - 1; j++)
                 {
                     //getting the water surface position
-                    float3 surfacePositionWS = float3(currentPosition.x, 0, currentPosition.z) - currentPosition.y * _MainLightPosition.xyz;
+                    float3 surfacePositionWS = currentPosition - currentPosition.y * _MainLightPosition.xyz;
                     half shadowValue = MainLightRealtimeShadow(TransformWorldToShadowCoord(currentPosition));
                     //the amount of light that enters the water
                     float lightValue = WaveAten(surfacePositionWS);
-                    
+
                     //if it is in light
                     if(shadowValue > _Threshold && lightValue > _Threshold)
                     {                       
-                        float phase = HGPhaseFunction(dot(rayDirection, _MainLightPosition.xyz));
+                        float prepustnost = exp(-(_Scattering + _Absorption) * length(surfacePositionWS - currentPosition));
+                        lightValue *= prepustnost;
                         float inscattering = _Scattering * lightValue * phase;
-                        float waterHeight = SampleHeight(worldPos.xz, 1, 1);
+                        inscattering *= exp(-(_Scattering + _Absorption) * stepLength * j);
+                        float waterHeight = SampleHeight(surfacePositionWS.xz, 1, 1);
                         if (currentPosition.y < waterHeight){
                             //brightness should follow exponential function. _DepthIntensity is user controlled.
-                            accumFog += pow(inscattering, (1 + (-currentPosition.y + waterHeight)/_DepthIntensity));
+                            //accumFog += pow(inscattering, (1 + (-currentPosition.y + waterHeight)/_DepthIntensity));
+                            accumFog += inscattering;
                         }
                     }
                     currentPosition += step;
