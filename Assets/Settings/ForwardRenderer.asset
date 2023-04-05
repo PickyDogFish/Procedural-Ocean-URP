@@ -23,7 +23,7 @@ MonoBehaviour:
     depthIntensity: 14.5
     steps: 16
     maxDistance: 35
-    jitter: 100
+    jitter: 1
     gaussBlur:
       amount: 2
       samples: 2
