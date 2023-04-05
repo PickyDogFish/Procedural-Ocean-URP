@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _spectrum:
     energySpectrum: 0
-    windSpeed: 6.3
-    fetch: 0
-    peaking: 0
-    scale: 0.016
+    windSpeed: 8.1
+    fetch: 100
+    peaking: 3.3
+    scale: 0.36
     cutoffWavelength: 1.67
     alignment: 1
     extraAlignment: 1
