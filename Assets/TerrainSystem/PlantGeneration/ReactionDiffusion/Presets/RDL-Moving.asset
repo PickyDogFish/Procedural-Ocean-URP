@@ -68,5 +68,5 @@ MonoBehaviour:
     m_RotationOrder: 4
   simulationSettings: {fileID: 11400000, guid: d44e4d3b7871c5f4f93cac7fc5e08f90, type: 2}
   builderTriangleBudget: 524288
-  builderTargetValue: 0.3
+  builderTargetValue: 0.2
   builderGridScale: 0.0625

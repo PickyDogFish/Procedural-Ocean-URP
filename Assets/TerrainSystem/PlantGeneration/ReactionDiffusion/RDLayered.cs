@@ -48,7 +48,10 @@ namespace PlantGeneration.ReactionDiffusion
         {
             float extraKill = Mathf.Clamp01(layerSettings.killIncrease.Evaluate((float)layerIndex/layerSettings.size));
             RDSimulator.Iterate(ref simulationRead, ref simulationWrite, ref simulationCompute, layerSettings.simulationSettings, extraKill, layerIndex, layerSettings.step);
-            Texture2D tex = RDSimulator.ToTexture2D(simulationWrite, layerSettings.simulationSettings.resolution);
+            Texture2D tex = RandomUtils.ToTexture2D(simulationWrite, layerSettings.simulationSettings.resolution);
+            if (layerIndex % 10 == 1 && layerIndex < 150){
+                RandomUtils.SaveTexture(tex, "layer-" + layerIndex + ".png");
+            }
             TextureScaler.Scale(tex, layerSettings.size, layerSettings.size);
 
             Color[] colors = tex.GetPixels();

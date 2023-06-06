@@ -20,12 +20,14 @@ float kill;
 float speed;
 
 float flowIntensity;
-int2 flowOffset;
+//int2 flowOffset;
 
 int2 Flow2D(int2 pos){
-    float3 texVal = FlowTex.Load(int3(pos + flowOffset, 0)) + float3(-0.5,-0.5,0);
+    //float3 texVal = FlowTex.Load(int3(pos + flowOffset, 0)) + float3(-0.5,-0.5,0);
+    float3 texVal = FlowTex.Load(int3(pos, 0)) + float3(-0.5,-0.5,0);
     texVal = texVal * 2;
-    return (int2) (texVal * flowIntensity);
+    // range from -flowIntensity to +flowIntensity
+    return round(texVal * flowIntensity);
 }
 
 
@@ -35,6 +37,7 @@ float2 Read2D(int2 pos){
 
 float2 Read2DOffset(int2 pos){
     return Read.Load(int3(pos + Flow2D(pos), 0));
+    //return Read.Load(int3(pos + int2(-1,-1), 0));
 }
 
 float Feed2D(int2 pos){
@@ -78,4 +81,5 @@ void Update (uint3 id : SV_DispatchThreadID){
 
     float b = prevq.y + (diffusion.y * newq.y + reactionTerm - (kill + newFeed) * prevq.y) * speed;
     Write[id.xy] = float2(saturate(a), saturate(b));
+    //Write[id.xy] = FlowTex.Load(int3(id.xy, 0))-float2(0.5,0.5);//float2(saturate(a), saturate(b));
 }

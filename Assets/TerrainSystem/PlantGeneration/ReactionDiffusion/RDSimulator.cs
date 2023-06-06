@@ -45,7 +45,7 @@ namespace PlantGeneration.ReactionDiffusion
             renderTexture.dimension = TextureDimension.Tex2D;
             renderTexture.volumeDepth = res;
             renderTexture.filterMode = FilterMode.Bilinear;
-            renderTexture.wrapMode = TextureWrapMode.Repeat;
+            renderTexture.wrapMode = TextureWrapMode.Mirror;
             renderTexture.Create();
             return renderTexture;
         }
@@ -65,8 +65,8 @@ namespace PlantGeneration.ReactionDiffusion
 
                 RDShader.SetFloat("flowIntensity", settings.flowIntensity);
 
-                int[] offset = new int[2]{(int)Mathf.Cos(layer + i) * 10, (int)Mathf.Sin(layer + i) * 10};
-                RDShader.SetInts("flowOffset", offset);
+                //int[] offset = new int[2]{(int)Mathf.Cos(layer + i) * 10, (int)Mathf.Sin(layer + i) * 10};
+                //RDShader.SetInts("flowOffset", offset);
 
                 //Setting feed parameters
                 RDShader.SetTexture(kernel, "FeedTex", settings.feedTexture);
@@ -88,16 +88,6 @@ namespace PlantGeneration.ReactionDiffusion
             RenderTexture tmp = writeBuffer;
             writeBuffer = readBuffer;
             readBuffer = tmp;
-        }
-
-        public static Texture2D ToTexture2D(RenderTexture rTex, int resolution)
-        {
-            Texture2D tex = new Texture2D(resolution, resolution, TextureFormat.RGB24, true);
-            // ReadPixels looks at the active RenderTexture.
-            RenderTexture.active = rTex;
-            tex.ReadPixels(new Rect(0, 0, rTex.width, rTex.height), 0, 0);
-            tex.Apply();
-            return tex;
         }
     }
 }
