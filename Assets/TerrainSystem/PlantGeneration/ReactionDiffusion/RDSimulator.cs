@@ -43,8 +43,8 @@ namespace PlantGeneration.ReactionDiffusion
             renderTexture.name = "Output";
             renderTexture.enableRandomWrite = true;
             renderTexture.dimension = TextureDimension.Tex2D;
-            renderTexture.volumeDepth = res;
-            renderTexture.filterMode = FilterMode.Bilinear;
+            //renderTexture.volumeDepth = res;
+            renderTexture.filterMode = FilterMode.Point;
             renderTexture.wrapMode = TextureWrapMode.Mirror;
             renderTexture.Create();
             return renderTexture;
