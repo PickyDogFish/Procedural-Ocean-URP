@@ -15,12 +15,12 @@ MonoBehaviour:
   feed: 0.025
   useFeedTexture: 0
   feedTexture: {fileID: 2800000, guid: d231d4df9f38bce428ed1ed8c5e04e26, type: 3}
-  feedTexStrength: 0.124
-  flowTexture: {fileID: 2800000, guid: 303844147841c7d459b757fe16e8c0d8, type: 3}
-  flowIntensity: 1.5
+  feedTexStrength: 0.03
+  flowTexture: {fileID: 2800000, guid: b7ba210ac065d6f46ad7cc2bc5798266, type: 3}
+  flowIntensity: 0
   kill: 0.06
   du: 1
   dv: 0.5
   speed: 1
-  initialTexture: {fileID: 2800000, guid: 22ac7c206cca26f40a3852ef5f6cae32, type: 3}
+  initialTexture: {fileID: 2800000, guid: bc45c2d4d12d49241b9c452fb1dbe85e, type: 3}
   resolution: 512

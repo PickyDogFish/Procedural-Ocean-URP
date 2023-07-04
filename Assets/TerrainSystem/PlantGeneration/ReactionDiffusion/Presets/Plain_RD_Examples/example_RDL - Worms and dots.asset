@@ -30,7 +30,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  simulationSettings: {fileID: 11400000, guid: e9ae149f47b9f13439a28925fae261fc, type: 2}
+  simulationSettings: {fileID: 11400000, guid: a1a5bdc9f79e43c44a6a232e6f2ed941, type: 2}
   builderTriangleBudget: 524288
   builderTargetValue: 0.2
   builderGridScale: 0.0625

@@ -12,34 +12,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04cbaf5885b25754da159b5789594791, type: 3}
   m_Name: RDL-Test
   m_EditorClassIdentifier: 
-  <startOffset>k__BackingField: 25
-  <step>k__BackingField: 50
-  <size>k__BackingField: 256
-  <killIncrease>k__BackingField:
+  autoUpdate: 0
+  material: {fileID: 2100000, guid: 0a9904b194778de4cb0c1d95eaeaad47, type: 2}
+  speciesName: GenericPlant
+  growChance: 0.3
+  maxSpawnHeight: 0
+  minSpawnHeight: -3.4028235e+38
+  growSpread: 5
+  maxSize: 1
+  minSize: 0.75
+  startOffset: 10
+  step: 25
+  size: 128
+  killIncrease:
     serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 2
-      outSlope: 2
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
+    m_Curve: []
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  <builderTriangleBudget>k__BackingField: 524288
-  <builderTargetValue>k__BackingField: 0.7
-  <builderGridScale>k__BackingField: 1
-  <simulationSettings>k__BackingField: {fileID: 11400000, guid: 897d7bd1fe6da0a4ca674836221a4c5a, type: 2}
+  simulationSettings: {fileID: 11400000, guid: 897d7bd1fe6da0a4ca674836221a4c5a, type: 2}
+  builderTriangleBudget: 524288
+  builderTargetValue: 0.2
+  builderGridScale: 0.0625

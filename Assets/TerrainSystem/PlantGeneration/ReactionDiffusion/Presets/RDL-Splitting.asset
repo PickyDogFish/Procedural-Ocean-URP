@@ -37,8 +37,8 @@ MonoBehaviour:
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: 0.47585192
-      value: 0.336714
+      time: 0.3923789
+      value: 0.30891007
       inSlope: 2.2707682
       outSlope: 2.2707682
       tangentMode: 0
@@ -46,18 +46,27 @@ MonoBehaviour:
       inWeight: 0.0658274
       outWeight: 0.077899545
     - serializedVersion: 3
-      time: 1.0015851
-      value: 1.0717521
-      inSlope: 1.7491274
-      outSlope: 1.7491274
+      time: 0.49367285
+      value: 0.71681684
+      inSlope: 1.0113871
+      outSlope: 1.0113871
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.1110307
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1.0015851
+      value: 1.0717521
+      inSlope: 0.0155350845
+      outSlope: 0.0155350845
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 1
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
   simulationSettings: {fileID: 11400000, guid: 7a20d7a71f109b742967317bc4bbca6b, type: 2}
   builderTriangleBudget: 524288
-  builderTargetValue: 0.3
+  builderTargetValue: 0.2
   builderGridScale: 0.0625
