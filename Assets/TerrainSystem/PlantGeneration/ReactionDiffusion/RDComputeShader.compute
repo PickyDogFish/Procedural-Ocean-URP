@@ -24,8 +24,8 @@ float flowIntensity;
 
 int2 Flow2D(int2 pos){
     //float3 texVal = FlowTex.Load(int3(pos + flowOffset, 0)) + float3(-0.5,-0.5,0);
-    float3 texVal = FlowTex.Load(int3(pos, 0)) + float3(-0.5,-0.5,0);
-    texVal = texVal * 2;
+    float3 texVal = FlowTex.Load(int3(pos, 0)) + float3(-0.5,-0.5,-0.5);
+    //texVal = texVal * 2;
     // range from -flowIntensity to +flowIntensity
     return round(texVal * flowIntensity);
 }
@@ -36,8 +36,13 @@ float2 Read2D(int2 pos){
 }
 
 float2 Read2DOffset(int2 pos){
-    return Read.Load(int3(pos + Flow2D(pos), 0));
-    //return Read.Load(int3(pos + int2(-1,-1), 0));
+    int2 newPos = pos + Flow2D(pos);
+    //clamping the edges of the texture
+    newPos.x = max(0,newPos.x);
+    newPos.x = min(resolution-1,newPos.x);
+    newPos.y = max(0,newPos.y);
+    newPos.y = min(resolution-1,newPos.y);
+    return Read.Load(int3(newPos, 0));
 }
 
 float Feed2D(int2 pos){
@@ -74,7 +79,7 @@ void Update (uint3 id : SV_DispatchThreadID){
     }
 
 
-    float2 prevq = Read2DOffset(id.xy);
+    float2 prevq = (Read2D(id.xy) + Read2DOffset(id.xy))/2.0;
     float2 newq = GetLaplacian(id.xy);
     float reactionTerm = prevq.r * prevq.g * prevq.g;
     float a = prevq.x + (diffusion.x * newq.x - reactionTerm + newFeed * (1.0 - prevq.x)) * speed;
