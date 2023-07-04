@@ -13,6 +13,7 @@ namespace PlantGeneration {
             GetComponent<MeshRenderer>().material = settings.material;
         }
         public void Clear() {
+            DestroyImmediate(GetComponent<MeshFilter>().sharedMesh);
             GetComponent<MeshFilter>().sharedMesh = null;
         }
     }
