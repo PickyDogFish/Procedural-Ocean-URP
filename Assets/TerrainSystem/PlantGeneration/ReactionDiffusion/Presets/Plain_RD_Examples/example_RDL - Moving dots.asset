@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04cbaf5885b25754da159b5789594791, type: 3}
+  m_Name: example_RDL - Moving dots
+  m_EditorClassIdentifier: 
+  autoUpdate: 0
+  material: {fileID: 2100000, guid: 0a9904b194778de4cb0c1d95eaeaad47, type: 2}
+  speciesName: GenericPlant
+  growChance: 0.3
+  maxSpawnHeight: 0
+  minSpawnHeight: -32
+  growSpread: 5
+  maxSize: 1
+  minSize: 0.75
+  startOffset: 0
+  step: 100
+  size: 128
+  killIncrease:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  simulationSettings: {fileID: 11400000, guid: 60e68556e78204043962e8893da32c70, type: 2}
+  builderTriangleBudget: 524288
+  builderTargetValue: 0.2
+  builderGridScale: 0.0625

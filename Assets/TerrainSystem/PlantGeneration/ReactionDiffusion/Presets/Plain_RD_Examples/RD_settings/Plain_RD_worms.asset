@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 698031c1e0fc0234d9c5d3b88f60aca1, type: 3}
+  m_Name: Plain_RD_worms
+  m_EditorClassIdentifier: 
+  feed: 0.057
+  useFeedTexture: 0
+  feedTexture: {fileID: 2800000, guid: b7ba210ac065d6f46ad7cc2bc5798266, type: 3}
+  feedTexStrength: 0
+  flowTexture: {fileID: 2800000, guid: b7ba210ac065d6f46ad7cc2bc5798266, type: 3}
+  flowIntensity: 0
+  kill: 0.065
+  du: 1
+  dv: 0.41
+  speed: 1
+  initialTexture: {fileID: 2800000, guid: bc45c2d4d12d49241b9c452fb1dbe85e, type: 3}
+  resolution: 512
